@@ -1,0 +1,99 @@
+<head>
+<style>
+
+</style>
+<script language='javascript'>
+
+function gt(){
+	jie = $("#mb1 option:selected").val();
+	ming = $("#mb1 option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+	}
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+function tishi(a)
+{
+	var b  = $(a).val();
+	var ab = b.split(",");
+	var c  = ab.length//模板拥有的项目个数
+	if(b == ' ')
+	{
+		$('#pitishi').html('提示：你还没有选择模板');
+	}else{
+		$('#pitishi').html('提示：该模板有'+c+'个项目');
+	}
+	
+}
+function yanzheng(e){
+	var ti = e.pifile.value;
+	var timb = e.xmmb.value;
+	if(ti==''){
+		alert("请先选择要上传的文件");
+		return false;
+	}
+	if(ti!='' && timb==''){
+		if(!window.confirm('确定不设置默认项目！')){
+			return false;
+		}
+	}
+}
+</script>
+<style>
+table td{font-size: 16px;padding:5px;}
+table td img{width: 60%;}
+table td:first-child{width: 45%;}
+</style>
+</head>
+<div class='center'>
+	<h2>排污口站点上传</h2>
+	<form method="post" action="#" enctype="multipart/form-data" style='margin-top:30px;' onsubmit="return yanzheng(this);">
+		<table style='width:80%;margin:0 auto;'>
+		  <tr>
+		  <td align='right'>选择文件:</td><td align='left'><input type="file" name="pifile" title="请上传excel文件" style='background-color:#C7EDCC;' /></td>
+		  </tr>
+		  <tr>
+		    <td align='right'>批次名称:</td>
+		    <td align='left'><input type="text" name="piming" value="" size='28' placeholder='请输入批次名称' required /></td>
+		  </tr>
+		  <tr>
+		    <td align='right'>监测项目:</td>
+		    <td align='left' >
+		    	<select name='xmmb' style="width:149px;" onchange="tishi(this)" class='input-sm' id='mb1'>
+					<option value=''>----请选择----</option>
+					$mbse 
+				</select>
+		 		<button type="button" class="btn btn-xs btn-primary" onclick='gt()' >项目模板设定</button>
+		    </td>
+		  </tr>
+		   <tr>
+	            <td style="color:red;" id='pitishi' align='center' colspan='2'>提示：你还没有选择模板</td>
+	       </tr>
+		  <tr>
+		    <td align='center' colspan='2'><p/><p/><input type = 'submit' name="fsub" value="上传" class='btn btn-xs btn-primary'/><p/></td>
+		  </tr>
+		  <tr>
+			<td colspan='2' align='center'>规定excel格式&nbsp;&nbsp;&nbsp;<a href="$rooturl/site/upfile/site_implode_demo.xls" >下载分批站点上传excel模版</a><br/></td>
+		  </tr>
+		  <tr>
+		  	<td colspan='2'><img src="$rooturl/site/upfile/site_implode_demo.png" /></td>
+		  </tr>
+		</table>
+	</form>
+</div>
+
+<!-- 弹出层 -->
+		<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>

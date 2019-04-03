@@ -1,0 +1,162 @@
+<!---->
+<style>
+div,p,label{margin:0px;}
+p{line-height:30px;text-align:center;font-weight:bold;}
+.fixed{position:fixed;top:126px;width:50%;}
+#checked_fixed{border-right:1px solid #56932C;}
+#checkbox_fixed{border-left:1px solid #FFCC99;}
+h2{text-align:center;}
+.widget-header{position:static;}
+.show{text-align:left;}
+</style>
+<div style="top:0px;width:100%;background-color:#FFF;">
+<h2  class="header smaller center title"> 化验项目分包设置</h2>
+<div class="widget-header header-color-blue4 center">
+<div class="center widget-toolbar" style="text-align:center;">
+	选择分包单位：
+	<select class="chosen" name="fzx" id='mb3'>
+		<option>----请选择----</option>
+		$fzxop
+	</select> 
+	搜索项目：
+	<select class="chosen" name="select_value" id='mb2'>
+		<option>----请选择----</option>
+		$value_options
+	</select> 
+	<input type="button" style="display:none;height:31px;line-height:26px;vertical-align:middle;" class="checked_value" value="选中/取消选中" />
+</div>
+</div>
+</div>
+<!-- $ti -->
+<form action="$rooturl/xd_csrw/xm_fb_save.php" method="POST" name="xmfb" id='xmfb' onsubmit="return submitTest();">
+<input type="hidden" name="fzx" value="{$fbfzx}" />
+<input type="hidden" name="site_type" value="$site_type" />
+<input type="hidden" name="cyd_id" value="{$_GET[cyd_id]}" />
+<div id='aaa'>
+$fp_sites
+$lines		   
+</div>
+<div style="position:fixed;bottom:0px;left:0px;width:100%;z-index: 999;text-align:center;background:rgba(120,120,120,0.5);">
+	<input  style="width:100px;height:28px;" type="submit" name="submit" value="保存现有修改" />
+</div>
+<div style="clear:both;height:30px;text-align:center;">
+</div>
+</form>
+<script type="text/javascript">
+$("#mb3").change(function(){
+	$("#xmfb input[name=fzx]").val($(this).val());
+});
+function submitTest(){
+	if(!$("#mb3").val() || ''==$("#xmfb input[name=fzx]").val()){
+		alert("你没有指定分包的分中心！");
+		return false;
+	}
+}
+$(function(){
+	$('body').height($('body').parent().height());
+	$("#mb2").chosen();//可搜索下拉菜单
+	$("#mb3").chosen();//可搜索下拉菜单
+	$("input[name='vid[]']").each(function(){//把已经选中的项目高亮显示
+		if($(this).is(":checked")){
+			$(this).parent("label").css("background-color","#C9F2D1");
+		}
+	});
+	$("label.show").mouseover(function(){//鼠标移动到项目上或者选中的项目，高亮显示
+		$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+	}).mouseout(function(){
+		if(!$(this).children("input").is(":checked")){
+			$(this).css("background-color","#FFF");
+		}
+	});
+	$("#checkbox input[name='vid[]']").click(function(){//点击项目后 更新选中项目的数量
+		var value_num	= parseInt($("#num_tishi").text());
+		if($(this).is(":checked")){
+			value_num = value_num+1;
+		}else{
+			value_num = value_num-1;
+		}
+		$("#num_tishi").text(value_num);
+	});
+	$("#checked input[name='vid[]']").click(function(){//点击项目后 更新选中项目的数量
+                var value_num   = parseInt($("#checked_num").text());
+                if($(this).is(":checked")){
+                        value_num = value_num+1;
+                }else{
+                        value_num = value_num-1;
+                }
+                $("#checked_num").text(value_num);
+        });
+	//未选择项目的 全选/反选 功能
+	$("input.all_check").click(function(){
+		$("#checkbox input:checkbox").each(function(){
+			if($(this).is(":checked")){
+				$(this).attr("checked",false).parent("label").css("background-color","#FFF");;
+			}else{
+				$(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+			}
+		});
+                $("#num_tishi").text($("#checkbox input[name='vid[]']:checked").length);
+	});
+	//已选择项目的 全选/反选 功能
+	$(".all_checked").click(function(){
+		$("#checked input:checkbox").each(function(){
+                        if($(this).is(":checked")){
+                                $(this).attr("checked",false).parent("label").css("background-color","#FFF");
+                        }else{
+                                $(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+                        }
+			
+                });
+		$("#checked_num").text($("#checked input[name='vid[]']:checked").length);
+	});
+	//点击“选中”按钮，选中该项目
+	$(".checked_value").click(function(){
+		var xm_id	= $("select[name='select_value']").val();
+		if(xm_id){
+			var parend_id   = $("input[name='vid[]'][value='"+xm_id+"']").parent("label").parent("div").attr("id");
+			if(parend_id=='checkbox'){
+				var value_num   = parseInt($("#num_tishi").text());
+			}else{
+				var value_num   = parseInt($("#checked_num").text());
+			}
+			if($("input[name='vid[]'][value='"+xm_id+"']").is(":checked")){
+				$("input[name='vid[]'][value='"+xm_id+"']").attr("checked",false);//.parent("label").css("background-color","#FFF");
+				value_num = value_num-1;
+			}else{
+				$("input[name='vid[]'][value='"+xm_id+"']").prop("checked",true);//.parent("label").css("background-color","#C9F2D1");
+				value_num = value_num+1;
+			}
+			if(parend_id=='checkbox'){
+				$("#num_tishi").text(value_num);
+			}else{
+				$("#checked_num").text(value_num);
+			}
+		}
+	});
+	//选择项目后 出现选中和未选中的 按钮
+	$("select[name='select_value']").change(function(){
+		if(this.value=='' || this.value=='----请选择----'){
+			$(".checked_value,.check_value").hide();
+		}else{
+			$(".checked_value,.check_value").show();
+			var scroll_offset = $("input[name='vid[]'][value='"+this.value+"']").offset(); //获取选择项目的位置
+                	//$("body,html").animate({
+			
+			//$("#qckb_value_modify").animate({
+			if($("#qckb_value_modify").attr("id")){
+				var dui_xiang	= "#qckb_value_modify";
+			}else{
+				var dui_xiang	= "body,html";
+			}
+			//获取窗口的滚动条的垂直位置      
+        	var s = $("#aaa").scrollTop();
+			$(dui_xiang).animate({
+                        	scrollTop:(scroll_offset.top+s) //滑动条 滚动到 该项目的地方
+                	},0);
+			$("input[name='vid[]']").parent("label").css("background-color","#FFF");
+			$("input[name='vid[]']:checked").parent("label").css("background-color","#C9F2D1");
+			$("input[name='vid[]'][value='"+this.value+"']").parent("label").css("background-color","#38D878");
+		}
+	});
+});
+</script>

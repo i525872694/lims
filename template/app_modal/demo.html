@@ -1,0 +1,52 @@
+<style>
+.jumpLink {
+    text-decoration:underline;
+    color:blue;
+    cursor: pointer;
+}
+</style>
+<div class="widget-box transparent" style="margin:0;">
+    <div class="widget-header center">
+        <h3 class="header smaller title" style="color:#000;">站点列表</h3>
+        <div class="widget-toolbar no-border">
+            <button id="addSite" class="btn btn-minier btn-primary">添加</button>
+            <button id="implodeSite" class="btn btn-minier btn-primary">导入</button>
+        </div>
+    </div>
+</div>
+<div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+        <!--蓝色工具栏-->
+    </div>
+</div>
+<div class="container-fluid">
+    {$ui_ag_grid}
+</div>
+<script>
+$(function(){
+	$("#myGrid").height($(window).height() - 140);
+	get_ag_grid_data();
+    $("#addSite").click(function(){
+        location.href = '{__ROOTURL__}/site/siteInfo.php?app=site&act=add_site';
+    });
+    $("#implodeSite").click(function(){
+        location.href = '{__ROOTURL__}/site/pw.php?app=site&act=implode_site';
+    });
+})
+//获取数据
+function get_ag_grid_data(){
+    var url = '{__ROOTURL__}/huayan/ahlims.php?app=site&act=site_list_data';
+    $.get(url,function(resp){
+        handle_ag_grid(resp);
+    },'json')
+}
+function  ag_grid_cellClick(obj){
+    console.log(obj);
+    // console.log(obj.data);
+    // console.log(obj.colDef);
+    // var field = obj.colDef.field;
+    // var tag = $.inArray(field, ['one_level_jifei_list_num','loumen_meter_list_num']);
+    // console.log(tag);
+    // location.href = '{__ROOTURL__}/site/siteInfo.php?sid='+obj.data.id;
+}
+</script>

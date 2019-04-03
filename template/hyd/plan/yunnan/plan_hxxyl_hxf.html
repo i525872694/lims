@@ -1,0 +1,293 @@
+<h1>{$arow['assay_element']}测定原始记录表</h1>
+<h1>(化学法)</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:4.3%">
+        <td style="width:17.2%">
+        <td style="width:8.3%">
+        <td style="width:8.3%">
+        <td style="width:8.3%">
+        <td style="width:8.3%">
+        <td style="width:8.3%">
+        <td style="width:8.0%">
+        <td style="width:8.0%">
+        <td style="width:8.0%">
+        <td style="width:6.3%">
+        <td style="width:6.3%">
+    </tr>
+    <tr>
+        <td colspan="3" align="left">测定项目：{$arow['assay_element']}</td>
+        <td colspan="1">测定方法</td>
+        <td colspan="5">{$arow['td2']}</td>
+        <td colspan="1">滴定管规格</td>
+        <td colspan="2"><input type="text" class="inputl" name="td8" value="{$arow['td8']}" style="width:60px;">ml</td>
+    </tr>
+    <tr>
+        <td colspan="3" align="left">标准溶液名称：<input type="text" class="inputl" name="td9" value="{$arow['td9']}" style="width: 130px;"></td>
+        <td colspan="1">浓度</td>
+        <td colspan="5">C[(NH<sub>4</sub>)<sub>2</sub>Fe(SO<sub>4</sub>)<sub>2</sub>•6H<sub>2</sub>O]=<input type="text" class="inputl" name="td10" value="{$arow['td10']}" style="width: 60px;">mol/L</td>
+        <td colspan="1">标定日期</td>
+        <td colspan="2"><input type="text" class="inputl date_Ymd" name="td11" value="{$arow['td11']}"></td>
+    </tr>
+    <tr align="center">
+        <td rowspan="2">序号</td>
+        <td rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">水样体积mL</td>
+        <td rowspan="2">稀释倍数</td>
+        <td colspan="4">标准溶液用量mL</td>
+        <td colspan="1" rowspan="2">含量<br />({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">平均值/<br>理论浓度<br>({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+    <tr align="center">
+        <td colspan="1">终点</td>
+        <td colspan="1">始点</td>
+        <td colspan="1">用量</td>
+        <td colspan="1">空白减</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>标定</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}"></td>
+        <td><input type="text" class="inputc" name="btdata[105]" value="{$arow['btdata'][105]}" id='bt105'></td>
+        <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="zk()"></td>
+        <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}" onblur="zk()"></td>
+        <td><input type="text" class="noinputc" name="btdata[104]" value="{$arow['btdata'][104]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>标定</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[506]" value="{$arow['btdata'][506]}"></td>
+        <td><input type="text" class="inputc" name="btdata[505]" value="{$arow['btdata'][505]}" id='bt505'></td>
+        <td><input type="text" class="inputc" name="btdata[502]" value="{$arow['btdata'][502]}" onblur="zk()"></td>
+        <td><input type="text" class="inputc" name="btdata[503]" value="{$arow['btdata'][503]}" onblur="zk()"></td>
+        <td><input type="text" class="noinputc" name="btdata[504]" value="{$arow['btdata'][504]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>平均值</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" class="noinputc" name="btdata[601]" value="{$arow['btdata'][601]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}"></td>
+        <td><input type="text" class="inputc" name="btdata[205]" value="{$arow['btdata'][205]}" id='bt205'></td>
+        <td><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="zk()"></td>
+        <td><input type="text" class="inputc" name="btdata[203]" value="{$arow['btdata'][203]}" onblur="zk()"></td>
+        <td><input type="text" class="noinputc" name="btdata[204]" value="{$arow['btdata'][204]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[401]" value="{$arow['btdata'][401]}"></td>
+        <td><input type="text" class="inputc" name="btdata[405]" value="{$arow['btdata'][405]}" id='bt405'></td>
+        <td><input type="text" class="inputc" name="btdata[402]" value="{$arow['btdata'][402]}" onblur="zk()"></td>
+        <td><input type="text" class="inputc" name="btdata[403]" value="{$arow['btdata'][403]}" onblur="zk()"></td>
+        <td><input type="text" class="noinputc" name="btdata[404]" value="{$arow['btdata'][404]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>平均值</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" class="noinputc" name="btdata[501]" value="{$arow['btdata'][501]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>校核</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[301]" value="{$arow['btdata'][301]}"></td>
+        <td><input type="text" class="inputc" name="btdata[305]" value="{$arow['btdata'][305]}" onblur="zk()" id='bt305'></td>
+        <td><input type="text" class="inputc" name="btdata[302]" value="{$arow['btdata'][302]}" onblur="zk()"></td>
+        <td><input type="text" class="inputc" name="btdata[303]" value="{$arow['btdata'][303]}" onblur="zk()"></td>
+        <td><input type="text" class="noinputc" name="btdata[304]" value="{$arow['btdata'][304]}"></td>
+        <td><input type="text" class="noinputc" name="btdata[309]" value="{$arow['btdata'][309]}"></td>
+        <td title="原始结果: {$arow['btdata'][311]}"><input type="text" class="noinputc" name="btdata[310]" value="{$arow['btdata'][310]}"></td>
+        <td><input type="hidden" class="noinputc" name="btdata[311]" value="{$arow['btdata'][311]}"></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+// $.isNumeric(v('bt105')) ? '' : setdata('bt105', 1);
+// $.isNumeric(v('bt205')) ? '' : setdata('bt205', 1);
+// $.isNumeric(v('bt305')) ? '' : setdata('bt305', 1);
+// $.isNumeric(v('bt405')) ? '' : setdata('bt405', 1);
+
+var vd2 = $('.vd2');
+for (var i = 0; i < vd2.length; i++) {
+    $.isNumeric($('.vd2')[i].value) ? '' : $('.vd2')[i].value = 1;
+}
+
+function zk() {
+    // $.isNumeric(v('bt105')) ? '' : setdata('bt105', 1);
+    // $.isNumeric(v('bt205')) ? '' : setdata('bt205', 1);
+    // $.isNumeric(v('bt305')) ? '' : setdata('bt305', 1);
+    // $.isNumeric(v('bt405')) ? '' : setdata('bt405', 1);
+    if ($("[name='btdata[102]']").val().indexOf('.') != -1) {
+        var len1 = $("[name='btdata[102]']").val().split('.')[1].length;
+    } else {
+        var len1 = 0;
+    }
+    if ($("[name='btdata[202]']").val().indexOf('.') != -1) {
+        var len2 = $("[name='btdata[202]']").val().split('.')[1].length;
+    } else {
+        var len2 = 0;
+    }
+    if ($("[name='btdata[302]']").val().indexOf('.') != -1) {
+        var len3 = $("[name='btdata[302]']").val().split('.')[1].length;
+    } else {
+        var len3 = 0;
+    }
+
+    if ($.isNumeric($("[name='btdata[102]']").val()) && $.isNumeric($("[name='btdata[103]']").val())) {
+        $("[name='btdata[104]']").val(roundjs(accsub($("[name='btdata[102]']").val(), $("[name='btdata[103]']").val()), len1));
+    } else {
+        $("[name='btdata[104]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[502]']").val()) && $.isNumeric($("[name='btdata[503]']").val())) {
+        $("[name='btdata[504]']").val(roundjs(accsub($("[name='btdata[502]']").val(), $("[name='btdata[503]']").val()), len1));
+    } else {
+        $("[name='btdata[504]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[104]']").val()) && $.isNumeric($("[name='btdata[504]']").val())) {
+        $("[name='btdata[601]']").val(roundjs(accDiv(accAdd($("[name='btdata[104]']").val(), $("[name='btdata[504]']").val()), 2), len1));
+    } else {
+        $("[name='btdata[601]']").val('');
+    }
+    if (sub($("[name='td9']").val(), 10) == '硫酸亚铁铵' && !$("[name='td10']").val()) {
+        if ($.isNumeric($("[name='btdata[601]']").val())) {
+            $("[name='td10']").val(roundjs(accDiv(0.125, $("[name='btdata[601]']").val()), 4));
+        } else if ($.isNumeric($("[name='btdata[104]']").val())) {
+            $("[name='td10']").val(roundjs(accDiv(0.125, $("[name='btdata[104]']").val()), 4));
+        } else {
+            $("[name='td10']").val('');
+        }
+    }
+
+    if ($.isNumeric($("[name='btdata[202]']").val()) && $.isNumeric($("[name='btdata[203]']").val())) {
+        $("[name='btdata[204]']").val(roundjs(accsub($("[name='btdata[202]']").val(), $("[name='btdata[203]']").val()), len2));
+    } else {
+        $("[name='btdata[204]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[402]']").val()) && $.isNumeric($("[name='btdata[403]']").val())) {
+        $("[name='btdata[404]']").val(roundjs(accsub($("[name='btdata[402]']").val(), $("[name='btdata[403]']").val()), len2));
+    } else {
+        $("[name='btdata[404]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[204]']").val()) && $.isNumeric($("[name='btdata[404]']").val())) {
+        $("[name='btdata[501]']").val(roundjs(accDiv(accAdd($("[name='btdata[204]']").val(), $("[name='btdata[404]']").val()), 2), len2));
+    } else {
+        $("[name='btdata[501]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[501]']").val())) {
+        var kb = $("[name='btdata[501]']").val();
+    } else if ($.isNumeric($("[name='btdata[204]']").val())) {
+        var kb = $("[name='btdata[204]']").val();
+    }
+    if ($.isNumeric($("[name='btdata[302]']").val()) && $.isNumeric($("[name='btdata[303]']").val())) {
+        $("[name='btdata[304]']").val(roundjs(accsub($("[name='btdata[302]']").val(), $("[name='btdata[303]']").val()), len3));
+    } else {
+        $("[name='btdata[304]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[304]']").val()) && $.isNumeric(kb)) {
+        $("[name='btdata[309]']").val(roundjs(accsub(kb, $("[name='btdata[304]']").val()), len3));
+    } else {
+        $("[name='btdata[309]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[301]']").val()) && $.isNumeric($("[name='btdata[309]']").val()) && $.isNumeric($("[name='td10']").val())) {
+        var ysjg = jsws(accDiv(accMul(accMul($("[name='btdata[309]']").val(), $("[name='td10']").val()), 8000), $("[name='btdata[301]']").val()));
+        $("[name='btdata[311]']").val(ysjg);
+        var bt305 = v('bt305');
+        $.isNumeric(bt305) ? '' : bt305 = 1;
+        var jhjg = roundjs(accMul(ysjg, bt305), 0);
+        var jcx = "{$arow['td3']}";
+        if (jhjg > jcx) {
+            $("[name='btdata[310]']").val(jhjg);
+        } else {
+            $("[name='btdata[310]']").val('<' + jcx);
+        }
+    } else {
+        $("[name='btdata[310]']").val('');
+        $("[name='btdata[311]']").val('');
+    }
+}
+
+function jsgs() {
+    zk();
+    $.isNumeric(vs['vd2']) ? '' : vs['vd2'] = 1;
+    if (vs['vd3'].toString().indexOf('.') != -1) {
+        var len = vs['vd3'].toString().split('.')[1].length;
+    } else {
+        var len = 0;
+    }
+    if ($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])) {
+        vs['vd5'] = roundjs(Math.abs(accsub(vs['vd4'], vs['vd3'])), len);
+    } else {
+        vs['vd5'] = '';
+    }
+    if ($.isNumeric($("[name='btdata[501]']").val())) {
+        var kb = $("[name='btdata[501]']").val();
+    } else if ($.isNumeric($("[name='btdata[204]']").val())) {
+        var kb = $("[name='btdata[204]']").val();
+    }
+    if ($.isNumeric(vs['vd5']) && $.isNumeric(kb)) {
+        vs['vd10'] = roundjs(accsub(kb, vs['vd5']), len);
+    } else {
+        vs['vd10'] = '';
+    }
+
+    if ($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd10']) && $.isNumeric($("[name='td10']").val())) {
+        var xsbs = vs['vd2'];
+        $.isNumeric(xsbs) ? '' : xsbs = 1;
+        vs['vd0'] = jsws(accMul(accDiv(accMul(accMul(vs['vd10'], $("[name='td10']").val()), 8000), vs['vd1']), xsbs));
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

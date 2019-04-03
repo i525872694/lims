@@ -1,0 +1,277 @@
+<table class="noborder hide">
+    <tr align="right">
+        <td colspan="15">监-**</td>
+    </tr>
+</table>
+<h1>$arow[assay_element]检验原始记录</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:6%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">检验方法</td>
+        <td colspan="3">{$arow['td2']}</td>
+        <td colspan="2">草酸钠浓度(mol/L)</td>
+        <td colspan="3"><input type="text" class="inputl" id="c_v" name="td12" value="{$arow['td12']}" /></td>
+        <td colspan="2">配制日期</td>
+        <td colspan="3"><input type="text" class="inputl date_Ymd" name="td13" value="{$arow['td13']}" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">滴定管规格(mL)</td>
+        <td colspan="3"><input type="text" class="inputl" name="td14" value="{$arow['td14']}" /></td>
+        <td colspan="2">滴定管颜色</td>
+        <td colspan="3" class="noborder" style="padding-left: 4px;"><input type="text" class="inputl" name="td16" value="{$arow['td16']}" /></td>
+        <td colspan="5" class="noborder"></td>
+    </tr>
+    <tr>
+        <td rowspan="2">序号</td>
+        <td colspan="4">水样</td>
+        <td colspan="6">高锰酸钾溶液用量(mL)</td>
+        <td rowspan="2">草酸钠溶液(mL)</td>
+        <td rowspan="2">样品浓度<br />（mg/L）</td>
+        <td rowspan="2">平均值/<br />理论浓度<br />（mg/L）</td>
+        <td rowspan="2">相对偏差/<br />加标回收率<br />（％）</td>
+    </tr>
+    <tr>
+        <td>{$zhanming}</td>
+        <td>采样日期</td>
+        <td>体积（mL）</td>
+        <td>稀释比</td>
+        <td>终点</td>
+        <td>始点</td>
+        <td>用量</td>
+        <td>平均</td>
+        <td>予加</td>
+        <td>总耗量</td>
+    </tr>
+    <tr>
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2">空白</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}" onblur="func()"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[104]" value="{$arow['btdata'][104]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[105]" value="{$arow['btdata'][105]}"></td>
+        <td rowspan="2"><input type="text" class="noinputc" name="btdata[106]" value="{$arow['btdata'][106]}"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[107]" value="{$arow['btdata'][107]}" onblur="func()"></td>
+        <td rowspan="2"><input type="text" class="noinputc" name="btdata[108]" value="{$arow['btdata'][108]}"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[109]" value="{$arow['btdata'][109]}" onblur="func()"></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+    </tr>
+    <tr>
+        <td><input type="text" class="inputc" name="btdata[110]" value="{$arow['btdata'][110]}" onblur="func()">
+            <table class="noborder"></table>
+        </td>
+        <td><input type="text" class="inputc" name="btdata[111]" value="{$arow['btdata'][111]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[112]" value="{$arow['btdata'][112]}"></td>
+    </tr>
+    <tr>
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2">V<sub>2</sub></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}" onblur="func()"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[203]" value="{$arow['btdata'][203]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[204]" value="{$arow['btdata'][204]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[205]" value="{$arow['btdata'][205]}"></td>
+        <td rowspan="2"><input type="text" class="noinputc" name="btdata[206]" value="{$arow['btdata'][206]}"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[207]" value="{$arow['btdata'][207]}" onblur="func()"></td>
+        <td rowspan="2"><input type="text" class="noinputc" name="btdata[208]" value="{$arow['btdata'][208]}"></td>
+        <td rowspan="2"><input type="text" class="inputc" name="btdata[209]" value="{$arow['btdata'][209]}" onblur="func()"></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+    </tr>
+    <tr>
+        <td><input type="text" class="inputc" name="btdata[210]" value="{$arow['btdata'][210]}" onblur="func()">
+            <table class="noborder"></table>
+        </td>
+        <td><input type="text" class="inputc" name="btdata[211]" value="{$arow['btdata'][211]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[212]" value="{$arow['btdata'][212]}"></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function func() {
+    if ($.isNumeric($("[name='btdata[101]']").val())) {
+        $("[name='btdata[102]']").val(accDiv(accsub(100, $("[name='btdata[101]']").val()), 100));
+    } else {
+        $("[name='btdata[102]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[103]']").val()) && $.isNumeric($("[name='btdata[104]']").val())) {
+        var strArr = $("[name='btdata[103]']").val().toString().split(".");
+        if (strArr.length == 2) {
+            var numlen11 = strArr[1].length;
+        } else {
+            var numlen11 = 2;
+        }
+        $("[name='btdata[105]']").val(roundjs(accsub($("[name='btdata[103]']").val(), $("[name='btdata[104]']").val()), numlen11));
+    } else {
+        $("[name='btdata[105]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[110]']").val()) && $.isNumeric($("[name='btdata[111]']").val())) {
+        var strArr = $("[name='btdata[110]']").val().toString().split(".");
+        if (strArr.length == 2) {
+            var numlen12 = strArr[1].length;
+        } else {
+            var numlen12 = 2;
+        }
+        $("[name='btdata[112]']").val(roundjs(accsub($("[name='btdata[110]']").val(), $("[name='btdata[111]']").val()), numlen12));
+    } else {
+        $("[name='btdata[112]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[105]']").val()) && $.isNumeric($("[name='btdata[112]']").val())) {
+        var jg1 = roundjs(accDiv(accAdd($("[name='btdata[105]']").val(), $("[name='btdata[112]']").val()), 2), numlen11);
+        $("[name='btdata[106]']").val(jg1);
+    } else {
+        $("[name='btdata[106]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[106]']").val()) && $.isNumeric($("[name='btdata[107]']").val())) {
+        $("[name='btdata[108]']").val(accAdd($("[name='btdata[106]']").val(), $("[name='btdata[107]']").val()));
+    } else {
+        $("[name='btdata[108]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[201]']").val())) {
+        $("[name='btdata[202]']").val(accDiv(accsub(100, $("[name='btdata[201]']").val()), 100));
+    } else {
+        $("[name='btdata[202]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[203]']").val()) && $.isNumeric($("[name='btdata[204]']").val())) {
+        var strArr = $("[name='btdata[203]']").val().toString().split(".");
+        if (strArr.length == 2) {
+            var numlen21 = strArr[1].length;
+        } else {
+            var numlen21 = 2;
+        }
+        $("[name='btdata[205]']").val(roundjs(accsub($("[name='btdata[203]']").val(), $("[name='btdata[204]']").val()), numlen21));
+    } else {
+        $("[name='btdata[205]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[210]']").val()) && $.isNumeric($("[name='btdata[211]']").val())) {
+        var strArr = $("[name='btdata[210]']").val().toString().split(".");
+        if (strArr.length == 2) {
+            var numlen22 = strArr[1].length;
+        } else {
+            var numlen22 = 2;
+        }
+        $("[name='btdata[212]']").val(roundjs(accsub($("[name='btdata[210]']").val(), $("[name='btdata[211]']").val()), numlen22));
+    } else {
+        $("[name='btdata[212]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[205]']").val()) && $.isNumeric($("[name='btdata[212]']").val())) {
+        var jg2 = roundjs(accDiv(accAdd($("[name='btdata[205]']").val(), $("[name='btdata[212]']").val()), 2), numlen21);
+        $("[name='btdata[206]']").val(jg2);
+    } else {
+        $("[name='btdata[206]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[206]']").val()) && $.isNumeric($("[name='btdata[207]']").val())) {
+        $("[name='btdata[208]']").val(accAdd($("[name='btdata[206]']").val(), $("[name='btdata[207]']").val()));
+    } else {
+        $("[name='btdata[208]']").val('');
+    }
+}
+
+
+function jsgs() {
+    func();
+
+    if ($.isNumeric(vs['vd1'])) {
+        vs['vd2'] = accDiv(accsub(100, vs['vd1']), 100);
+    } else {
+        vs['vd2'] = '';
+    }
+
+    var v2 = parseFloat($("[name='btdata[206]']").val());
+    // 草酸钠
+    var v_csn = $.isNumeric(vs['vd9']) ? vs['vd9'] : 10;
+    var k = v_csn / parseFloat(v2);
+    var kb = parseFloat($("[name='btdata[106]']").val());
+    var mr_v = parseFloat($("input[name=td9]").val());
+    if ('' == $("#c_v").val()) {
+        $("#c_v").val('0.01');
+    }
+    var C = parseFloat($("#c_v").val());
+    mr_v = $.isNumeric(mr_v) ? mr_v : 100;
+    //默认体积与实际取样体积比较判断是否稀释
+    if (mr_v != vs['vd1'] && 0 != kb && ('' == kb || !$.isNumeric(kb))) {
+        $("#kb").focus();
+        // return false;
+    }
+    if ('' == k || !$.isNumeric(k)) {
+        $("#kv").focus();
+        // return false;
+    }
+    var vd3_split = String(vs['vd3']).split('.');
+    if (vd3_split.length == 2) {
+        var diding_ws = vd3_split[1].length;
+    } else {
+        var diding_ws = 2;
+    }
+    if ($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])) {
+        vs['vd5'] = roundjs(accsub(vs['vd4'], vs['vd3']), diding_ws);
+    } else {
+        vs['vd5'] = '';
+    }
+    if ($.isNumeric(vs['vd10']) && $.isNumeric(vs['vd11'])) {
+        vs['vd12'] = roundjs(accsub(vs['vd11'], vs['vd10']), diding_ws);
+    } else {
+        vs['vd12'] = '';
+    }
+    if ($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd12'])) {
+        vs['vd6'] = roundjs(accDiv(accAdd(vs['vd5'], vs['vd12']), 2), diding_ws);
+    } else {
+        vs['vd6'] = vs['vd0'] = '';
+        return false;
+    }
+    if ($.isNumeric(vs['vd7'])) {
+        vs['vd8'] = roundjs(accAdd(vs['vd6'], vs['vd7']), 2);
+    } else {
+        vs['vd8'] = roundjs(vs['vd6'], 2);
+        vs['vd7'] = '';
+    }
+    if ('' !== vs['vd8']) {
+        //计算公式
+        //默认体积与实际取样体积比较判断是否稀释
+        // C 草酸钠标准溶液 0.010mol/L
+        //系数   k*C*8000/v3
+        if (mr_v == vs['vd1']) {
+            //不稀释 (10+v1)*k*C*8000/v3
+            var xishu = parseFloat(8000 * C / 100);
+            vs['vd0'] = jsws((accAdd(10, vs['vd6']) * k - 10) * xishu);
+        } else {
+            //稀释 {[(10+v1)*k-10]-[(10+v0)*k-10]*f}*C*8000/V3
+            var xishu = parseFloat(8000 * C / vs['vd1']);
+            var f = vs['vd2']; //(mr_v-parseFloat(vs['vd1']))/mr_v;
+            var p1 = accAdd(10, vs['vd6']) * k - 10;
+            var p2 = (accAdd(10, kb) * k - 10) * f;
+            var p3 = (p1 - p2) * xishu;
+            // vs['vd0'] = jsws(p3/mr_v*vs['vd1']);
+            vs['vd0'] = jsws(p3);
+        }
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

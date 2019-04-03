@@ -1,0 +1,9 @@
+<tr>
+	<td title="查看详情" style='min-width:100px;'><a href="bzwz.php?action=查看&wz_id={$r['id']}&wz_type={$r['wz_type']}$tabs">{$r['wz_bh']}</a></td>
+	<td title="显示所有名称为 {$r['wz_name']} 的 {$r['wz_type']}" style='min-width:100px;'>&nbsp;&nbsp;&nbsp;&nbsp;<a href="bzwz_list.php?wz_name={$r['wz_name']}&wz_type={$r['wz_type']}&_wz_type={$_GET['_wz_type']}$tabs">{$r['wz_name']}</a></td>
+	$wz_type_subdivide_lines
+	<td title="显示所有国标为 {$r['guobiao']} 的 {$r['wz_type']}" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<a href="bzwz_list.php?guobiao={$r['guobiao']}&guobiao={$r['guobiao']}&_guobiao={$_GET['_guobiao']}$tabs">{$r['guobiao']}</a></td>
+	$time_limit
+	$num
+	<td>{$r['create_man']}</td>
+</tr>

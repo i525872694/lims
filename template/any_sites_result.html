@@ -1,0 +1,170 @@
+<script> 
+
+//点击站点或者取消勾选站点时判断是否要勾选批名
+function check_group(t){
+	var c=$(t).attr("class"); 
+	var c=parseInt(c);
+	var b=t.checked;
+	if(b){	
+		$('#'+c).prop('checked',true);
+	}
+	else{
+		var cl=$("input[class='"+c+"']:checked").length;
+		if(cl==0){
+			$("#"+c).prop('checked',false);
+		}
+	}
+}
+//选中或者取消所有站点
+function check_sites(t){
+	var id=t.id;
+	if(t.checked){
+		$('.'+id).prop("checked",true);
+	}else{
+		$('.'+id).prop("checked",false);
+	}
+}
+//根据任务类型、水样类型、批次名称查询数据
+function redirect() {
+	var	site_type=$("#site_type").val();
+	var	water_type=$("#water_type").val();
+	var	group_name=$("#group_name").val();
+	var	tjcs=$("#tjcs").val();
+        url = "?site_type="+site_type+'&water_type='+water_type+'&tjcs='+tjcs;
+        if( group_name.value != '' )
+            url += "&group_name="+group_name;
+    location = url;
+}
+//form提交前验证
+function verify(aForm){
+	var sites_length=$("input[name='sites[]']:checked").length;
+	if(!sites_length){
+		alert('你没有选择任何站点！');
+		return false;
+	}
+	var begin_date=$("#begin_date").val();
+	var end_date=$("#end_date").val();
+	var a = /^(\d{4})-(\d{2})-(\d{2})$/;
+	var r = a.test(begin_date);
+	if(begin_date==''||begin_date==null){
+		alert('开始时间不能为空！');
+		return false;
+	}
+	if(end_date==''||end_date==null){
+		alert('终止时间不能为空！');
+		return false;
+	}
+	if(r==false){
+		alert('开始时间格式不对！');
+		return false; 
+	}
+	var r1 = a.test(end_date);
+	if(r1==false){
+		alert('终止时间格式不对！');
+		return false; 
+	}
+	if(end_date<begin_date){
+		alert('终止时间不能小于开始时间！');
+		return false;
+	}
+    with(aForm){
+        vid=elements['vid[]'];
+        var vid_count=0;
+        for(i=0;i<vid.length;i++) if(vid[i].checked) vid_count++;
+		if(!vid_count){
+			if(confirm("没有选择项目，如果继续则默认查询已选站点的所有项目！")){
+				return true;
+			}else{
+				return false;
+			}
+		}
+    }
+}
+//项目的全选或者取消全选
+function qx(aButton,aItem){
+    with(aButton.form){
+        var v=$("input[name='"+aItem+"']");
+		if(aItem=='sites[]'){
+			var v2=$("input[name='group_name[]']");
+
+			for(i=0;i<v2.length;i++) v2[i].checked=(aButton.value!='全选') ? false :true;
+		}
+        for(i=0;i<v.length;i++) v[i].checked=(aButton.value!='全选') ? false :true;
+    }
+	aButton.value=(aButton.value=='全选') ? '取消全选' : '全选' ;
+}
+//改变模板时ajax更新数据库
+function change_mb(t){
+	var mb_value=t.value;
+	$.get('any_sites_result.php?ajax=1',{mb_value:mb_value},function(data){
+	},'html');
+}
+//改变成果表参数时ajax更新数据库
+function change_bt_cs(t){
+	var btcs=$("input[name='cgb_bt_cs[]']:checked");
+	var len=btcs.length;
+	var arr=[];
+	for(var i=0;i<len;i++){
+		arr[i]=btcs[i].value;
+	}
+	$.post('any_sites_result.php?ajax=1',{bt_cs_arr:arr},function(data){
+	},'html');
+}
+</script>
+<style type="text/css">
+	.s_float{display:block;margin-left:15px;float:left}
+	.pc_css{font-size:14px;font-weight:bold;}
+</style>
+<form  action="any_sites_result_export.php?ajax=1" method="post" onsubmit="return(verify(this))" target="_blank">
+<h3 class="header smaller center title">任意站点任意项目任意时间段成果输出</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+    任务类型: <select id="site_type" name="site_type" onchange="redirect()">{$site_type_str}</select>
+    水样类型: <select id="water_type" name="water_type" onchange="redirect()"><option value="全部">全部</option>{$water_type_str}</select>
+    站点分批: <select id="group_name" name="group_name" onchange="redirect()" class="chosen-select"><option value="">请选择</option>{$group_name_str}</select>  
+	统计参数: <select id="tjcs" name="tjcs" onchange="redirect()"><option value="">请选择</option>{$tjcs_str}</select>
+	</div>
+  </div>
+  <div class="widget-body">
+<table  style="margin-top:20px" class="table table-striped table-bordered table-hover">
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+        选择要输出的站点 <input type="button" value="取消全选" onclick="qx(this,'sites[]')">
+    </td>
+</tr>
+$group_site_str
+
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+        起始日期:<input type="text" size='10' name="begin_date" id="begin_date"  value="{$begin_date}" />
+        终止日期:<input type=text size='10' id="end_date"  name="end_date"  value="{$end_date}" />
+    </td>
+</tr>
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+       选择要输出的化验项目 <input type="button" value="全选" onclick="qx(this,'vid[]')">
+    </td>
+</tr>
+$vid_str
+</table>
+<br />
+<table style="margin-top:20px" class="table table-striped table-bordered table-hover center">
+<tr>
+<td width="20%">成果表模板类型</td>
+<td align='left'><span style='width:60px;text-align:center' class='s_float'><input type='radio' name='cgb_mb' value='1' {$cgb_mb1} onclick="change_mb(this)"/>横表</span><span class='s_float' style='width:60px;text-align:center'><input type='radio' name='cgb_mb' value='2' {$cgb_mb2} onclick="change_mb(this)"/>竖表</span></td>
+</tr>
+<tr>
+<td>成果表表头参数</td>
+<td align="left">$cgb_bt_cs</td>
+</tr>
+</table>
+<center><input type="submit" name="view" value="查看成果" />&nbsp;&nbsp;<input type="submit" name="load" value="下载成果" /></center>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+//可输入搜索条件的下拉列表
+$(document).ready(function(){ $(".chosen-select").chosen();});
+</script>
+

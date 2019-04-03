@@ -1,0 +1,43 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+ <head>
+  <title>正在跳转中</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	{literal}
+ <style type="text/css">
+  <!--
+	body {text-align:center;
+		background-color:#EEF2FB;}
+	#box{
+		width:500px;height:120px;
+		margin:auto auto;
+		margin-top:150px;
+		text-align:center;
+		background:url('images/login-content-bg.gif');
+		border:1px solid #D1D5E1;
+	}
+	p{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 25px;
+	color: #666666;
+}
+a{text-decoration:none; color:#06C;}
+  -->
+ </style>
+ {/literal}
+ {if $js}
+ <script type="text/javascript" language="javascript">
+ {$js}
+ </script>
+ {/if}
+ <meta http-equiv="refresh" content="{$time};url={$url}">
+ </head>
+ <body>
+  <div id="box">
+   <p>您的页面正在跳转中请稍候。。。</p>
+   <p style="color:#ff66cc; font-weight:bold;">{$content}</p>
+   <p><a href="{$url}">如果您的页面没有跳转，请点击这里</a></p>
+  </div>
+ </body>
+</html>

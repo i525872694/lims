@@ -1,0 +1,83 @@
+<script type="text/javascript" src="{AH_URL}/js/drag-arrange.js"></script>
+<style>
+#order_jcxm .col-xs-1{
+	cursor: move;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+</style>
+<form name="order_jcxm" action="#" style="margin:10px auto;">
+	<!-- <div class="space-8"></div> -->
+	<div class="row item">
+		{loop $jcxm $i $value}
+		<div class="col-xs-1">
+			<label>
+				<input type="hidden" name="vid[]" value="{$value['id']}" />
+				<span class="value_C" title="{$value_C}">【{$i}】{$value['value_C']}</span>
+			</label>
+		</div>
+		{/loop}
+	</div>
+	<div class="fixed_button_box">
+		<div class="fixed_button_bg_box"></div>
+		<div class="fixed_button">
+			<input class="btn btn-primary btn-sm" type="button" value="保存配置信息" />
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	var assayValueObj = $('#order_jcxm .col-xs-1');
+	assayValueObj.arrangeable();
+	assayValueObj.parent().bind('drag.end.arrangeable', function(e){
+		$('#order_jcxm .col-xs-1').each(function(i){
+			var obj = $(this).find('.value_C');
+			obj.html(obj.html().replace(/【\d+】/, '【'+ i +'】'));
+		})
+	});
+	// 初始顺序
+	var order_values = {};
+	var order_values2 = {};
+	function init_order_values(){
+		$('#order_jcxm [name="vid[]"]').each(function(i){
+			var vid = $(this).val();
+			order_values[vid] = i;
+			order_values2[vid] = i;
+		})
+	}
+	// 初始化初始顺序
+	init_order_values();
+	// 
+	$('#order_jcxm  .fixed_button input[type=button]').bind('click', function(){
+		// 只提交改动过顺序的项目
+		$('#order_jcxm [name="vid[]"]').each(function(i){
+			var vid = $(this).val();
+			if(order_values[vid] == i){
+				delete order_values[vid];
+			}
+		})
+		console.log(order_values)
+		$.ajax({
+			type: 'post',
+			data: {
+				order_values: order_values
+			},
+			dataType: 'json',
+			url: trade_global.rooturl+'/huayan/ahlims.php?app=jcxm&act=order_jcxm_save',
+			success: function(data) {
+				if(data.error == '0'){
+					init_order_values();
+					save_status_msg('保存成功');
+				}else{
+					order_values = clone(order_values2);
+					alert_error('修改失败，请刷新页面重试！');
+				}
+			},
+			error: function(data){
+				console.log(data.responseText);
+			}
+		});
+	});
+</script>

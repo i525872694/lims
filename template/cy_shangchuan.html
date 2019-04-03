@@ -1,0 +1,26 @@
+
+<script language='javascript'>
+function yanzheng(e){
+	var ti = e.pifile.value;
+	if(ti==''){
+		alert("请先选择要上传的文件");
+		return false;
+	}
+}
+</script>
+
+<div class='center'>
+	<form method="post" action="#" enctype="multipart/form-data" style='margin-top:30px;' onsubmit="return yanzheng(this);">
+		<table width='320px'>
+		  <tr>
+		    <td align='center' colspan='2'><h2>采样数据上传</h2><br/></td>
+		  </tr>
+		  <tr>
+		  <td align='left'>选择文件:<p/></td><td align='left'><input type="file" name="pifile" title="请上传excel文件"/><p/></td>
+		  </tr>
+		  <tr>
+		    <td align='center' colspan='2'><p/><p/><input type = 'submit' name="fsub" value="上传" class='btn btn-xs btn-primary'/><p/></td>
+		  </tr>
+		</table>
+	</form>
+</div>

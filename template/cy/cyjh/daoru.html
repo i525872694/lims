@@ -1,0 +1,233 @@
+<div class="container-fluid" style="padding-top: 10px">
+
+
+
+    <!--<div class="col-md-6">-->
+
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">手动编辑,单点新增</div>-->
+            <!--<div class="panel-body">-->
+                <!--<form  method="post" action="$rooturl/cy/cyjh/daoru_do.php" >-->
+                    <!--<input type="hidden" name="type" value="insert">-->
+                    <!--<table>-->
+                        <!--<tr>-->
+                            <!--<td>站点名</td>-->
+                            <!--<td> <input type="text" class="form-control" id="sname" name="sname"  placeholder="站点名"></td>-->
+                            <!--<td>计划日期</td>-->
+                            <!--<td>  <input type="text" class="form-control" id="jhdate"  name="jhdate" placeholder="计划日期"></td>-->
+                            <!--<td colspan="2">   <button type="submit" class="form-control btn-info">新增</button></td>-->
+                        <!--</tr>-->
+
+                    <!--</table>-->
+
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+    <h1 style="text-align: center">年监测计划管理</h1>
+
+        <script type="text/javascript" src="{$rooturl}/js/ag-grid/locale.zh_cn.js"></script>
+        <script type="text/javascript" src="{$rooturl}/js/ag-grid/ag-grid.js"></script>
+        <div class="row" style="padding:10px">
+                <div class="col-md-2 col-md-offset-2">
+                    <input placeholder="搜索..." type="text"  oninput="onFilterChanged(this.value)"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-8 ">
+                    <form method="post" action="$rooturl/cy/cyjh/daoru_do.php" enctype="multipart/form-data">
+
+                        <table>
+                            <tr>
+                                <td> 监测计划年份</td>
+                                <td style="width: 250px">  <input type="number"  class="form-control" name="jhyear" value="{$years}" required></td>
+
+                                <td style="width: 250px">  <input type="file" class="form-control" name="daoru" required></td>
+
+                                <td>  <button class="form-control btn-success">计划上传</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+        </div>
+        <div id="myGrid" style="height: 500px;padding: 20px" class="ag-fresh"></div>
+
+
+
+</div>
+
+<style>
+    .jumpLink{
+        text-decoration:underline;
+        color:blue;
+        width: 70px;
+    }
+</style>
+
+<script>
+    $(function(){
+
+        $("#myGrid").height( $(window).height()-230);
+
+        init_ag_table();
+
+    })
+
+    //请在使用本功能的界面调用函数 handle_ag_grid(table_data)
+    var Q_columnDefs = {$ag_grid_data['columnDefs']};
+    var Q_gridOptions = {$ag_grid_data['gridOptions']};
+    Q_gridOptions['columnDefs']=Q_columnDefs;
+    Q_gridOptions['localeText']=ag_localeText;
+    Q_gridOptions['showToolPanel']=false;
+    Q_check = '';//obj.node.setDataValue会再次触发修改,造成逻辑错误,因此用全局变量记录
+    var Q_ag_grid_first = true;
+
+    function init_ag_table()
+    {
+        $.get("{$rooturl}/cy/cyjh/cyjh_api.php",function(resp){
+            handle_ag_grid(resp);
+        })
+    }
+    //将表格数据传递过来后，进行表格展示,也支持刷新
+    function handle_ag_grid(data){
+        if(Q_ag_grid_first){
+            Q_ag_grid_first =false;
+            Q_gridOptions.rowData=data;
+            create_ag_grid();
+        }
+        else{
+            Q_gridOptions.api.setRowData(data)
+        }
+        Q_gridOptions.api.addEventListener('cellClicked', function(obj){
+            ag_grid_cellClick(obj);
+        })
+
+        Q_gridOptions.api.addEventListener('cellValueChanged', function(obj){
+            ag_grid_celledtor(obj);
+        })
+
+    }
+    function ag_grid_celledtor(obj)
+    {
+        console.log(obj)
+        if(obj.newValue == obj.oldValue)
+        {
+            return false;
+        }
+        if(obj.newValue == Q_check)//obj.node.setDataValue会再次触发修改,造成逻辑错误
+        {
+            Q_check='';
+            return false;
+        }
+
+        var data = {};
+
+        if(obj.newValue){//如果值为真
+
+            var check = check_jhdate_ok(obj.newValue);
+
+            console.log(check);
+
+            if(!check)
+            {
+                Q_check=obj.oldValue;
+
+
+                obj.node.setDataValue(obj.colDef.field,obj.oldValue);
+                return false;
+            }
+
+            if(obj.data.map[obj.newValue]){//本次修改的新值是否已经存在
+                alert(obj.newValue + '已经存在');
+                return false;
+            }
+
+            data['jhdate']= obj.data.year + '-' + obj.newValue;
+
+            if(obj.data.map[obj.oldValue])//修改
+            {
+                data['id']=obj.data.map[obj.oldValue];
+                data['type']='update';
+
+            }else{//写入
+                data['sname']=obj.data.sname;
+                data['type']='insert';
+            }
+        }else {//如果值为假,意味着删除
+            if(!obj.data.map[obj.oldValue]) return false;//原来为空,现在还是空
+
+            var truthBeTold = window.confirm("确定删除"+obj.data.sname+','+obj.data.year + '-' + obj.oldValue);
+            if (truthBeTold) {
+                data['type']='del';
+                data['id']=obj.data.map[obj.oldValue];
+            }
+        }
+
+        $.post("{$rooturl}/cy/cyjh/daoru_do.php",data,function(resp){
+            if(resp != 'ok'){
+                obj.node.setDataValue(obj.colDef.field,obj.oldValue);
+                alert(resp);
+                return false;
+            }
+            init_ag_table();
+
+        });
+    }
+    // 验证用户输入的日期是否正确
+    function check_jhdate_ok(value)
+    {
+        var list = value.split('-');
+        var error_msg = '';
+        if(list.length != 2  || list[0].length!=2 || list[1].length!=2 ){
+            error_msg +="请输入日期的格式类似为:01-01";
+        }
+        var month = parseInt( list[0]);
+        var day = parseInt( list[1] ) ;
+        if(month<1 || month>12 || day<1 || day>31){
+            error_msg +="请输入合理的日期";
+        }
+        if(error_msg){
+            alert(error_msg);
+            return false;
+        }
+        return true;
+    }
+    function ag_grid_cellClick(obj)
+    {
+      //  console.log(obj.data);
+    }
+
+    //获取到数据后,,创建表格
+    function create_ag_grid(){
+        var eGridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(eGridDiv, Q_gridOptions);
+        autoSizeAll();
+    }
+
+    //让所有列自适应宽度
+    function autoSizeAll() {
+
+        var allColumnIds = [];
+        Q_columnDefs.forEach( function(columnDef) {
+            allColumnIds.push(columnDef.field);
+        });
+        Q_gridOptions.columnApi.autoSizeColumns(allColumnIds);
+    }
+
+    function onBtExport() {
+        var params ={
+            make:true,
+            model: true,
+            price: true,
+            riqi: true,
+        };
+        Q_gridOptions.api.exportDataAsCsv(params);
+    }
+
+    function onFilterChanged(newFilter) {
+        Q_gridOptions.api.setQuickFilter(newFilter);
+    }
+</script>
+

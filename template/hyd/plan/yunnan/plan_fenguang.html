@@ -1,0 +1,201 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-00</td>
+    </tr>
+</table><h1>{$arow['assay_element']}测定原始记录</h1>
+$hjtj_bt
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:5.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:9.3%;"></td>
+        <td style="width:9.3%;"></td>
+        <td style="width:9.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:8.3%;"></td>
+        <td style="width:9.3%;"></td>
+        <td style="width:7.3%;"></td>
+    </tr>
+    <tr>
+        <td colspan="2">检测项目</td>
+        <td colspan="2">{$arow['assay_element']}</td>
+        <td colspan="2">检测依据</td>
+        <td colspan="6">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器名称</td>
+        <td colspan="2">{$arow['td4']}</td>
+        <td colspan="2">仪器型号</td>
+        <td colspan="2">{$arow['td5']}</td>
+        <td colspan="2">仪器编号</td>
+        <td colspan="2">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">定容体积(mL)</td>
+        <td colspan="2"><input type="text" name="td6" value="$arow[td6]" /></td>
+        <td colspan="2">比色皿规格(cm)</td>
+        <td colspan="2"><input type="text" name="td9" value="$arow[td9]" /></td>
+        <td colspan="2">选用波长(nm)</td>
+        <td colspan="2"><input type="text" name="td8" value="$arow[td8]" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">标准溶液名称</td>
+        <td colspan="2"><input type="text" name="td10" value="$arow[td10]" /></td>
+        <td colspan="2">标准溶液浓度(mg/L)</td>
+        <td colspan="2"><input type="text" name="td11" value="$arow[td11]" /></td>
+        <td colspan="2">检出限({$arow['unit']})</td>
+        <td colspan="2">{$arow['td3']}</td>
+        <!-- <td colspan="1">空白值(A<sub>0</sub>)</td> -->
+        <!-- <td colspan="1"><input type="text" id="kbzA0" name="td29" value="{$arow['td29']}" /></td> -->
+    </tr>
+    <tr>
+        <td colspan="2" class="change_qx blue_a" title="点击选择曲线">回归方程</td>
+        <td colspan="6      ">
+            {$arow['quxian']}
+            &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']}
+            <input type="hidden" name="CA" id="qa" value="$arow[CA]" />
+            <input type="hidden" name="CB" id="qb" value="$arow[CB]" /></td>
+        <td colspan="2" class="view_qx blue_a" title="查看曲线">标准曲线绘制日期</td>
+        <td colspan="2">{$arow['sc_ldrq']}</td>
+    </tr>
+    <tr>
+        <td colspan="1" rowspan="2">序号</td>
+        <td colspan="2" rowspan="2">{$zhanming}</td>
+        <td colspan="1" rowspan="2">采样日期</td>
+        <td colspan="1" rowspan="2">实际取样体积V(mL)</td>
+        <td colspan="4">吸光度</td>
+        <td colspan="1" rowspan="2">含量({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">平均值/<br>理论浓度<br>({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+    <tr>
+        <td>Ⅰ</td>
+        <td>Ⅱ</td>
+        <td>平均值(A)</td>
+        <td>A-A<sub>0</sub></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白1</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}"></td>
+        <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[104]" value="{$arow['btdata'][104]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白2</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}"></td>
+        <td><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[203]" value="{$arow['btdata'][203]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[204]" value="{$arow['btdata'][204]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">平均</td>
+        <td></td>
+        <td>/</td>
+        <td>/</td>
+        <td>/</td>
+        <td><input type="text" class="noinputc" name="btdata[301]" value="{$arow['btdata'][301]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    $aline
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function func() {
+    if ($("[name='btdata[102]']").val().indexOf('.') != -1) {
+        var len1 = $("[name='btdata[102]']").val().split('.')[1].length;
+    } else {
+        var len1 = 2;
+    }
+    if ($("[name='btdata[202]']").val().indexOf('.') != -1) {
+        var len2 = $("[name='btdata[202]']").val().split('.')[1].length;
+    } else {
+        var len2 = 2;
+    }
+    if ($.isNumeric($("[name='btdata[102]']").val()) && $.isNumeric($("[name='btdata[103]']").val())) {
+        $("[name='btdata[104]']").val(roundjs(accDiv(accAdd($("[name='btdata[102]']").val(), $("[name='btdata[103]']").val()), 2), len1));
+    } else if ($.isNumeric($("[name='btdata[102]']").val())) {
+        $("[name='btdata[104]']").val($("[name='btdata[102]']").val());
+    } else {
+        $("[name='btdata[104]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[202]']").val()) && $.isNumeric($("[name='btdata[203]']").val())) {
+        $("[name='btdata[204]']").val(roundjs(accDiv(accAdd($("[name='btdata[202]']").val(), $("[name='btdata[203]']").val()), 2), len2));
+    } else if ($.isNumeric($("[name='btdata[202]']").val())) {
+        $("[name='btdata[204]']").val($("[name='btdata[202]']").val());
+    } else {
+        $("[name='btdata[204]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[104]']").val()) && $.isNumeric($("[name='btdata[204]']").val())) {
+        $("[name='btdata[301]']").val(roundjs(accDiv(accAdd($("[name='btdata[104]']").val(), $("[name='btdata[204]']").val()), 2), len1));
+    } else if ($.isNumeric($("[name='btdata[104]']").val())) {
+        $("[name='btdata[301]']").val($("[name='btdata[104]']").val());
+    } else {
+        $("[name='btdata[301]']").val('');
+    }
+}
+
+function jsgs() {
+    func();
+    var kb = $("[name='btdata[301]']").val();
+    $.isNumeric(kb) ? '' : kb = 0;
+
+    //运算函数在lib.js
+    var vid = $arow[vid];
+    var sc_unit = "{$arow['sc_unit']}";
+    //vid94是浊度，不需判断是质量曲线还是浓度曲线
+    if (sc_unit.split('/').length == 2 || vid == '94' || sc_unit == '度' || sc_unit == 'NTU') {
+        var qy_v = 1;
+        var vd2 = parseFloat($("input[name=td6]").val() / vs['vd1']); //稀释倍数
+    } else {
+        var qy_v = parseFloat(vs['vd1']);
+        var vd2 = 1;
+    }
+    // var kb = $('#kbzA0').val();
+    // if(kb==''){
+    //   document.getElementById('kbzA0').focus();
+    // }
+
+    var vd3_split = String(vs['vd3']).split('.');
+    if (vd3_split.length == 2) {
+        var diding_ws = vd3_split[1].length;
+    } else {
+        var diding_ws = 2;
+    }
+    if ($.isNumeric(kb) && $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) && $.isNumeric($("input[name=td6]").val())) {
+        var vd3 = parseFloat(vs['vd3']); //I
+        var vd4 = parseFloat(vs['vd4']); //II
+        var pj = vs['vd5'] = roundjs(accDiv(accAdd(vd3, vd4), 2), diding_ws); //获取平均值
+        var gmd = vs['vd6'] = roundjs(accsub(pj, kb), diding_ws); //获取回归方程中Y的值，即(A)-(A0)的值
+        var CA = parseFloat($('#qa').val());
+        var CB = parseFloat($('#qb').val());
+        var han1 = accsub(gmd, CA); //计算公式
+        var han2 = accDiv(han1, CB);
+        var jg = parseFloat(accMul(han2, vd2));
+        vs['vd0'] = vs['_vd0'] = jsws(accDiv(jg, qy_v));
+    } else {
+        vs['vd5'] = vs['vd6'] = vs['vd0'] = vs['_vd0'] = '';
+    }
+}
+
+</script>

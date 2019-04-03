@@ -1,0 +1,51 @@
+<link href='{$rooturl}/css/fileinput.css' rel="stylesheet" type="text/css">
+<script src='{$rooturl}/js/fileinput.js'></script>
+
+<h3 class='header smaller center title'>修改机构文件</h3>
+<form method="POST" action="jigou_file.php" enctype="multipart/form-data">
+    <input type="hidden" name='id' value='{$id}'>
+    <input type="hidden" name="action" value="add">
+    <table class="table table-striped table-bordered table-hover center" style="width:15cm">
+        <tr align=center>
+            <td>表单名称</td>
+            <td style="text-align:left;padding-left:120px">
+                <input type="text" name="bdname" value="$bd">
+            </td>
+        </tr>
+        <tr align=center>
+            <td>上传文件</td>
+            <td style="text-align:left;">
+                <input type="file" name="file[]" id="files" multiple>
+            </td>
+        </tr>
+        <tr align=center>
+            <td>备注</td>
+            <td style="text-align:left;padding-left:120px">
+                <input type="text" name="beizhu" value="$bz">
+            </td>
+        </tr>
+        <tr align=center>
+            <td colspan=2>
+                <input type="submit" class="btn btn-xs btn-primary" name="fix" value="保存">
+                <input type="button" class="btn btn-xs btn-primary" onclick="return location='jigou_file.php?id=$id'" value="返回">
+            </td>
+
+        </tr>
+    </table>
+</form>
+<script>
+//上传控件初始化
+$("#files").fileinput({
+    language: 'zh',
+    uploadUrl: '.',
+    uploadAsync: false, //设置上传同步异步 此为同步  
+    maxFileSize: 100000,//上传大小
+    showUpload: false,
+    maxFileCount: 10, //表示允许同时上传的最大文件个数
+    enctype: 'multipart/form-data',
+    //隐藏上传按钮
+    layoutTemplates: {
+        actionUpload: '',
+    }
+});
+</script>

@@ -1,0 +1,46 @@
+<!-- 在线修改模板的显示页面    -->
+<link rel="stylesheet" href="$rooturl/js/lims/codemirror-5.5/codemirror.css">
+<script src="$rooturl/js/lims/codemirror-5.5/codemirror.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/sublime.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/search.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/dialog.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/searchcursor.js"></script>
+<!-- 语言插件js -->
+<script src="$rooturl/js/lims/codemirror-5.5/css.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/xml.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/htmlmixed.js"></script>
+<script src="$rooturl/js/lims/codemirror-5.5/javascript.js"></script>
+<style>
+  .CodeMirror { height: auto; border: 1px solid #ddd; }
+  .CodeMirror-scroll { max-height: 800px; }
+</style>
+<form action='template.php' method="POST">
+	<input type="hidden" name="action" value="modi">
+	<table class="texttar">
+		<tr><td align="center"><input type="submit" value='修改'></td></tr>
+		<tr>
+			<td>模板:<input type=text  size=80 name='name' value='$_GET[name]'></td>
+		</tr>
+		<tr>
+			<td>
+				注释:<input type=text size=80 name=note value='$note'><br>
+				内容:<textarea id="codetext" name="data" cols="120" rows="$linecount">$lines</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td align="center"><input type="submit" value='修改'></td>
+		</tr>
+	</table>
+</form>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("codetext"), {
+    lineNumbers: true,
+    mode: "text/html",
+    keyMap: "sublime",
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    showCursorWhenSelecting: true,
+    theme: "monokai"
+  });
+</script>
+

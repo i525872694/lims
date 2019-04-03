@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>{$year}年度质量控制数据统计分析表</title>
+<link href="{$rooturl}/css/ace.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/bootstrap.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/print.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/buttons.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	*{text-align: center;}
+	table{margin: 0 auto; min-width: 28cm;text-align: center;}
+	table.single td{ min-height:40px; min-width: 20px;}
+	table.single td input[type='text']{ width: 100%;}
+	table.single textarea{width: 100%; height: 100%;}
+	.padding_0 td{ padding:0;margin:0;line-height:15px;height:30px;}
+	table.single tr.line:hover{ background-color:#ccc;}
+	table.single td.nohover{ background-color:#FFF;}
+</style>
+</head>
+<body>
+	<div style="margin: 15px;">
+		<h3>{$year}年度质量控制数据统计分析表</h3>
+		<table class="single">
+			<tr>
+				<td colspan="27" style="text-align: left; border:none;">
+					单位:{$hub_info['hub_name']}
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="2">统计时段</td>
+				<td rowspan="2">样品总数（个/月）</td>
+				<td colspan="3">全程序空白</td>
+				<td colspan="3">现场平行样</td>
+				<td colspan="2">平行空白</td>
+				<td colspan="3">室内平行双样</td>
+				<td colspan="3">回收率</td>
+				<td colspan="3">标准控制样</td>
+				<td colspan="1">密码样</td>
+				<td colspan="1">精密度偏性试验</td>
+				<td colspan="4">质控考核项目</td>
+				<td rowspan="2">结果分析评价</td>
+				<td rowspan="2">备注</td>
+			</tr>
+			<tr>
+				<td>检查项次</td><td>测定率范围</td><td>相对偏差范围</td><td>检查项次</td><td>检查率范围</td><td>相对偏差范围</td><td>空白测定率范围</td><td>相对偏差范围</td><td>测定项次</td><td>测定率范围</td><td>相对偏差范围</td><td>测定项次</td><td>测定率范围</td><td>回收率范围</td><td>测定项次</td><td>测定率范围</td><td>相对误差范围</td><td>测定个数</td><td>完成项次</td><td>盲样</td><td>见证实验</td><td>能力验证</td><td>实验室比对</td>
+			</tr>
+			{loop $data $i $row}
+			<tr>
+				<td>{$row['month']}月</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			{/loop}
+		</table>
+	</div>
+</body>
+</html>

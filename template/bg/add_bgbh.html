@@ -1,0 +1,21 @@
+<head>
+
+	<script type="text/javascript">
+		function get_bh(t){
+			var cy_date=$("#cy_date").val();
+			$.get("$rooturl/baogao/add_bgbh.php?ajax=1",{bg_lx:t.value,cy_date:cy_date},function(data){
+				$("#bg_bh").val(data);
+			},'html');
+		}
+	</script>
+</head>
+<div style="width:500px;height:250px;margin:0 auto;">
+<form action="bg_create.php" method="post"  >
+<input type="hidden" name="cyd_id" value="{$_GET['cyd_id']}">
+  <table class="table table-striped table-bordered table-hover " style="margin-top:50px;text-align:center" > 
+   <tr><td>(水监)字 <select name="year">{$year_list}</select> 第<select name="bg_lx" id="bg_lx" onchange="get_bh(this)"><option value="T">T</option><option value="W">W</option><option value="S">S</option><option value="E">E</option></select><input type="text" id="bg_bh" name="bg_bh" size="4" value="{$bg_bh}"/>号</td></tr>
+  </table>
+  <input type="hidden" name="cy_date" id="cy_date" value="{$_GET[cy_date]}">
+  <center><input type="submit" name="sub" value="提交保存"></center>
+</form>
+</div>

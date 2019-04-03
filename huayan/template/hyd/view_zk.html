@@ -1,0 +1,38 @@
+<!-- 化验单查看质控 -->
+<div class="modal fade" id="modal_view_zk" style="width:800px;margin:0 auto;overflow:auto;" data-backdrop="static">
+  <form action="#" method="post" name="form_select" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>化验单查看质控</h3>
+    </div>
+    <div class="modal-body">
+      <table  class="table table-bordered center" style="width:17cm">
+        <tr>
+            <td>序号</td>
+            <td>质控项目</td>
+            <td>样品采集数</td>
+            <td>质控数量</td>
+            <td>控制率</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>室内平行</td>
+            <td>{$data_cy['c_cy']}</td>
+            <td>{$data_px['c_px']}</td>
+            <td>{php echo _round($data_px['c_px']/$data_cy['c_cy']*100, 2);}%</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>加标回收</td>
+            <td>{$data_cy['c_cy']}</td>
+            <td>{$data_jb['c_jb']}</td>
+            <td>{php echo _round($data_jb['c_jb']/$data_cy['c_cy']*100, 2);}%</td>
+        </tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary btn-sm" id="sel_ok">确定</a>
+        <a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+    </div>
+  </form>
+</div><!-- 化验单查看质控 end -->

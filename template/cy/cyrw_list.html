@@ -1,0 +1,96 @@
+<style>
+#search{
+  /*搜索框*/
+  min-width:200px;
+  height:35px;
+  width:10%;
+  padding-right:18px;
+  position:inherit;
+  font-size:14px;
+  border-radius: 6px !important;
+}
+.icon-search{margin-left: -18px;}/*搜索图标*/
+.search_str{
+  display: none
+}
+</style>
+<script>
+function redirect( cy_date ){
+    url = "cyrw_list.php?cy_date=" + cy_date + "&site_type=" + v('site_type');
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+//删除采样数据
+function del_cy(cyd_id){
+    if(cyd_id){
+        var alert_obj = $.alert({title: '加载中...',content:'正在删除采样数据...<img src="{$rooturl}/img/loading.gif"/>',confirmButton:'',});//,autoClose: 'confirm|3000'
+        var url   = "{$rooturl}/cy/modify_cyd.php?action=删除&cyd_id="+cyd_id;
+        $.get(url,function(data){
+            //console.log(data);
+            switch(data.status){
+                case 'yes':
+                    var url2  = "{$duijie_url}xd_cyrw/cy_duijie_url.php?ajax=1";
+                    $.post(url2,{'del_fzx_id':"{$fzx_id}",'action':'del_cy','del_bar_code':data.del_bar_code},function(data2){
+                      //console.log(data2);
+                      alert_obj.close();
+                      alert_obj = $.alert({title:'删除成功！',content:'正在刷新页面！',autoClose: 'confirm|2000'});
+                      setTimeout('window.location.reload();',2000);
+                    },'json');
+                break;
+                default:
+                    alert_obj.close();
+                    alert_obj = $.alert({title:'删除失败！',content:'删除不了相应数据，请联系管理员。'});
+                break;
+            }    
+        },'json');
+    }
+}
+function go_biaoqian(){
+    var date = get_cy_date();
+    window.open('./biaoqian.php?cy_date='+date);
+}
+</script>
+<h3 class="header smaller center title">采样任务列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		任务性质:<select id="site_type" onchange="redirect(get_cy_date())">$site_type_list</select>
+		年份选择:<select id="year"      onchange="redirect(get_cy_date())">$year_list</select>
+        月份选择:<select id="month"     onchange="redirect(get_cy_date())">$month_list</select> 
+        <button type="button" onclick="go_biaoqian()" class="btn btn-xs btn-primary">样品编码对照表</button>
+        <input type='text' name='search_xm' value='' id='search' data_div='search_box' onkeyup="xm_Search(this);" placeholder='请输入搜索内容' class='search_xm' />
+        <i class="icon-search"> </i>
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" id='search_box'>
+  <tr>
+    <th width="5%" style='min-width:35px;'>序号</th>
+    <th width="10%" style='min-width:80px;'>采样日期</th>
+    <th width="10%" style='min-width:90px;'>采样单号</th>
+    <th width="23%" style='min-width:110px;'>批名/委托单位</th>
+    <th width="15%" style='min-width:60px;'>采样人</th>
+    <th width="17%" style='min-width:110px;'>状态</th>
+    <th width="20%" style='min-width:168px;'>操作/记录表</th>
+  </tr>
+  $lines
+</table>
+</div>
+</div>
+<script>
+function xm_Search(e) {
+	var data_div	= e.getAttribute("data_div");
+	if (e.value == ""){
+		$("#"+data_div+" .bg-div").show();
+    $('.search_str').hide();
+  }else{
+    $('.search_str').show();
+		$("#"+data_div+" .bg-div").hide()
+		$("#"+data_div+' .bg-div[data-val*='+e.value+']').show()
+	}
+
+}
+</script>

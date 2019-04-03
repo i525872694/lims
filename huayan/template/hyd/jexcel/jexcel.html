@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>化验单等表格开发编辑平台</title>
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/ace.min.css">
+    <script type="text/javascript">
+        var trade_global = {rooturl: '{__ROOTURL__}'};
+    </script>
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/jquery.jexcel.js?v={$global['hyd']['v']}"></script>
+    <!-- 计算公式插件 -->
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/excel-formula.min.js"></script>
+    <!-- 自定义数据格式插件 -->
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/jquery.mask.min.js"></script>
+    <!-- 日历插件 -->
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/jquery.jcalendar.js"></script>
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/jquery.jcalendar.css">
+
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{AH_URL}/js/jexcel/js/jquery.page-liner.js"></script>
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/page-liner.css?v={$global['hyd']['v']}">
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/jquery.jexcel.css?v={$global['hyd']['v']}">
+    <link rel="stylesheet" type="text/css" href="{AH_URL}/js/jexcel/css/sheet-pc-main.css?v={$global['hyd']['v']}">
+</head>
+<body id="padbody" class="desktop-web propad prouser embed tim tim-web">
+<div id="status-bar-top"></div>
+<header class="tim-web  sheet-style ">
+    <div id="web_header_top" class="web_header_top">
+        <div class="brand_back" onclick="window.history.go(-1)">
+            <img class="brand_back_icon" src="{AH_URL}/js/jexcel/images/pad_head_brand_back.png">
+        </div>
+        <a class="brand_logo_new" href="#" style="left: 30px;"></a>
+        <div class="brand_text" style="left: 86px;">化验单等表格开发编辑</div>
+        <input id="padAloneTitle" class="tim-web" value="" style="top: 24px; visibility: visible; left: 80px;" maxlength="129">
+        <div class="save-group-btn-container" id="saveGroupBtnContainer" style="top: 38px;">
+            <div id="saveGroupBtn" class="save-group-btn"></div>
+        </div>
+        <div id="editor-last-changed" class="editor-last-changed-web" style="opacity: 1; left: 78px; top: 26px; display: none;">
+            最近保存 <span id="last-saved-timestamp" time=""></span>
+        </div>
+        <span id="editor-last-state" style="left: 80px; top: 26px; display: none;" class="editor-last-state-web"></span>
+        <div id="web_header_extra_container" style="display: inline-block;">
+            <button class="sharebutton header-function-btn-blue-normal preview_view hide" style="display: inline-block;">预览查看</button>
+            <button class="toolbar-auth-btn header-function-btn-normal preview_yuan hide" style="display: inline-block;">查看HTML</button>
+            <!-- <button class="toolbar-create-btn header-function-btn-normal" style="display: inline-block;">新建</button> -->
+            <button class="toolbar-create-btn header-function-btn-normal" style="display: inline-block;">设置</button>
+        </div>
+    </div>
+    <div id="web_header_bottom" class="web_header_bottom"></div>
+</header>
+<div id="padpage" class="hidePadPage" style="transition: transform 0.2s ease 0s; top: 0px;">
+    <div id="padeditor" class="sheet-style loaded">
+        <div class="editor-wrapper">
+            <div id="canvasContainer22" style="margin-top: 25px; top: 0px; position: absolute; width: 100%; display: block; z-index: 500;">
+                <div class="excel-container" style="transform-origin: left top 0px; height: 100%; width: 100%; cursor: default; transform: scale(1);">
+                    <div style="height: 100%; width: 100%;">
+                        <div id="my"></div>
+                    </div>
+
+                    <div class="" style="width: 100%; height: 100%;">
+                        <div class="link-wrap">
+                            <div class="link-box" style="display: none;">
+                                <span class="link-content" href="#"></span>
+                                <span class="link-cancel"><!-- 取消关联 --></span>
+                                <span class="link-modify">修改</span>
+                            </div>
+                            <div class="link-modify-wrap" style="display: none;">
+                                <div class="link-modify-arrow link-modify-arrow-top" style="left: 20%;"></div>
+                                <div class="link-modify-content">
+                                    <!-- 单元格名称,eg:A1 -->
+                                    <input class="link-modify-heade" type="hidden">
+                                    <div class="link-modify-line">
+                                        <b>说明：</b><br>
+                                        <span>字段说明和字段名称都为空时表示取消绑定</span><br>
+                                        <span>表头数据使用arowData； 行数据使用linesData</span>
+                                    </div>
+                                    <div class="ac-checkBox">
+                                        <div class="ac-checkBox-container">
+                                            <input id="link-modify-readonly" type="checkbox" checked value="">
+                                            <label for="link-modify-readonly"> </label>
+                                        </div>
+                                        <span class="ac-checkBox-content">锁定单元格</span>
+                                    </div>
+                                    <div class="link-modify-line">
+                                        <label class="link-modify-title">字段说明</label>
+                                        <input class="link-modify-input" type="text" placeholder="请输入字段说明">
+                                    </div>
+                                    <div class="link-modify-line">
+                                        <label class="link-modify-title">字段名称</label>
+                                        <input class="link-modify-input" type="text" placeholder="请输入字段名称">
+                                    </div>
+                                    <div class="link-modify-line">
+                                        <label class="link-modify-title">显示格式</label>
+                                        <input class="link-modify-input" type="text" placeholder="请输入自定义格式">
+                                    </div>
+                                    <div class="link-modify-line">
+                                        <label class="link-modify-title">自定义类</label>
+                                        <input class="link-modify-input" type="text" placeholder="请输入自定义格式">
+                                    </div>
+                                    <div class="link-modify-warnning" style="visibility: hidden;"></div>
+                                    <div class="link-modify-button link-modify-valid">应用</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="smart-btn" style="left: 271px; top: 453px; display: none;"></div>
+
+                        <div class="x-scroll-board hide">
+                            <div class="x-scroll-wrap" style="width: 1029px; left: 49px; display: block; bottom: 0px;">
+                                <div class="x-scroll-box" style="width: 406px; transform: translateX(0px);"></div>
+                            </div>
+                        </div>
+                        <div class="y-scroll-board hide">
+                            <div class="y-scroll-wrap" style="height: 722px; top: 20px; display: block; right: 0px;">
+                                <div class="y-scroll-box" style="height: 67px; transform: translateY(0px);"></div>
+                            </div>
+                        </div>
+                        <div class="formula-error-card" style="display: none; left: 265px; top: 312px;">
+                            <div class="formula-error-title">错误</div>
+                            <div class="formula-error-content">公式解析错误。</div>
+                            <div class="formula-error-close"></div>
+                        </div>
+                        <div class="smart-selection-menu" style="display: none; max-height: 999px; left: 343px; top: 476px;">
+                            <div class="component-vaild menu-component">复制单元格</div>
+                            <div class="component-vaild menu-component">填充序列</div>
+                            <div class="component-vaild menu-component">仅填充格式</div>
+                            <div class="component-vaild menu-component">不带格式填充</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="inputboxwithpc" style="transition: transform 0.2s ease 0s; top: 100px; display: block;">
+    <div class="inputboxwrap">
+        <span class="cell-head"></span>
+    <div contenteditable="true" class="cell-input"></div></div>
+    <div class="inputbox-resize" id="inputboxResize"></div>
+</div>
+<textarea id="CopyPasteDiv" class="copyPaste" tabindex="-1" autocomplete="off" wrap="hard" style="position: fixed; top: -10000px; left: -10000px;"></textarea>
+<script type="text/javascript">
+    // 如果是在系统里面打开 ,全屏展示
+    $(window.parent.document).find("body").css({"padding-top": 0});
+    $(window.parent.document).find("#navbar, #menu-toggler, #sidebar, #breadcrumbs").hide();
+    $(window.parent.document).find(".main-content, #page-content").css({
+        width: "100%",
+        height: "100%",
+        margin: 0
+    })
+    // 预览查看
+    $(".preview_yuan").click(function(){
+        // window.open('h2j.php?fileName=' + $("#files_list").val(), 'opneYuan');
+    });
+    $(".preview_view").click(function(){
+        // window.open('view.php?fileName=' + $("#files_list").val(), 'openView');
+    });
+    // 初始化设置标题和备注大小和高度
+    $(".toolbar-create-btn").click(function(){
+        // 获取样式更改前的样式
+        var oldStyle = immTableSheet.sheetHot.actionCenter.getStyle(immTableSheet.jExcel);
+        // 统一更改样式
+        $(immTableSheet.jExcel.div).find("tbody td").removeAttr('height').height('20');
+        $(immTableSheet.jExcel.div).find("tr[id=row-0] td").attr("style", '')
+        $(immTableSheet.jExcel.div).find("td[id=0-0]").css({
+            height: '60px',
+            "font-family": "宋体",
+            "font-weight": "bold",
+            "font-size": "32px"
+        });
+        $(immTableSheet.jExcel.div).find("tbody td.jexcel_label:last").parent("tr").find("td").attr("style", '').attr("height", '');
+        $(immTableSheet.jExcel.div).find("tbody td.jexcel_label:last").parent("tr").find("td:eq(1)").css({
+            "height": "50px",
+            "min-height": "50px"
+        });
+        $(immTableSheet.jExcel.div).find("tbody td.jexcel_label:last").parent("tr").find("td:gt(1)").css({
+            "white-space": "pre-wrap",
+            "vertical-align": "top",
+            "text-align": "left"
+        });
+        // 
+        updateUndoRedoButtonState();
+        $(immTableSheet.jExcel.div).jexcel("resize");
+        // 记录进操作历史记录
+        immTableSheet.sheetHot.actionCenter.setHistory(immTableSheet.jExcel, oldStyle);
+    });
+    // ##############################
+    // 全局客户端数据
+    window.jExcelID = 'my';
+    window.fileName = '{$fileName}';
+    window.clientVars = {"initialAttributedText": '{$initialAttributedText}', "isMac":navigator.userAgent.match(/Mac\sOS\sX/i), "isIPhone":navigator.userAgent.indexOf("iPhone"), isAndroid: navigator.userAgent.indexOf("Android")};
+    $(document).ready(function(){
+        jExcelInit($.parseJSON(clientVars.initialAttributedText));
+        var t = new ImmTableSheet;
+        t.isSheet = true, window.immTableSheet = t, t.init();
+        // 初始化标尺
+        $.fn.pageLiner.init($(immTableSheet.jExcel.div).find('thead .jexcel_label'));
+    });
+    // ##############################
+    // jExcel初始化
+    function jExcelInit(data){
+        console.log('rowCount:'+data.rowCount);
+        console.log('columnCount:'+data.columnCount);
+        data.id = jExcelID;
+        // data.editable=false;
+        // data.resizeColumn=false;
+        data.rowDrag = true;
+        data.showRowHeader = false;
+        data.showColumnHeader = false;
+        data.showRowHeader = true;
+        data.showColumnHeader = true;
+        // data.wordWrap = true;
+        data.columnSorting = false,
+        data.allowInsertRow = true;
+        data.allowManualInsertRow = true;
+        data.allowInsertColumn = true;
+        data.allowManualInsertColumn = true;
+        // 配置区域打开时展示绑定信息
+        data.onselection = function(e, o, d, origin){
+            // 显示绑定信息
+            window.linkWrap.show(o, d);
+            //显示当前单元格信息
+            var ids = $(o).prop('id').split('-');
+            var cellName = $(this).jexcel('getLetter', ids[0], ids[1]);
+            var formula = $(e).jexcel('getValue', cellName);
+            $("#inputboxwithpc .cell-head").text(cellName);
+            $("#inputboxwithpc .cell-input").text(formula);
+        }
+        // onafterchange
+        data.onafterchange = function(e){
+            // 更新按钮状态
+            window.updateUndoRedoButtonState();
+        }
+
+        // data = [
+        //     [11.23, 12, '=A1+B1', 15.1, 0.01, 0.07],
+        //     ['12', '5.66', 178.34, 178.65, 0.49, 0.28],
+        //     [3.22, 4.66, 30.01, 29.1, -0.76, -2.55],
+        //     ['87.32', '93.54', 13.48, 13.56, 0.1, 0.74],
+        // ];
+
+        // // Create the spreadsheet based on data
+        // $('#my').jexcel({
+        //     data:data,
+        //     colWidths: [ 300, 80, 500, 100, 100, 100 ],
+        //     columns: [
+        //               { type: 'text' },
+        //               { type: 'text' },
+        //               { type: 'text', mask:'##.00', options:{ reverse: true } },
+        //               { type: 'text', mask:'#.###.00', options:{ reverse: true } },
+        //               { type: 'text' },
+        //               { type: 'text' },
+        //               ]
+        // });
+        // return;
+        // 列类型 text, numeric, hidden, dropdown, autocomplete, checkbox, calendar
+        // data.columns  = [
+        //     { type:'text', wordWrap:true },
+        //     { type:'number' },
+        //     { type:'text',  mask:'#.###.00', options:{ reverse: true } },
+        //     { type:'text',  mask:'#.###.00' },
+        //     { type: 'calendar', options : {
+        //             format:'YYYY-MM-DD', // Date format
+        //             readonly:0, // Input as readonly (true or false)
+        //             today:0, // Input with at today as default (true or false)
+        //             time:0, // Show time picker
+        //             clear:1, // Show clear button
+        //             mask:1, // Mask the input
+        //             months:['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'], // Translations can be done here
+        //             weekdays:['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'], // Translations can be done here
+        //             weekdays_short:['日', '一', '二', '三', '四', '五', '六'] // Translations can be done here
+        //         }
+        //     },
+        //     { type: 'calendar', options: { format:'YYYY-MM-DD HH24:MI', time:1 } }
+        // ]
+
+
+        // data.contextMenu = function(){
+        //     return false;
+        // }
+        data.saveData = function(data){
+            if(! data){
+                return setStatusTips("数据异常,无法保存", 3e3, "#ff0000");
+            }
+            $.ajax({
+                type: 'post',
+                data: {data: JSON.stringify(data)},
+                dataType: 'json',
+                url: 'ahlims.php?app=jexcel&act=save_muban&fileName=' + fileName,
+                success: function(data){
+                    $("#last-saved-timestamp").attr("time", dateFormat(new Date));
+                    if (data.error == '0') {
+                        var t = Date.now();
+                        setStatusTips("保存成功", 3e3, null, function() {
+                            return "您的所有的更改都会自动保存在文档中。\n最近的一次编辑是在" + Math.ceil((Date.now() - t) / 1e3) + "秒钟前执行。"
+                        })
+                        padutils.showToolToast("已保存成功", {zIndex: 99999}, {toolToastCloseTime: 3e3});
+                    } else{
+                        immTableSheet.jExcel.saveIndex = -1;
+                        setStatusTips("保存失败,稍后将自动重试。", 3e3, "#ff0000");
+                        padutils.showToolToast(data.content || "保存失败,稍后将自动重试。", {
+                            zIndex: 99999
+                        }, {
+                            toastType: "typeWarnning",
+                            toolToastCloseTime: 5000
+                        })
+                    }
+                },error: function(data){
+                    immTableSheet.jExcel.saveIndex = -1;
+                    padutils.showToolToast(data.responseText, {
+                        zIndex: 99999
+                    }, {
+                        toastType: "typeWarnning",
+                        toolToastCloseTime: 3e3
+                    })
+                }
+            });
+        }
+        $('#' + jExcelID).jexcel(data);
+    }
+</script>
+<script type="text/javascript" src="{AH_URL}/js/jexcel/js/sheet-pc-index.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{AH_URL}/js/jexcel/js/sheet-pc-esnext.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{AH_URL}/js/jexcel/js/sheet-pc-lazy_test.js?v={$global['hyd']['v']}"></script>
+
+</body>
+</html>

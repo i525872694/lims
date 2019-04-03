@@ -1,0 +1,48 @@
+<style>
+    .jumpLink {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+</style>
+<div class="widget-box transparent" style="margin:0;">
+    <div class="widget-header center">
+        <h3 class="header smaller title" style="color:#000;">分析仪器使用记录表</h3>
+    </div>
+    <div class="widget-header center">
+        <a href='shiwen_add.php?id={$id}&year={$year}' class='btn btn-xs btn-primary no-print'>添加使用记录</a>
+        <span style='float:right;margin-right:10%'><span style='font-size:16px;'><b>{$year}</b></span>年</span>
+    </div>
+</div>
+
+<div class="widget-header header-color-blue4">
+    <div class="widget-toolbar">
+        <!--蓝色工具栏-->
+        <span>仪器名称:{$yiqi_name}</span>
+        <span style='margin-left:1000px'>仪器编号:{$yiqi_bianhao}</span>
+    </div>
+</div>
+<div class="container-fluid">
+    {$ui_ag_grid}
+</div>
+<script>
+    $(function () {
+        $("#myGrid").height($(window).height() - 140);
+        get_ag_grid_data();
+    })
+    //获取数据
+    function get_ag_grid_data() {
+        var url = '{__ROOTURL__}/app_modal/shiwen_yiqi.php?ajax=1&id={$id}&year={$year}';
+        $.get(url, function (resp) {
+            handle_ag_grid(resp);
+        }, 'json')
+    }
+    function ag_grid_cellClick(obj) {
+        if (obj.colDef.field == 'xiugai') {
+            location.href = '{__ROOTURL__}/app_modal/shiwen_yiqi_update.php?id=' + obj.data.id+'&year={$year}&uid={$id}';
+        }
+        if (obj.colDef.field == 'del') {
+            location.href = '{__ROOTURL__}/app_modal/shiwen_yiqi.php?del=1&id='+obj.data.id+'&year={$year}&uid={$id}';
+        }
+    }
+</script>

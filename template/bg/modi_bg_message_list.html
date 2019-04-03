@@ -1,0 +1,104 @@
+<style type="text/css">
+	.left{text-align:left;padding-left:50px !important}
+</style>
+<script type="text/javascript">
+	function get_bh(t){
+		var cyd_id=$("#cyd_id").val();
+		var cy_date=$("#cy_date").val();
+		var bg_lx=$("#bg_lx").val();
+		var year=$("#year").val();
+		$.post("$rooturl/baogao/modi_bg_message_list.php?ajax=1",{bg_lx:bg_lx,cyd_id:cyd_id,cy_date:cy_date,year:year},function(data){
+			$("#bg_bh").val(data);
+			$("#bh_nums").val(data);
+		},'html');
+	}
+	function check_bh(is_sub){
+		var bh=$("#bg_bh").val();
+		var year=$("#year").val();
+		if(bh==''||bh==null){
+			$("#bg_bh").val($("#bh_nums").val());
+		}else{
+			var is_add=$("#is_add").val();
+			if(is_sub&&is_add){
+				$("#f1").submit();
+			}else{
+				var cyd_id=$("#cyd_id").val();
+				var cy_date=$("#cy_date").val();
+				var bg_lx=$("#bg_lx").val();
+				$.post("$rooturl/baogao/modi_bg_message_list.php?ajax=1",{bh:bh,cyd_id:cyd_id,cy_date:cy_date,bg_lx:bg_lx,year:year},function(data){
+					if(data=='1'){
+						if(!confirm("此编号已经存在，是否继续添加")){
+							$("#bg_bh").val($("#bh_nums").val());
+							$("#is_add").val('0');
+							return false;
+						}else{
+							$("#is_add").val('1');
+							if(is_sub){
+								$("#f1").submit();
+							}
+							return true;
+						}
+					}else{
+						$("#is_add").val('0');
+						if(is_sub){
+							$("#f1").submit();
+						}
+						return true;
+					}	
+				},'html');
+			}
+		}
+	}
+</script>
+<form  action="modi_bg_message_save.php" method="post" id="f1">
+<input type="hidden" name="cyd_id" id="cyd_id" value="{$_GET['cyd_id']}">
+<input type="hidden" name="cy_date" id="cy_date" value="{$_GET['cy_date']}">
+<input type="hidden" name="bh_nums" id="bh_nums" value={$bg_bh}>
+<input type="hidden" name="is_add" id="is_add" value=0>
+<h3 class="header smaller center title">修改检测报告信息</h3>
+<div class="widget-box no-border">
+
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" >
+<tr>
+	<td>报告编号</td>
+	<td class="left">(水监)字 <select onchange="get_bh()" name="year" id="year">{$year_list}</select> 第<select name="bg_lx" id="bg_lx" onchange="get_bh()">{$options}</select><input type="text" id="bg_bh" name="bg_bh" size="4" value="{$bg_bh}" required="required" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onblur="check_bh(0)" autocomplete="off" data-toggle="popover" data-title="报告编号提醒" data-trigger="focus"  data-placement="bottom" onfocus="get_max_bh(this)" data-html="true" data-content=""/>号</td>
+	<td >联系人</td>
+	<td class="left"><input type="text" name="lx_user" value="{$report_rs['lx_user']}"/></td>
+</tr>
+<tr>
+	<td >联系电话</td>
+	<td class="left"><input type="text" name="tel" value="{$report_rs['tel']}"/></td>
+	<td>报告日期</td>
+	<td class="left"><input class="date-picker" type="text" name="bg_date" value="{$report_rs['bg_date']}"/></td>
+</tr>
+<tr>
+	<td><select name="date_lx" id="date_lx">{$date_lx_options}</select></td>
+	<td class="left"><input class="date-picker" type="text" name="sj_date" value="{$report_rs['sj_date']}"/></td>
+	<td>检验类别</td>
+	<td class="left"><select name="jy_lb" ><option value="">请选择</option>{$jy_lb_option}</select></td>
+</tr>
+
+</table>
+</div>
+{$modi_bg_message_line}
+<center><input type="button" value="保存" class="btn btn-xs btn-primary" onclick="check_bh(1)"></center>
+</div>
+</form>
+<script type="text/javascript">
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+//获取上次的最大编号
+function get_max_bh(t){
+	var cyd_id=$("#cyd_id").val();
+	var year=$("#year").val();
+	var cy_date=$("#cy_date").val();
+	var bg_lx=$("#bg_lx").val();
+	$.post("$rooturl/baogao/modi_bg_message_list.php?ajax=1",{bg_lx:bg_lx,cyd_id:cyd_id,cy_date:cy_date,bh:t.value,year:year,action:'bef_bh'},function(data){
+		var popover_obj = document.getElementById('bg_bh');
+		popover_obj.setAttribute('data-content',data); 
+		$("#bg_bh").popover('show');
+	},'html');
+	 
+}
+</script>

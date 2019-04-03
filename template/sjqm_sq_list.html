@@ -1,0 +1,92 @@
+<h1 class="center">领用申请</h1>
+<form>
+	<div class="widget-header header-color-blue4 center">
+		<div class="widget-toolbar">
+			<center>
+				申请状态：
+				<select name='jindu' id="jindu">
+            	$jindu
+            </select>
+				<input type='button' value='打印' class="btn btn-xs btn-primary" onclick="print_();" class="no_print" />
+				<!--<input type='button' value='删除此批次' class="btn btn-xs btn-primary" onclick="del_();"  class="no_print"/>-->
+				<button class="btn btn-primary btn-xs" onclick='yunxu_sq()' $kufang_qx>允许所选申请</button>
+				<button class="btn btn-primary btn-xs" onclick='del_sq()' $kufang_qx>删除所选申请</button>
+			</center>
+		</div>
+	</div>
+<table class='table table-striped table-bordered table-hover center' style="border: 2px solid #ddd" id="ly_table">
+	<tr align=center>
+	<td><input type='checkbox' id="all"></td>
+	<td>序号</td>
+	<td>物品名称</td>
+	<td>当前库存</td>
+	<td>规格</td>
+	<td>级别</td>
+	<td>生产批号</td>
+	<td>申请数量</td>
+	<td>申请人</td>
+	<td>申请日期</td>
+	<td>状态</td>
+	<!-- <td class="no_print">操作</td> -->
+	</tr>
+	$line
+</table>
+<!-- <input type=button value='确认出库' onclick="window.location.href='sjqm_rck.php?action=get_out&id='+$('input[name=id]').val()+'&num='+$('input[name=shuliang]').val()+'&user='+$('input[name=user]').val()+'&pro_id='+$('input[name=pro_id]').val();"> -->
+</form>
+<style>     
+@media print {   
+.no_print {    
+display: none    
+}   
+}   
+</style>
+<script>
+	function print_(){
+		window.print();
+	}
+	function del_(){
+		var id = $("input[name='wz_id']").val();
+		window.location.href="sjqm_rck.php?handle=del_buy_pici&from=sq&id="+id;
+	}
+	//允许申请
+	function yunxu_sq(){
+		var fruit=[];
+		$("input:checkbox[name='ids']:checked").each(function() {
+            fruit.push($(this).val());
+        });
+		$.get('sjqm_ajax.php?type=sq&sq_type=ck&ids='+fruit,function(data){
+			if(data=='success'){
+				window.location.href="sjqm_rck.php?action=queren";
+			}else{
+				alert('服务器故障，请稍后重试');
+			}
+		});
+	}
+	//拒绝申请
+	function del_sq(){
+		var fruit=[];
+		$("input:checkbox[name='ids']:checked").each(function() {
+            fruit.push($(this).val());
+        });
+		$.get('sjqm_ajax.php?type=del_sq&ids='+fruit,function(data){
+			if(data=='success'){
+				window.location.href="sjqm_rck.php?action=queren";
+			}else{
+				alert('服务器故障，请稍后重试');
+			}
+		});
+	}
+	//全选非全选切换
+	$("#all").click(function(){   
+		if(this.checked){   
+			$("#ly_table :checkbox").prop("checked", true);  
+		}else{   
+			$("#ly_table :checkbox").prop("checked", false);
+		}   
+	});
+	//状态切换更换表格数据
+	$('#jindu').change(function(){
+		var jindu=$('#jindu').val();
+		window.location.href="sjqm_rck.php?action=queren&jindu="+jindu;
+	})
+</script>

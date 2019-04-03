@@ -1,0 +1,56 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-00</td>
+    </tr>
+</table>
+<h1>仪器法测定溶解氧原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:13%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="3">{$arow['assay_element']}</td>
+        <td>测定方法</td>
+        <td colspan="3">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器名称</td>
+        <td colspan="3">{$arow['td4']}</td>
+        <td>仪器编号</td>
+        <td colspan="3">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td colspan="2">水样名称</td>
+        <td colspan="1">采样日期</td>
+        <td>仪器读数</td>
+        <td>换算值(mg/L)</td>
+        <td>含量<br />({$arow['unit']})</td>
+        <td>平均值</td>
+        <td>相对偏差/<br />加标回收率<br />（%）</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs() {
+    // if (!vs['vd0']) {
+    if ($.isNumeric(vs['vd27'])) {
+        vs['vd0'] = vs['vd27'];
+    } else {
+        vs['vd0'] = '';
+    }
+    // }
+}
+
+</script>

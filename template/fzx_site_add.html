@@ -1,0 +1,201 @@
+<style>
+.site_label,.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+.group_sites{float:none;background-color:#C9F2D1}
+</style> 
+<div align='center'><font size='6pt'>配置站点</font><font size='6pt' onclick='guanbi2()' color='red'><span class="glyphicon glyphicon-remove" aria-hidden="true" style="cursor:pointer;"></span></font></div>
+<form id="fp_sites" action="$rooturl/fzx_manage/fzx_sites.php" method="post">
+<input type='hidden' name='act' value='fp_sites' />
+<input type='hidden' name='tjid' value='$tjid' />
+<input type='hidden' name='fp_id' value='$fp_id' />
+<input type='hidden' name='oldstr' value='$oldstr' />
+<input type='hidden' name='xms' value='$xms' />
+<div id="tabs" style="width:100%;margin:0 auto;" class="center">
+                        <ul>
+								<li><a href="#tabs-1" id="k1">已有站点</a></li>
+                                <li>
+                                    <a href="#tabs-2" id="k2">添加新站点</a>
+                                </li>
+                        </ul>
+						<div id='tabs-1'>
+							分中心列表:
+							<select name="fzx_id"   id="fzx_id_list" class="chosen" style="max-width:150px;" $dis>
+								$fp_fzx_options
+							</select>
+                          水样类型:<select id='fp_water_type' style='text-align:left;' onclick='wychange(this)'><option value='全部'>全部</option>$water_type_options</select>
+                          统计属性:<select class='chosen' id='fp_tjcs'><option value='全部'>全部</option>$tjcs_fp_options</select>
+                          站点名称:<select class='chosen' id='fp_site_name'><option value='全部'>全部</option>$site_options</select>
+                          <div style='text-align:left;margin-top:20px;'>
+                                    $fp_lines
+                                    <div style='clear:both;'></div>
+                                   <br/>
+			                         <div style='text-align:center;'>
+				                        <input class="btn btn-primary btn-xs" name="bao" type="submit" value="保存" onclick=''>&nbsp;&nbsp;
+				                        <input class="btn btn-primary btn-xs" name="bao" type="button" value="关闭" onclick='guanbi2()'>
+				                     </div>
+                          </div>
+                        </div>
+                        <div id="tabs-2">
+                                <br />数据加载中......<br />
+                        </div>
+                        <p/>
+</div>
+<script>
+$(function(){
+	//防止批次过少，窗口扩展不开的情况。
+	$('body').height($('body').parent().height());
+	$(".chosen").chosen();//可搜索下拉菜单
+	$( "#tabs" ).tabs();
+	if($("#tabs-2:contains('数据加载中')").html()){
+        	var lianJie     = "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes&daohang_action={$_GET['daohang_action']}&ajax=$_GET[ajax]&fp_id={$fp_id}&tjid={$tjid}";
+		var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+        	var str = "<option value='"+group_name+"' selected>"+group_name+"</option>";
+        	$("#tabs-2").load(lianJie).find("select[name='group_name']").append(str);
+        }
+	$("#k2").click(function(){
+		if($("#tabs-2:contains('数据加载中')").html()){
+			var lianJie	= "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes&fp_id={$fp_id}";
+			$("#tabs-2").load(lianJie);
+		}
+		//默认批次名称
+        	var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+		$("#tabs-2 input[name='group_name']").val(group_name);
+		//$(window.parent.document).find('iframe').height($('body').height()+$("#tabs-2").height()+300);
+	});
+	//鼠标移动到项目上或者选中的项目，高亮显示
+	$("label.site_label,.group_sites").mouseover(function(){
+    	$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+    }).mouseout(function(){
+    	if(!$(this).children("input").is(":checked")){
+        	$(this).css("background-color","#FFF");
+    	}
+    });
+	//用户改变“批名”是对应 搜出站点
+	$("#group_select").change(function(){
+		var tjcs	= $("#tjcs_select").val();
+		$("div[group_id],label[group_id]").hide();
+		if(this.value!='全部'){
+			if(tjcs!='全部'){
+                $("div[group_id='"+this.value+"'],label[group_id='"+this.value+"'][tjcs='"+tjcs+"']").show();
+			}else{
+				$("div[group_id='"+this.value+"'],label[group_id='"+this.value+"']").show();
+			}
+		}else{
+			if(tjcs!='全部'){
+				$("label[group_id][tjcs='"+tjcs+"']").each(function(){
+					$(this).show().prevAll("div[group_id='"+$(this).attr("group_id")+"']").show();//筛选出站点后，将其对应的批次名称也显示出来;
+				});
+			}else{
+				$("div[group_id],label[group_id]").show();
+			}
+		}
+	});
+	//分中心搜索
+	$("#fzx_id_list").on("change",function(){
+		var fp_id_moren	= $(this).val();
+		var tjid	= $("input[name='tjid']").val();
+		var xms		= $("input[name='xms']").val();
+		var fp_id	= $("input[name='fp_id']").val();
+		$('.modal-content').html('');
+		$('.modal-content').load('$rooturl/fzx_manage/fzx_site_add.php',{"fp_id_moren":fp_id_moren,"fp_id":fp_id,"tjid":tjid,"ajax":"1",'xms':xms});
+		$('body').css("overflow","hidden");
+		$("#cover").show();
+	});
+	//未分配批次的站点
+	$("#fp_new_sites").click(function(){
+		if($(this).is(":checked")){
+			$("#tabs-3 [new_sites][new_sites!='new_sites']").hide();
+			$("#tabs-3 [new_sites='new_sites']").show();
+			//有时候参数的div会没有new_sites的属性，这里要处理一下
+			$("label.fp_sites[new_sites='new_sites']").each(function(){
+                        	$(this).show();
+                        	$("div.fp_sites[tjcs='"+$(this).attr("tjcs")+"']").show();
+			});
+		}else{
+			$("#tabs-3 [new_sites]").show();
+		}
+	});
+	//总站分配站点的"统计参数"、“站点名称”是，对应搜出站点
+	$("#fp_site_name,#fp_tjcs").change(function(){
+		var fp_tjcs	= $("#fp_tjcs").val();
+		var fp_site_name= $("#fp_site_name").val();
+		if(fp_site_name=='全部'){
+			if(fp_tjcs=='全部'){
+				$(".fp_sites").show();
+				$("#fp_site_name option").show();
+			}else{
+				$(".fp_sites[tjcs!='"+fp_tjcs+"']").hide();
+				$(".fp_sites[tjcs='"+fp_tjcs+"']").show();
+				//隐藏不包含该统计参数的 下拉菜单选项
+				$("#fp_site_name option[value!='全部']").hide();
+				$("#fp_site_name option[site_tjcs*=',"+fp_tjcs+",'][value!='全部']").show();
+			}
+		}else{
+			if(fp_tjcs=='全部'){
+				$(".fp_sites").hide();
+				$("label.fp_sites input[site_id='"+fp_site_name+"']").parent("label").each(function(){
+					$(this).show();
+					$("div.fp_sites[tjcs='"+$(this).attr("tjcs")+"']").show();
+				});
+			}else{
+				//隐藏不包含该统计参数的 下拉菜单选项
+                $("#fp_site_name option[value!='全部']").hide();
+                $("#fp_site_name option[site_tjcs*=',"+fp_tjcs+",'][value!='全部']").show();
+				$("div.fp_sites[tjcs!='"+fp_tjcs+"'],label.fp_sites").hide();
+				$("div.fp_sites[tjcs='"+fp_tjcs+"']").show();
+				$("label.fp_sites[tjcs='"+fp_tjcs+"'] input[site_id='"+fp_site_name+"']").parent("label").show();
+				
+			}
+		}
+	});
+	//默认将 任务类型、批次名称、分中心  都处理为不可选择
+	$("#tabs-2").on("click","#add",function(){
+		$("#tabs-2 form[name='playlist'] select[name='customers[]']:last").removeAttr("disabled");
+		$("#tabs-2 form[name='playlist'] select[name='fenz[]']").attr("disabled",true);
+		//添加分中心的隐藏域
+		var fzx_id_last	= $("#tabs-2 form[name='playlist'] select[name='fenz[]']:last").val();
+		$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='fenz[]' value='"+fzx_id_last+"' />");
+	});
+	//选择新添加站点提交时改为ajax提交
+	$("#tabs-2").on("submit","form[name='playlist']",
+		function(){
+			//添加一个隐藏域变量，告诉站点添加页面 这里是ajax提交的
+			if($("input[name='action'][value='site_add_ajax']").val()!='site_add_ajax'){
+				$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='action' value='site_add_ajax' />");
+				$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='group_name' value='$tjid' />");
+			}
+			var options = {
+				dataType: "html",
+				success:function(data){
+					if(data){
+						guanbi2();
+						location = window.location.href;
+              		}
+        		},
+        		timeout:10000
+            };
+			$(this).ajaxSubmit(options);//ajax提交
+			return false;
+		}
+	);
+})
+//水样类型筛选
+function wychange(wy){
+	var va = $(wy).val();
+	if(va == '全部'){
+		$("label[wy]").show();
+	}else if(va.indexOf(',')!='-1'){
+		$("label[wy]").hide();
+		varr = va.split(',');
+		for(s in varr){
+			xian = $("label[wy='"+varr[s]+"']");
+			xian.show();
+		}
+
+	}else{
+		//$("div[tjcs]").hide();
+		xian1 = $("label[wy='"+va+"']");
+		xian1.show();
+		$("label[wy!='"+va+"']").hide();
+	}
+}
+</script>

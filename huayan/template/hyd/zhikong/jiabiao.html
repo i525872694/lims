@@ -1,0 +1,519 @@
+<h3 class="header smaller center" style="color:#000;">加标计算相关设置</h3>
+<div class="jiabiao-toolbar">
+    水样类型：{echo PublicApp::get_select('water_type',$this->get_all_leixing(),true,true);}
+    <button class="btn btn-xs btn-primary add-rule"><span class="glyphicon glyphicon-plus"></span><span>添加条件</span></button>
+    <button class="btn btn-xs btn-primary del-rule" disabled><i class="glyphicon glyphicon-remove"></i>刪除</button>
+</div>
+<!-- 检测项目 -->
+<div class="hide" id="jb_value_C">{echo PublicApp::get_select('vid',$_SESSION['assayvalueC'],true,false);}</div>
+<!-- {loop $jiabiao_info $key $value} -->
+<!-- {if is_array($value)} -->
+<div class="hide" id="jb_{$key}">{echo PublicApp::get_select($key,$value,true,false);}</div>
+<!-- {/if} -->
+<!-- {/loop} -->
+<!-- bootstrapTable数据表格 -->
+<table id="bootstrapTable_jb" class="table center"></table>
+<script>
+var jb_info = {$jb_info};
+var jb_conf = {$jb_conf};
+$("#jb_value_C select").prepend('<option value="0">默认设置</option>');
+// 为水样类型和人员选择绑定change事件来查看不同的数据
+$("#zhikong1 [name=water_type]").on("change", function(){
+    if( '全部' != $(this).val() ){
+        jbTable.bootstrapTable("hideColumn","lname");
+    }else{
+        jbTable.bootstrapTable("showColumn","lname");
+    }
+    // 更新bootstrapTable表数据，需要使用最新的URL路径
+    jbTable.bootstrapTable("refresh",{silent: true, url: get_jiabiao_url()});
+});
+//这是绑定操作按钮事件
+window.jbEditEvents = {
+    'click button': function (e, value, row, index) {
+        $.confirm({
+            content: '你确定要删除吗？',
+            confirm: function(){
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {id: row.id},
+                    url: 'ahlims.php?app=zk_jiabiao&act=zhikong_del&ajax=1',
+                    success: function(data){
+                        if( '0' == data.error ){
+                            save_status_msg(data.content,'success');
+                            jbTable.bootstrapTable('removeByUniqueId', row.id);
+                        }else{
+                            save_status_msg(data.content,'danger');
+                        }
+                    },error: function(data){
+                        alert_error(data.responseText);
+                    }
+                });
+            }
+        });
+    }
+}
+function get_jiabiao_url(){
+    var water_type = $("#zhikong1 [name=water_type]").val();
+    // 根据人员，水样类型，显示数据类型进行筛选数据进行展示
+    return 'ahlims.php?ajax=1&app=zk_jiabiao&act=jiabiao_list&water_type='+water_type;
+}
+
+// 注册editable即点即改功能
+var register_jb_editable = function(index, that, value, row, title, field){
+    // 检测项目使用select2
+    var source = [];
+    var sel_type = 'select';
+    var val_data = row[field];
+    if(field == 'value_C'){
+        var sel_type = 'select2';
+        var val_data = row.value_C;
+        // 注意这里键值是id
+        $("#jb_"+field+" option").each(function(){
+            source.push({id: $(this).attr("value"), text: $(this).html()});
+        });
+    }else{
+        // 注意这里键值是value
+        $("#jb_"+field+" option").each(function(){
+            source.push({value: $(this).attr("value"), text: $(this).html()});
+        });
+    }
+    $(that).editable({
+        title: title,
+        type: sel_type,
+        showbuttons: false,
+        select2: {
+            allowClear: true,
+            placeholder: '--请选择--'
+        },
+        source: function(){
+            return source;
+        },
+        value : val_data,
+        display: function(value) {
+            value = $("#jb_"+field+" option[value='"+value+"']").html();
+            $(that).html(value);
+        },
+        url: function(params){
+            var d = new $.Deferred;//回调延迟的对象
+            row[field] = row['data'][field] = params.value;
+            row['data']['water_type'] = $("#zhikong1 [name=water_type]").val();
+            if(field == 'value_C'){
+                row['data']['vid'] = params.value;
+                row.value_C = $("#jb_value_C option[value='"+params.value+"']").html();
+            }
+            var prop = {id: row.id, data: row.data};
+            $.ajax({
+                type: 'get',
+                data: prop,
+                dataType: 'json',
+                url: 'ahlims.php?app=zk_jiabiao&act=jiabiao_save&ajax=1',
+                success: function(data){
+                    if(data.error=='0'){
+                        row.id=data.id;
+                        save_status_msg(data.content,'success');
+                        jbTable.bootstrapTable('updateRow', {index: index, row: row});
+                        d.resolve();
+                    }else{
+                        return d.reject(data.content);
+                    }
+                },error: function(data){
+                    return d.reject(data.responseText);
+                }
+            });
+            return d.promise();
+        }
+    });
+    $(that).trigger("click");
+}
+//.editable的click事件绑定
+var jb_editClickEvents = {
+    'click .editable':function(e, value, row, index){
+        //如果已注册editable方法事件则不再重复注册
+        if( $(this).is(".editable-click") ){
+            return false;
+        }
+        var that = this;
+        //当前列所在位置
+        var n = $(that).parents("tr").find("td").index($(that).parents("td"));
+        //当前列数据名称
+        var editableTitle = $("#bootstrapTable_jb thead tr th:eq("+n+")").text();
+        // 当前列参数名称
+        var field = $("#bootstrapTable_jb thead tr th:eq("+n+")").attr("data-field");
+        // 注册编辑功能
+        register_jb_editable(index, that, value, row, editableTitle, field);
+    }
+}
+window.jb_editJbhsl_blws = {
+    'click .editable':function(e, value, row, index){
+        //如果已注册editable方法事件则不再重复注册
+        if( $(this).is(".editable-click") ){
+            return false;
+        }
+        $(this).editable({
+            type: 'Blws',
+            title: '小数位数设定',
+            value: value,
+            url: function(params) {
+                var d = new $.Deferred;//回调延迟的对象
+                row['jbhsl_blws'] = row['data']['jbhsl_blws'] = params.value;
+                row['data']['water_type'] = $("#zhikong1 [name=water_type]").val();
+                var prop = {id: row.id,  data: row.data};
+                $.ajax({
+                    type: 'get',
+                    data: prop,
+                    dataType: 'json',
+                    url: 'ahlims.php?app=zk_jiabiao&act=jiabiao_save&ajax=1',
+                    success: function(data){
+                        if(data.error=='0'){
+                            row.id=data.id;
+                            save_status_msg(data.content,'success');
+                            jbTable.bootstrapTable('updateRow', {index: index, row: row});
+                            d.resolve();
+                        }else{
+                            return d.reject(data.content);
+                        }
+                    },error: function(data){
+                        return d.reject(data.responseText);
+                    }
+                });
+                return d.promise();
+            }
+        });
+        $(this).trigger("click");
+    }
+}
+window.text_editable = {
+    'click .editable':function(e, value, row, index){
+        //如果已注册editable方法事件则不再重复注册
+        if( $(this).is(".editable-click") ){
+            return false;
+        }
+
+        var that = this;
+        //当前列所在位置
+        var n = $(that).parents("tr").find("td").index($(that).parents("td"));
+        //当前列数据名称
+        var editableTitle = $("#bootstrapTable_jb thead tr th:eq("+n+")").text();
+        // 当前列参数名称
+        var field = $("#bootstrapTable_jb thead tr th:eq("+n+")").attr("data-field");
+
+        if('allow_cv'==field){
+            editableTitle = 'V标/V水>?%时考虑体积，全考虑体积时设置为0即可';
+        }
+
+        var val_data = row[field];
+        $(this).editable({
+            type: 'text',
+            title: editableTitle,
+            value: val_data,
+            // showbuttons: false,
+            validate: function (value) {
+                value = $.trim(value);
+                if (!value) {
+                    return '不能为空！';
+                }
+                if (/[^\d.]/g.test(value)){
+                    return '只能输入大于等于0的数字！';
+                }
+            },
+            url: function(params) {
+                var d = new $.Deferred;//回调延迟的对象
+                row[field] = row['data'][field] = params.value;
+                row['data']['water_type'] = $("#zhikong1 [name=water_type]").val();
+                var prop = {id: row.id, data: row.data};
+                $.ajax({
+                    type: 'get',
+                    data: prop,
+                    dataType: 'json',
+                    url: 'ahlims.php?app=zk_jiabiao&act=jiabiao_save&ajax=1',
+                    success: function(data){
+                        if(data.error=='0'){
+                            row.id=data.id;
+                            save_status_msg(data.content,'success');
+                            jbTable.bootstrapTable('updateRow', {index: index, row: row});
+                            d.resolve();
+                        }else{
+                            return d.reject(data.content);
+                        }
+                    },error: function(data){
+                        return d.reject(data.responseText);
+                    }
+                });
+                return d.promise();
+            }
+        });
+        $(this).trigger("click");
+    }
+}
+var jbTable = $('#bootstrapTable_jb').bootstrapTable({
+    cache: false,
+    url: get_jiabiao_url(),
+    height: get_jiabiao_height(),
+    uniqueId: 'id',
+    toolbar: "#zhikong1 .jiabiao-toolbar",
+    toolbarAlign: "center",
+    toolbarClass: "header-color-blue4",
+    showColumns: false,
+    showRefresh: true,
+    minimumCountColumns: 3,
+    clickToSelect:true,
+    search: true,
+    searchText: '',
+    formatSearch: function () {
+        return '请输入要搜索的信息';
+    },
+    columns: [
+        {
+            field: 'checkbox',
+            checkbox: true
+        },
+        {
+            field: 'xuhao',
+            title: '序号',
+            events: false,
+            formatter: function(value, row, index){
+                return index+1;
+            }
+        },
+		{
+			field: 'lname',
+			visible: ( '全部' == $("#zhikong1 [name=water_type]").val() ),
+			sortable: true,
+			title: '水样类型'
+		},
+        {
+            field: 'value_C',
+            title: '检测项目',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index){
+                if(row.vid == 0 && index == 0){
+                    return '默认设置';
+                }
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'formula',
+            title: '计算公式',
+            events: jb_editClickEvents,
+            tooltipInfo: "m代表质量，c代表浓度</p><p>区分浓度计算法和质量计算法即可。",
+            formatter: function(value, row, index, field){
+                field = 'formula';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'allow_cv',
+            title: '是否考虑标液体积',
+            events: text_editable,
+            formatter: function(value, row, index, field){
+                field = 'allow_cv';
+                if(value == 0){
+                    return '<span class="editable">是</span>';
+                }
+                return '<span class="editable">V<sub>标</sub>/V<sub>水</sub>&gt;'+value+'%时</span>';
+            }
+        },
+        {
+            field: 'yv_allow_ov',
+            title: '原水样是否考虑其他体积',
+            events: jb_editClickEvents,
+            tooltipInfo: "其他体积是指化验过程中加入的辅助介质(包含试剂、酸、碱等)的体积或者进行加标实验时加入的混标标液中其他项目标液所占的体积。</p><p>如果是辅助试剂则原水样及加标样都需要考虑,若是混标标液,只有加标样需要考虑,而原水样不需要考虑。",
+            formatter: function(value, row, index, field){
+                field = 'yv_allow_ov';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'use_pingxing',
+            title: '原水样做室内平行时',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'use_pingxing';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'use_data',
+            title: '检测值',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'use_data';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'use_li',
+            title: '理论浓度',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'use_li';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'xy_jcx',
+            title: '小于检出限',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'xy_jcx';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'round_function',
+            title: '修约方式',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'round_function';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'check_jcx',
+            title: '是否判断检出限',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'check_jcx';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'vd0_add_blws',
+            title: '检测值多保留位数',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'vd0_add_blws';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'li_add_blws',
+            title: '理论浓度多保留位数',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'li_add_blws';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'show_li',
+            title: '是否显示理论浓度',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'show_li';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'need_x_v',
+            title: '是否需要体积系数',
+            events: jb_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'need_x_v';
+                return '<span class="editable">'+jb_info[field][value]+'</span>';
+            }
+        },
+        {
+            field: 'xishu_m',
+            title: '质量换算系数',
+            events: text_editable,
+            formatter: function(value, row, index, field){
+                field = 'xishu_m';
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'jbhsl_blws',
+            title: '回收率保留位数',
+            events: jb_editJbhsl_blws,
+            formatter: function(value, row, index, field){
+                field = 'jbhsl_blws';
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'option',
+            title: '操作',
+            events: jbEditEvents,
+            formatter: function(value, row, index){
+                if(index == 0 && row.water_type == 0){
+                    return '-';
+                }
+                return '<button title="删除" class="btn btn-danger btn-sm remove-rule"><span class="glyphicon glyphicon-trash"></span></button>';
+            }
+        }
+    ],
+	onLoadSuccess: function(data){
+        // 添加字段说明，自定义方法在hyd.js
+        jbTable.bootstrapTable('columnsAddTooltipInfo');
+    }
+});
+// 添加
+$(".add-rule").click(function(){
+    var new_row = Object.assign({}, jbTable.bootstrapTable('getData')[0]);
+    !new_row.id && (new_row=Object.assign({}, jb_conf));
+    new_row.id=0;
+    new_row.vid='-1';
+    new_row.value_C='无';
+    new_row.value_C = '<span class="red">点击选择项目</span>';
+    jbTable.bootstrapTable('insertRow', {index: 1, row: new_row});
+});
+function get_jiabiao_height(){
+    var height = $(window).height()
+    - $('#zhikong1 .header').outerHeight(true)
+    - $('#zhikong1 .jiabiao-toolbar').outerHeight(true)
+    - $(".fixed.nav-fixed").height() - 20;
+    return height < 300 ? 300 : height;
+}
+// 自适应高度
+$(window).resize(function () {
+    jbTable.bootstrapTable('resetView', {
+        height: get_jiabiao_height()
+    });
+});
+// 当化验单被选中时批量操作按钮才可操作
+jbTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+    $(".del-rule").prop('disabled', !jbTable.bootstrapTable('getSelections').length);
+    var selections = getIdSelections();
+});
+// 获取选中的数据
+function getIdSelections() {
+    return $.map(jbTable.bootstrapTable('getSelections'), function (row) {
+        return row.id
+    });
+}
+// 批量删除
+$(".del-rule").unbind("click").click(function () {
+    var ids = getIdSelections();
+    $.confirm({
+        content: '你确定要删除吗,删除后不可恢复？',
+        confirm: function(){
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                data: {ids: ids},
+                url: 'ahlims.php?app=zk_jiabiao&act=zhikong_del&ajax=1',
+                success: function(data){
+                    if( '0' == data.error ){
+                        jbTable.bootstrapTable('remove', {
+                            field: 'id',
+                            values: ids
+                        });
+                        $('.del-rule').prop('disabled', true);
+                        save_status_msg(data.content,'success');
+                        setTimeout(function () {
+                            jbTable.bootstrapTable('resetView');
+                        }, 200);
+                    }else{
+                        save_status_msg(data.content,'danger');
+                    }
+                },error: function(data){
+                    alert_error(data.responseText);
+                }
+            });
+        }
+    });
+});
+</script>

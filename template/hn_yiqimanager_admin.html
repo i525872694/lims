@@ -1,0 +1,76 @@
+<!-- 计量仪器设备一览表 -->
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1260px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF;align:center;}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF}
+select{background:#AACCFF}
+ul li{
+	list-style-type:none;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+	$("a[data-action='collapse']").removeAttr("data-action").css({"color":"#777777"});
+	$(".zhedie").css({"cursor":"pointer"});
+	$(".zhedie").click(function(){
+		if($(this).find(".icon-chevron-down").length > 0 ){
+			$(this).find(".icon-chevron-down").addClass("icon-chevron-up").removeClass("icon-chevron-down");
+			$(this).next(".widget-body").slideDown("3");
+		}else{
+			$(this).find(".icon-chevron-up").addClass("icon-chevron-down").removeClass("icon-chevron-up");
+			$(this).next(".widget-body").slideUp("3");
+		}
+	});
+})
+</script>
+<h3 class="header smaller center title" >实验室仪器一览</h3>
+<form name="form2" action="" class="tablev" method="post">
+$content
+$lines_4
+$lines_5
+$lines_6
+</form >
+<!-- 弹出层 -->
+	<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content" style="width:800px;">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
+	      </div>
+	      <div class="modal-body clearfix zhezhao">
+	      $lines
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- 弹出层 -->
+<script>
+function show1(room,bh,id,obj,name){
+	var name=name;
+	$('.modal-title').text(name+' (出厂编号：'+bh+")");
+	$('.zhezhao').load('$rooturl/app_modal/hn_yiqimanager_admin.php',{"action":'admin',"room":room,"id":id,"ajax":"1"});
+}
+
+//通过对 layer属性 对下拉菜单从新排色
+$(window).ready(function(){
+	$("div[layer='layer']").each(function(){
+		var color = getRandomColor();
+		 $(this).css({'background':color});
+	});
+});
+
+//生成随机颜色
+function getRandomColor(){
+	var c = '#';
+	var cArray = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+	for(var i = 0; i < 6;i++){
+	var cIndex = Math.round(Math.random()*15);
+		c += cArray[cIndex];
+	}
+	return c;
+}
+</script>

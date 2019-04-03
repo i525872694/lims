@@ -1,0 +1,9 @@
+#这里面是Git版本库共享的忽略文件配置
+.DS_Store
+template/ahlims_cache/
+vendor/*
+composer.lock
+.idea/
+*/upfile/*
+img/user/*
+upfile/*

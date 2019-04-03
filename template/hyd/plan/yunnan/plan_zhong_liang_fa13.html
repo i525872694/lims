@@ -1,0 +1,136 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-00</td>
+    </tr>
+</table>
+<h1>重量法测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:5%"></td>
+        <td style="width:4%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:4%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="2">$arow[assay_element]</td>
+        <td colspan="1">测定方法</td>
+        <td colspan="4">{$arow['td2']}</td>
+        <td colspan="2">干燥温度(℃)</td>
+        <td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}"></td>
+        <td>天平型号</td>
+        <td colspan="2">{$arow['td5']}</td>
+        <td>天平编号</td>
+        <td colspan="1">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="1">序号</td>
+        <td rowspan="2" colspan="2">样品编码</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">水样体积</td>
+        <td rowspan="1" colspan="4">过滤前始重(B)</td>
+        <td rowspan="1" colspan="4">过滤后终重(A)</td>
+        <td rowspan="2">A-B</td>
+        <td rowspan="2">HCO₃⁻<br>({$arow['unit']})</td>
+        <td rowspan="2">含量<br>({$arow['unit']})</td>
+        <td rowspan="2">平均值/<br />理论浓度({$arow['unit']})</td>
+        <td rowspan="2">相对偏差/<br />加标回收率（%）</td>
+    </tr>
+    <tr>
+        <td colspan=2>重量</td>
+        <td colspan=2>恒重</td>
+        <td colspan=2>重量</td>
+        <td colspan=2>恒重</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs() {
+    var val_split = String(vs['vd4']).split('.');
+    var baoLiuWeiShu = (val_split.length != 2) ? 4 : val_split[1].length;
+    //取保留位数
+
+
+    // vs['vd7'] = ''; //初始化第一个恒重
+    // if( $.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5']) ){
+    // 	if(Math.abs(accsub(vs['vd4'], vs['vd5'])) <= 0.0004){
+    // 		vs['vd6'] = '';
+    //         vs['vd7'] = vs['vd5'];
+    //     }else if($.isNumeric(vs['vd6'])){
+    //         if(Math.abs(accsub(vs['vd4'], vs['vd6'])) <= 0.0004 || Math.abs(accsub(vs['vd5'], vs['vd6'])) <= 0.0004){
+    //             vs['vd7'] = vs['vd6'];
+    //         }
+    //     }
+    // }
+    // //规则是  只有第一个就取第一个，有第一和第二且第一第二差距在0.0004 就取第二，如果三个都有，那第一个和第三个或第二个和第三个差距小于0.0004 就取最后一个
+    // 	//这是目前系统中的规则，感觉像是搬运别的地方的，等客户数据来了再说
+
+    // vs['vd11'] = ''; //初始化第二个恒重
+    // if( $.isNumeric(vs['vd8']) && $.isNumeric(vs['vd9']) ){
+    // 	if(Math.abs(accsub(vs['vd8'], vs['vd9'])) <= 0.0004){
+    // 		vs['vd10'] = '';
+    //         vs['vd11'] = vs['vd9'];
+    //     }else if($.isNumeric(vs['vd10'])){
+    //         if(Math.abs(accsub(vs['vd8'], vs['vd10'])) <= 0.0004 || Math.abs(accsub(vs['vd9'], vs['vd10'])) <= 0.0004){
+    //             vs['vd11'] = vs['vd10'];
+    //         }
+    //     }
+    // }
+
+    // 云南的需求 是取平均值
+
+
+    vs['vd7'] = '';
+    if (vs['vd5'] == '' && vs['vd6'] == '' && $.isNumeric(vs['vd4'])) {
+        vs['vd7'] = vs['vd4'];
+    } else if ($.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5']) && vs['vd6'] == '') {
+        vs['vd7'] = roundjs(accDiv(accAdd(vs['vd4'], vs['vd5']), 2), baoLiuWeiShu);
+    } else if ($.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])) {
+        vs['vd7'] = roundjs(accDiv(accAdd(accAdd(vs['vd4'], vs['vd5']), vs['vd6']), 3), baoLiuWeiShu);
+    }
+    vs['vd11'] = '';
+    if (vs['vd10'] == '' && vs['vd9'] == '' && $.isNumeric(vs['vd8'])) {
+        vs['vd11'] = vs['vd8'];
+    } else if ($.isNumeric(vs['vd8']) && $.isNumeric(vs['vd9']) && vs['vd10'] == '') {
+        vs['vd11'] = roundjs(accDiv(accAdd(vs['vd8'], vs['vd9']), 2), baoLiuWeiShu);
+    } else if ($.isNumeric(vs['vd8']) && $.isNumeric(vs['vd9']) && $.isNumeric(vs['vd10'])) {
+        vs['vd11'] = roundjs(accDiv(accAdd(accAdd(vs['vd8'], vs['vd9']), vs['vd10']), 3), baoLiuWeiShu);
+    }
+
+
+
+    if ($.isNumeric(vs['vd7']) && $.isNumeric(vs['vd11'])) {
+        vs['vd12'] = accsub(vs['vd11'], vs['vd7']);
+    } else {
+        vs['vd12'] = '';
+    }
+
+    if ($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd12'])) {
+        vs['vd0'] = accDiv(accMul(vs['vd12'], 1000000), vs['vd1']);
+        if ("{$arow['vid']}" != "567") {
+            vs['vd13'] = '-';
+        } else if ($.isNumeric(vs['vd13'])) {
+            vs['vd0'] = accAdd(vs['vd0'], accDiv(vs['vd13'], 2))
+        }
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

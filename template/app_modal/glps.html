@@ -1,0 +1,52 @@
+<style>
+	.body_content{
+		display: none;
+	}
+	.loading_div{
+		margin:0 auto;
+		position: fixed;
+		top:40%;
+		height:40%;
+		left:45%;
+		text-align: center;
+	}
+	.loading_img{
+		-webkit-transform: rotate(360deg);
+		animation: rotation 8s linear infinite;
+		-moz-animation: rotation 8s linear infinite;
+		-webkit-animation: rotation 8s linear infinite;
+		-o-animation: rotation 8s linear infinite;
+	}
+	@-webkit-keyframes rotation {
+    	from {-webkit-transform: rotate(0deg);
+	}to {
+		-webkit-transform: rotate(360deg);
+	}}
+</style>
+<div class='loading_div'>
+	<img src="{$rooturl}/img/Loading.png" class='loading_img' alt=""><br/>
+	<h3>正在拼命加载中</h3>
+</div>
+<div style="width:100%;margin:0 auto;" class='body_content'>
+	<div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+		<ul>
+			<li><a href="#tabs-1" onclick="location='glps.php?type=glps&tab=0&title=管理评审计划&id={$id}'">管理评审计划</a></li>
+			<li><a href="#tabs-2" onclick="location='glps.php?type=glps1&tab=1&title=管理评审准备&id={$id}'">管理评审准备</a></li>
+			<li><a href="#tabs-3" onclick="location='glps.php?type=glps2&tab=2&title=管理评审实施&id={$id}'">管理评审实施</a></li>
+			<li><a href="#tabs-3" onclick="location='glps.php?type=glps3&tab=2&title=权限分配&id={$id}'">权限分配</a></li>
+		</ul>
+	<div id="tabs-1">{$files_content0}</div>
+	<div id="tabs-2">{$files_content1}</div>
+	<div id="tabs-3">{$files_content2}</div>
+	<div id="tabs-4">{$files_content3}</div>
+	</div>
+</div>
+<script>
+	$(function(){
+		$('#tabs').tabs();
+		var active={$tab_active};
+		$('#tabs').tabs({active:active})
+		$(".body_content").show();
+			$('.loading_div').remove();
+	})
+</script>

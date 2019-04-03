@@ -1,0 +1,201 @@
+<style type="text/css">
+    h3{margin-top:30px !important;}
+    .biaotou{text-align: center;width:230mm;margin:0 auto;}
+    table td,table th{border:1px solid black;}
+</style>
+<h3 class='biaotou'>{$plan_list['plan_name']}</h3>
+<div class='biaotou' style="text-align: left;">采样时间、断面名称、监测项目及质量控制</div>
+<table class='biaotou'>
+    <tr>
+        <th style="min-width:100px;">采样时间</th>
+        <th>采样点</th>
+        <th style="min-width:80px;">采样人</th>
+        <th style="min-width:100px;">现场监测项目</th>
+        <th style="min-width:100px;">环境参数</th>
+    </tr>
+    {$plan_html}
+    <tr>
+        <td>质量控制：</td>
+        <td colspan="4" align="left">
+            {$zkyq_str}
+        </td>
+    </tr>
+    <tr style="{$qz_display}">
+        <td colspan="4" style="border: none;">下达人：{$plan_list['create_user']} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下达时间:{$plan_list['create_date']}</td>
+    </tr>
+</table>
+<div class="biaotou" style="margin-top: 15px;{$xd_button_display}"><input type="button" class="btn btn-primary btn-sm" value="确定下达" id='plan_button' /></div>
+<input type='hidden' name='plan_id' id="plan_id" value="{$plan_list['id']}" />
+
+
+<div class="bianji hidden">
+	<div class="bianji-head row">
+		
+			 <div class="col-md-8"><span id="show_title_div"> </span></div>
+			 <div class="col-md-4"><a href="javascript:hide_right_div_area();"><span class="pull-right glyphicon glyphicon-remove bianjiguan"></span></a></div>
+		
+	</div>
+	
+	<div class="bianji-content" id="show_sellwater_tablelist">
+		
+	asdfasdf
+	</div>
+
+</div>
+<script type="text/javascript">
+$(function(){
+    $("#plan_button").click(function(){
+        var plan_id = $("#plan_id").val();
+        if(plan_id){
+            var url  = "{$rooturl}/xd_cyrw/jiance_plan_save.php?ajax=1&plan_id="+plan_id;
+            var rooturl = "{$rooturl}";
+            $.post(url,function(data){
+                if(data.status == 'yes'){
+                    var alert_obj = $.alert({title: '加载中...',content:'任务下达成功,正在同步至云端服务器...<img src="{$rooturl}/img/loading.gif"/>',confirmButton:'',});//,autoClose: 'confirm|3000'
+                    //console.log(data.rec_arr);
+                    if(rooturl.indexOf('121.42.140.28') != '-1'){
+                        $.alert({title:'未同步！',content:'测试系统无需同步采样信息至对接表！直接刷新页面，请稍等...<img src="{$rooturl}/img/loading.gif"/>',autoClose: 'confirm|5000'});
+                        setTimeout('window.location.reload();',4000);
+                    }else{
+                        if(data.rec_arr){
+                            upload_cyrw(data.rec_arr);//往云服务器上传采样任务信息
+                        }
+                    }
+                }else{
+                    alert('任务下达失败，重刷新页面重试。');
+                }
+            },'json')
+        }
+    });
+})
+//上传采样信息到云服务器
+function upload_cyrw(rec_arr){
+    var cy_duijie_url   = "{$duijie_url}xd_cyrw/cy_duijie_url.php?ajax=1";
+    $.post(cy_duijie_url,{'fzx_id':"{$fzx_id}",'rec_arr':rec_arr},function(data2){
+        //console.log(data2);
+        if(data2.status == 'yes'){
+            $.alert({title:'同步完成！',content:'采样任务已同步至中间服务器,请到采样系统中接收并确认此任务！正在刷新页面，请稍等...<img src="{$rooturl}/img/loading.gif"/>',autoClose: 'confirm|5000'});
+            setTimeout('window.location.reload();',4000);
+        }else{
+            alert('任务未同步至云服务器，这个地方还需要想办法，需要能够再次上传！');
+            window.location.reload();
+        }
+    },'json');
+}
+
+//提供 cy_rec表的ID 修改 这个站点的项目 
+function update_xm(cid,sname){
+	
+   var url = "{$rooturl}/xd_cyrw/jiance_plan_g.php?ajax=1&type=get_xm&cid="+cid;;
+	$.get(url,function(resp){
+		$("#show_sellwater_tablelist").html(resp);
+        $("#show_title_div").html(sname);
+        show_right_div_area()
+	})
+}
+
+ //拼音搜索
+function pySearch(e) {
+	if (e.value == "")
+		$(".xm-li").show()
+	else{
+		$(".xm-li").hide()
+		$('.xm-li[data-val*='+e.value+']').show()
+    }
+
+} 
+ 
+
+
+//显示右边 
+function show_right_div_area() {
+    $(".bianji>div").css("display", "block");
+     
+     $(".bianji").removeClass('hidden');
+}
+//关闭右边
+function hide_right_div_area() {
+    $(".bianji>div").css("display", "none");
+     
+     $(".bianji").addClass('hidden');
+}
+
+//保存项目
+function xm_update(){
+ 
+   var url = "{$rooturl}/xd_cyrw/jiance_plan_g.php?ajax=1&type=update_xm&="+$("input").serialize();
+    $.get(url,function(resp){
+	 window.location.reload(); 
+	})
+
+}
+
+</script>
+
+<style>
+ 
+.xmcount{
+        color: blue;
+}
+
+.bianji{
+	width: 650px;
+	height: 100%;
+	background: #fff;
+	position: fixed;
+	z-index: 120;
+	top: 0px;
+	right: 0px;
+	box-shadow: -5px 0px 10px #ccc;
+	color: #333;
+	overflow: hidden;
+}
+.bianji-head{
+	height: 50px;
+	line-height: 50px;
+	padding:5px;
+	background: #fff;
+	color: #333;
+	border-bottom: 1px solid #EEECE8;
+	
+	z-index: 3;
+}
+.bianji-content{
+	z-index: 2;
+	padding:5px;
+	padding-top: 5px;
+ }
+.bianjiguan{
+	padding: 0px 10px;
+	color: #8B8989;
+	margin-top: 10px;
+	line-height: 30px;
+}
+.bianjiguan:hover{
+	background: #F8F6F2;
+	color: #CB1A44;
+}
+.bianji h5{
+	border-left: 3px solid var(--left-top);
+	padding-left: 10px;
+}
+
+ .xm-check,.xm-nocheck {
+       clear: both;
+    overflow: auto;
+    max-height:500px;
+ }
+.xm-check > label{
+        float: left;
+    min-width: 110px;
+    background: blanchedalmond;
+    margin: 2px;
+}
+.xm-nocheck > label{
+     float: left;
+    min-width: 110px;
+    background: whitesmoke;
+    margin: 2px;
+}
+
+</style>

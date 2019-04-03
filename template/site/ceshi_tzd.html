@@ -1,0 +1,396 @@
+
+    <h3 class="smaller title" style="color:#000;text-align: center;">测试任务通知单</h3><hr>
+    <table id="site_modi_box">
+        <tbody><tr>
+            <td id="checked_site" class="item" colspan='2'><!--选中站点--><div class="col-xs-1 checked" title="第二水厂"><label><input name="chose_site_id" value="2" checked="" type="checkbox"><span>第二水厂</span></label></div><div class="col-xs-1 checked" title="安宁所"><label><input name="chose_site_id" value="5" checked="" type="checkbox"><span>安宁所</span></label></div><div class="col-xs-1 checked" title="第四水厂"><label><input name="chose_site_id" value="3" checked="" type="checkbox"><span>第四水厂</span></label></div><div class="col-xs-1 checked" title="拱星墩"><label><input name="chose_site_id" value="6" checked="" type="checkbox"><span>拱星墩</span></label></div><div class="col-xs-1 checked" title="一厂取水口"><label><input name="chose_site_id" value="105" checked="" type="checkbox"><span>一厂取水口</span></label></div><div class="col-xs-1 checked" title="甸元寺"><label><input name="chose_site_id" value="9" checked="" type="checkbox"><span>甸元寺</span></label></div><div class="col-xs-1 checked" title="东站"><label><input name="chose_site_id" value="10" checked="" type="checkbox"><span>东站</span></label></div><div class="col-xs-1 checked" title="西关什字"><label><input name="chose_site_id" value="19" checked="" type="checkbox"><span>西关什字</span></label></div><div class="col-xs-1 checked" title="中山林"><label><input name="chose_site_id" value="18" checked="" type="checkbox"><span>中山林</span></label></div><div class="col-xs-1 checked" title="南河路"><label><input name="chose_site_id" value="17" checked="" type="checkbox"><span>南河路</span></label></div><div class="col-xs-1 checked" title="高滩村"><label><input name="chose_site_id" value="16" checked="" type="checkbox"><span>高滩村</span></label></div><div class="col-xs-1 checked" title="副食品"><label><input name="chose_site_id" value="15" checked="" type="checkbox"><span>副食品</span></label></div><div class="col-xs-1 checked" title="民航"><label><input name="chose_site_id" value="14" checked="" type="checkbox"><span>民航</span></label></div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button id="water_type_button" class="btn btn-xs btn-primary">批量修改监测项目</button>
+            </td>
+        </tr>
+        <tr id="water_type">
+            <th>水样类型修改</th>
+            <td style="text-align:left;" '="">
+                <select name="modi[water_type]" id="modi_water_type" class="sl"><option value="1">地表水</option><optgroup style="padding-left:21px"><option value="100">水源水</option><option value="151">水源调查</option></optgroup><option value="3">地下水</option><optgroup style="padding-left:21px"></optgroup><option value="5">生活饮用水</option><optgroup style="padding-left:21px"><option value="88">出厂水</option><option value="114">二次供水</option><option value="109">管网水</option><option value="115">饮用净水</option><option value="121">清洗消毒水样</option><option value="131">城市供水</option><option value="152">其他</option></optgroup><option value="7">废污水</option><optgroup style="padding-left:21px"></optgroup><option value="13">考核样品</option><optgroup style="padding-left:21px"></optgroup><option value="120">水处理材物料</option><optgroup style="padding-left:21px"><option value="138">聚氯化铝铁</option><option value="139">氯化铁</option><option value="140">硫酸铝</option><option value="141">石英砂</option><option value="142">无烟煤</option><option value="143">砾石</option><option value="144">活性炭</option><option value="145">聚丙烯酰胺</option><option value="146">HCA</option><option value="147">高锰酸钾</option></optgroup><option value="123">再生水</option><optgroup style="padding-left:21px"><option value="118">工业用水</option><option value="119">景观环境用水</option><option value="125">城市采用水</option></optgroup><option value="134">工序水</option><optgroup style="padding-left:21px"></optgroup><option value="135">水库水</option><optgroup style="padding-left:21px"></optgroup><option value="136">聚氯化铝</option><optgroup style="padding-left:21px"></optgroup></select>
+            </td>
+        </tr>
+        <tr id="site_type_tr">
+            <th>站点类型修改</th>
+            <td class="tree" id="site_tree">
+                <!--任务树-->
+                <input name="modi[site_type]" id="site_type_id" value="" type="hidden">
+            <svg width="642" height="300"><g transform="translate(100,20)"><path class="link" d="M100,162.5C150,162.5 150,162.5 200,162.5"></path><path class="link" d="M200,97.5C250,97.5 250,97.5 300,97.5"></path><path class="link" d="M200,32.5C250,32.5 250,32.5 300,32.5"></path><path class="link" d="M100,65C150,65 150,32.5 200,32.5"></path><path class="link" d="M100,65C150,65 150,97.5 200,97.5"></path><path class="link" d="M0,146.25C50,146.25 50,65 100,65"></path><path class="link" d="M0,146.25C50,146.25 50,162.5 100,162.5"></path><path class="link" d="M0,146.25C50,146.25 50,195 100,195"></path><path class="link" d="M0,146.25C50,146.25 50,227.5 100,227.5"></path><g class="node" transform="translate(100,227.5)"><circle id="node-site_tree-7" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点7</text></g><g class="node" transform="translate(100,195)"><circle id="node-site_tree-6" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点 6</text></g><g class="node" transform="translate(200,162.5)"><circle id="node-site_tree-5" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点 5</text></g><g class="node" transform="translate(100,162.5)"><circle id="node-site_tree-4" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">新节点 4</text></g><g class="node" transform="translate(300,97.5)"><circle id="node-site_tree-12" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">河淀</text></g><g class="node" transform="translate(200,97.5)"><circle id="node-site_tree-10" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">南京</text></g><g class="node" transform="translate(300,32.5)"><circle id="node-site_tree-8" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">海淀</text></g><g class="node" transform="translate(200,32.5)"><circle id="node-site_tree-3" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">北京</text></g><g class="node" transform="translate(100,65)"><circle id="node-site_tree-2" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">水源地</text></g><g class="node" transform="translate(0,146.25)"><circle id="node-site_tree-1" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">站点类型</text></g></g></svg></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div style="width:100%;height:35px;"><!--不要删除 用于防止遮罩层阻挡最后面的站点选中--></div>
+                <div style="width:100%;height:35px;position:fixed;bottom:0px;background-color:#96ABBA;opacity:0.5;"></div>
+                <input class="btn btn-primary btn-sm" id="site_modi_submit" style="position: fixed;left: calc(75% - 40px);bottom:0px;height:33px;opacity:1;" value="确定修改" type="button">
+            </td>
+        </tr>
+    </tbody></table>
+    <div class="tree" id="tree" style="display: none;">
+        <!--树状图-->
+    <svg width="900" height="300"><g transform="translate(100,20)"><path class="link" d="M100,162.5C150,162.5 150,162.5 200,162.5"></path><path class="link" d="M200,97.5C250,97.5 250,97.5 300,97.5"></path><path class="link" d="M200,32.5C250,32.5 250,32.5 300,32.5"></path><path class="link" d="M100,65C150,65 150,32.5 200,32.5"></path><path class="link" d="M100,65C150,65 150,97.5 200,97.5"></path><path class="link" d="M0,146.25C50,146.25 50,65 100,65"></path><path class="link" d="M0,146.25C50,146.25 50,162.5 100,162.5"></path><path class="link" d="M0,146.25C50,146.25 50,195 100,195"></path><path class="link" d="M0,146.25C50,146.25 50,227.5 100,227.5"></path><g class="node" transform="translate(100,227.5)"><circle id="node-tree-7" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点7</text></g><g class="node" transform="translate(100,195)"><circle id="node-tree-6" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点 6</text></g><g class="node" transform="translate(200,162.5)"><circle id="node-tree-5" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">新节点 5</text></g><g class="node" transform="translate(100,162.5)"><circle id="node-tree-4" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">新节点 4</text></g><g class="node" transform="translate(300,97.5)"><circle id="node-tree-12" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">河淀</text></g><g class="node" transform="translate(200,97.5)"><circle id="node-tree-10" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">南京</text></g><g class="node" transform="translate(300,32.5)"><circle id="node-tree-8" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="10" dy=".35em" text-anchor="start" style="fill-opacity: 1;">海淀</text></g><g class="node" transform="translate(200,32.5)"><circle id="node-tree-3" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">北京</text></g><g class="node" transform="translate(100,65)"><circle id="node-tree-2" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">水源地</text></g><g class="node" transform="translate(0,146.25)"><circle id="node-tree-1" style="fill: rgb(255, 255, 255); stroke: steelblue; stroke-width: 1.5px;" r="4.5"></circle><text x="-10" dy=".35em" text-anchor="end" style="fill-opacity: 1;">站点类型</text></g></g></svg></div>
+<div id="checked_site_box" style="display: hidden;">
+<table>
+    <tr class="site_xm_tr">
+            <th colspan="2">监测项目修改 <b>已选择 ( <span id="modi_xm_num" style="color:red;">0</span> )项</b></th>
+        </tr>
+        <tr class="site_xm_tr">
+            <td id="xm_modi" colspan="2">
+                <!--项目修改-->
+                <li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:1"><label><input name="vid[]" value="1" type="checkbox">总大肠菌群</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:2"><label><input name="vid[]" value="2" type="checkbox">粪大肠菌群</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:3"><label><input name="vid[]" value="3" type="checkbox">大肠埃希氏菌</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:6"><label><input name="vid[]" value="6" type="checkbox">菌落总数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:58"><label><input name="vid[]" value="58" type="checkbox">藻类</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:69"><label><input name="vid[]" value="69" type="checkbox">贾第鞭毛虫</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:70"><label><input name="vid[]" value="70" type="checkbox">隐孢子虫</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:86"><label><input name="vid[]" value="86" type="checkbox">叶绿素a</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:93"><label><input name="vid[]" value="93" type="checkbox">色度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:94"><label><input name="vid[]" value="94" type="checkbox">浑浊度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:95"><label><input name="vid[]" value="95" type="checkbox">臭和味</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:96"><label><input name="vid[]" value="96" type="checkbox">肉眼可见物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:97"><label><input name="vid[]" value="97" type="checkbox">水温</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:99"><label><input name="vid[]" value="99" type="checkbox">pH</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:100"><label><input name="vid[]" value="100" type="checkbox">溶解性总固体</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:101"><label><input name="vid[]" value="101" type="checkbox">悬浮物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:102"><label><input name="vid[]" value="102" type="checkbox">总残渣</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:103"><label><input name="vid[]" value="103" type="checkbox">总硬度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:104"><label><input name="vid[]" value="104" type="checkbox">高锰酸盐指数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:105"><label><input name="vid[]" value="105" type="checkbox">挥发酚</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:107"><label><input name="vid[]" value="107" type="checkbox">阴离子合成洗涤剂</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:108"><label><input name="vid[]" value="108" type="checkbox">石油类</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:109"><label><input name="vid[]" value="109" type="checkbox">矿物油</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:110"><label><input name="vid[]" value="110" type="checkbox">动植物油</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:111"><label><input name="vid[]" value="111" type="checkbox">总有机碳（TOC）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:114"><label><input name="vid[]" value="114" type="checkbox">溶解氧</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:117"><label><input name="vid[]" value="117" type="checkbox">电导率</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:118"><label><input name="vid[]" value="118" type="checkbox">化学需氧量（COD）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:119"><label><input name="vid[]" value="119" type="checkbox">五日生化需氧量（BOD₅）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:120"><label><input name="vid[]" value="120" type="checkbox">总磷（以P计）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:121"><label><input name="vid[]" value="121" type="checkbox">总氮</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:122"><label><input name="vid[]" value="122" type="checkbox">UV₂₅₄</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:124"><label><input name="vid[]" value="124" type="checkbox">酸度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:125"><label><input name="vid[]" value="125" type="checkbox">总碱度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:127"><label><input name="vid[]" value="127" type="checkbox">游离二氧化碳</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:131"><label><input name="vid[]" value="131" type="checkbox">活性氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:133"><label><input name="vid[]" value="133" type="checkbox">镉</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:135"><label><input name="vid[]" value="135" type="checkbox">铬（六价）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:137"><label><input name="vid[]" value="137" type="checkbox">铅</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:138"><label><input name="vid[]" value="138" type="checkbox">汞</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:141"><label><input name="vid[]" value="141" type="checkbox">硒</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:142"><label><input name="vid[]" value="142" type="checkbox">锑</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:143"><label><input name="vid[]" value="143" type="checkbox">钡</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:145"><label><input name="vid[]" value="145" type="checkbox">铍</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:146"><label><input name="vid[]" value="146" type="checkbox">钼</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:148"><label><input name="vid[]" value="148" type="checkbox">镍</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:150"><label><input name="vid[]" value="150" type="checkbox">银</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:151"><label><input name="vid[]" value="151" type="checkbox">铊</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:152"><label><input name="vid[]" value="152" type="checkbox">铝</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:154"><label><input name="vid[]" value="154" type="checkbox">铁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:157"><label><input name="vid[]" value="157" type="checkbox">锰</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:159"><label><input name="vid[]" value="159" type="checkbox">铜</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:161"><label><input name="vid[]" value="161" type="checkbox">锌</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:162"><label><input name="vid[]" value="162" type="checkbox">钠</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:163"><label><input name="vid[]" value="163" type="checkbox">锂</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:164"><label><input name="vid[]" value="164" type="checkbox">锶</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:166"><label><input name="vid[]" value="166" type="checkbox">砷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:167"><label><input name="vid[]" value="167" type="checkbox">钴</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:168"><label><input name="vid[]" value="168" type="checkbox">钛</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:169"><label><input name="vid[]" value="169" type="checkbox">钒</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:170"><label><input name="vid[]" value="170" type="checkbox">锡</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:172"><label><input name="vid[]" value="172" type="checkbox">钾</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:173"><label><input name="vid[]" value="173" type="checkbox">钙</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:174"><label><input name="vid[]" value="174" type="checkbox">镁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:176"><label><input name="vid[]" value="176" type="checkbox">甲基汞</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:177"><label><input name="vid[]" value="177" type="checkbox">四乙基铅</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:179"><label><input name="vid[]" value="179" type="checkbox">氰化物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:181"><label><input name="vid[]" value="181" type="checkbox">氟化物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:182"><label><input name="vid[]" value="182" type="checkbox">氯化物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:184"><label><input name="vid[]" value="184" type="checkbox">碘化物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:185"><label><input name="vid[]" value="185" type="checkbox">硫化物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:186"><label><input name="vid[]" value="186" type="checkbox">硝酸盐（以N计）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:187"><label><input name="vid[]" value="187" type="checkbox">亚硝酸盐氮</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:190"><label><input name="vid[]" value="190" type="checkbox">硫酸盐（以SO₄²⁻计）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:193"><label><input name="vid[]" value="193" type="checkbox">二氧化硅</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:195"><label><input name="vid[]" value="195" type="checkbox">硼</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:197"><label><input name="vid[]" value="197" type="checkbox">偏硅酸</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:198"><label><input name="vid[]" value="198" type="checkbox">氨氮（以N计）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:199"><label><input name="vid[]" value="199" type="checkbox">黄磷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:203"><label><input name="vid[]" value="203" type="checkbox">马拉硫磷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:204"><label><input name="vid[]" value="204" type="checkbox">七氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:205"><label><input name="vid[]" value="205" type="checkbox">五氯酚</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:206"><label><input name="vid[]" value="206" type="checkbox">六氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:207"><label><input name="vid[]" value="207" type="checkbox">六六六</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:208"><label><input name="vid[]" value="208" type="checkbox">乐果</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:209"><label><input name="vid[]" value="209" type="checkbox">对硫磷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:210"><label><input name="vid[]" value="210" type="checkbox">灭草松</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:211"><label><input name="vid[]" value="211" type="checkbox">甲基对硫磷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:212"><label><input name="vid[]" value="212" type="checkbox">百菌清</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:216"><label><input name="vid[]" value="216" type="checkbox">吡啶</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:217"><label><input name="vid[]" value="217" type="checkbox">水合肼</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:218"><label><input name="vid[]" value="218" type="checkbox">呋喃丹</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:219"><label><input name="vid[]" value="219" type="checkbox">林丹</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:220"><label><input name="vid[]" value="220" type="checkbox">毒死蜱</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:221"><label><input name="vid[]" value="221" type="checkbox">草甘膦</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:222"><label><input name="vid[]" value="222" type="checkbox">敌敌畏</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:223"><label><input name="vid[]" value="223" type="checkbox">莠去津</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:224"><label><input name="vid[]" value="224" type="checkbox">溴氰菊酯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:225"><label><input name="vid[]" value="225" type="checkbox">滴滴涕</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:226"><label><input name="vid[]" value="226" type="checkbox">环氧七氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:227"><label><input name="vid[]" value="227" type="checkbox">敌百虫</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:228"><label><input name="vid[]" value="228" type="checkbox">内吸磷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:229"><label><input name="vid[]" value="229" type="checkbox">甲萘威</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:247"><label><input name="vid[]" value="247" type="checkbox">2，4-滴</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:269"><label><input name="vid[]" value="269" type="checkbox">有机磷农药</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:280"><label><input name="vid[]" value="280" type="checkbox">四氯化碳</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:283"><label><input name="vid[]" value="283" type="checkbox">1，2-二氯乙烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:284"><label><input name="vid[]" value="284" type="checkbox">1，1，1-三氯乙烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:292"><label><input name="vid[]" value="292" type="checkbox">环氧氯丙烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:300"><label><input name="vid[]" value="300" type="checkbox">氯丁二烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:301"><label><input name="vid[]" value="301" type="checkbox">六氯丁二烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:302"><label><input name="vid[]" value="302" type="checkbox">氯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:303"><label><input name="vid[]" value="303" type="checkbox">1，1-二氯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:304"><label><input name="vid[]" value="304" type="checkbox">1，2-二氯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:307"><label><input name="vid[]" value="307" type="checkbox">三氯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:308"><label><input name="vid[]" value="308" type="checkbox">四氯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:309"><label><input name="vid[]" value="309" type="checkbox">苯乙烯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:313"><label><input name="vid[]" value="313" type="checkbox">丙烯腈</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:315"><label><input name="vid[]" value="315" type="checkbox">苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:316"><label><input name="vid[]" value="316" type="checkbox">甲苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:317"><label><input name="vid[]" value="317" type="checkbox">二甲苯（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:320"><label><input name="vid[]" value="320" type="checkbox">邻-二甲苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:323"><label><input name="vid[]" value="323" type="checkbox">乙苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:324"><label><input name="vid[]" value="324" type="checkbox">异丙苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:329"><label><input name="vid[]" value="329" type="checkbox">土臭素</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:330"><label><input name="vid[]" value="330" type="checkbox">甲基异莰醇-2</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:336"><label><input name="vid[]" value="336" type="checkbox">1，2-二氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:337"><label><input name="vid[]" value="337" type="checkbox">1，4-二氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:339"><label><input name="vid[]" value="339" type="checkbox">三氯苯（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:340"><label><input name="vid[]" value="340" type="checkbox">1，2，3-三氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:341"><label><input name="vid[]" value="341" type="checkbox">1，3，5-三氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:342"><label><input name="vid[]" value="342" type="checkbox">四氯苯（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:348"><label><input name="vid[]" value="348" type="checkbox">硝基苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:349"><label><input name="vid[]" value="349" type="checkbox">二硝基苯（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:350"><label><input name="vid[]" value="350" type="checkbox">对-二硝基苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:351"><label><input name="vid[]" value="351" type="checkbox">间-二硝基苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:352"><label><input name="vid[]" value="352" type="checkbox">邻-二硝基苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:353"><label><input name="vid[]" value="353" type="checkbox">硝基氯苯（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:354"><label><input name="vid[]" value="354" type="checkbox">对-硝基氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:355"><label><input name="vid[]" value="355" type="checkbox">间-硝基氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:356"><label><input name="vid[]" value="356" type="checkbox">邻-硝基氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:358"><label><input name="vid[]" value="358" type="checkbox">2，4-二硝基氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:359"><label><input name="vid[]" value="359" type="checkbox">2，4-二硝基甲苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:361"><label><input name="vid[]" value="361" type="checkbox">2，4，6-三硝基甲苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:364"><label><input name="vid[]" value="364" type="checkbox">多氯联苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:374"><label><input name="vid[]" value="374" type="checkbox">邻苯二甲酸二丁酯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:376"><label><input name="vid[]" value="376" type="checkbox">邻苯二甲酸二（2-乙基己基）酯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:380"><label><input name="vid[]" value="380" type="checkbox">苯胺</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:385"><label><input name="vid[]" value="385" type="checkbox">联苯胺</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:386"><label><input name="vid[]" value="386" type="checkbox">丙烯酰胺</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:392"><label><input name="vid[]" value="392" type="checkbox">苦味酸</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:393"><label><input name="vid[]" value="393" type="checkbox">多环芳烃（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:394"><label><input name="vid[]" value="394" type="checkbox">苯并（a）芘</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:395"><label><input name="vid[]" value="395" type="checkbox">苯并（b）荧蒽</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:396"><label><input name="vid[]" value="396" type="checkbox">苯并（k）荧蒽</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:397"><label><input name="vid[]" value="397" type="checkbox">茚并（1，2，3-cd）芘</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:398"><label><input name="vid[]" value="398" type="checkbox">苯并（g，h，i）苝</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:399"><label><input name="vid[]" value="399" type="checkbox">荧蒽</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:404"><label><input name="vid[]" value="404" type="checkbox">萘</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:408"><label><input name="vid[]" value="408" type="checkbox">松节油</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:410"><label><input name="vid[]" value="410" type="checkbox">微囊藻毒素-LR</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:411"><label><input name="vid[]" value="411" type="checkbox">丁基黄原酸</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:484"><label><input name="vid[]" value="484" type="checkbox">氯气及游离氯制剂（游离氯）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:485"><label><input name="vid[]" value="485" type="checkbox">臭氧</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:487"><label><input name="vid[]" value="487" type="checkbox">总氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:490"><label><input name="vid[]" value="490" type="checkbox">二氧化氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:492"><label><input name="vid[]" value="492" type="checkbox">氯酸盐</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:493"><label><input name="vid[]" value="493" type="checkbox">亚氯酸盐</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:494"><label><input name="vid[]" value="494" type="checkbox">三卤甲烷（总量）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:495"><label><input name="vid[]" value="495" type="checkbox">二氯甲烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:496"><label><input name="vid[]" value="496" type="checkbox">三氯甲烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:497"><label><input name="vid[]" value="497" type="checkbox">三溴甲烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:498"><label><input name="vid[]" value="498" type="checkbox">一氯二溴甲烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:499"><label><input name="vid[]" value="499" type="checkbox">二氯一溴甲烷</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:503"><label><input name="vid[]" value="503" type="checkbox">三氯乙醛</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:504"><label><input name="vid[]" value="504" type="checkbox">甲醛</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:505"><label><input name="vid[]" value="505" type="checkbox">乙醛</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:510"><label><input name="vid[]" value="510" type="checkbox">二氯乙酸</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:511"><label><input name="vid[]" value="511" type="checkbox">三氯乙酸</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:515"><label><input name="vid[]" value="515" type="checkbox">氯化氰</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:518"><label><input name="vid[]" value="518" type="checkbox">2-氯酚</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:523"><label><input name="vid[]" value="523" type="checkbox">2，4，6-三氯酚</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:524"><label><input name="vid[]" value="524" type="checkbox">溴酸盐</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:527"><label><input name="vid[]" value="527" type="checkbox">1，1-二氯-2-丙酮</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:544"><label><input name="vid[]" value="544" type="checkbox">总α放射性</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:545"><label><input name="vid[]" value="545" type="checkbox">总β放射性</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:553"><label><input name="vid[]" value="553" type="checkbox">1，2，4-三氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:559"><label><input name="vid[]" value="559" type="checkbox">2，4-二氯苯酚</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:569"><label><input name="vid[]" value="569" type="checkbox">耐热大肠菌群</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:578"><label><input name="vid[]" value="578" type="checkbox">余氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:583"><label><input name="vid[]" value="583" type="checkbox">水不溶物</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:586"><label><input name="vid[]" value="586" type="checkbox">密度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:589"><label><input name="vid[]" value="589" type="checkbox">聚合氯化铝</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:592"><label><input name="vid[]" value="592" type="checkbox">永久硬度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:595"><label><input name="vid[]" value="595" type="checkbox">碳酸盐硬度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:598"><label><input name="vid[]" value="598" type="checkbox">负硬度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:601"><label><input name="vid[]" value="601" type="checkbox">三价铁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:605"><label><input name="vid[]" value="605" type="checkbox">盐基度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:607"><label><input name="vid[]" value="607" type="checkbox">水不溶物质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:609"><label><input name="vid[]" value="609" type="checkbox">密度（20℃）</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:611"><label><input name="vid[]" value="611" type="checkbox">铅（Pb）质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:613"><label><input name="vid[]" value="613" type="checkbox">镉（Cd）质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:615"><label><input name="vid[]" value="615" type="checkbox">六价铬质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:617"><label><input name="vid[]" value="617" type="checkbox">砷（As）质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:619"><label><input name="vid[]" value="619" type="checkbox">汞（Hg）质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:627"><label><input name="vid[]" value="627" type="checkbox">总油</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:628"><label><input name="vid[]" value="628" type="checkbox">α-六六六</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:631"><label><input name="vid[]" value="631" type="checkbox">β-六六六</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:634"><label><input name="vid[]" value="634" type="checkbox">γ-六六六</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:637"><label><input name="vid[]" value="637" type="checkbox">δ-六六六</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:640"><label><input name="vid[]" value="640" type="checkbox">ρ，ρ'-DDE</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:643"><label><input name="vid[]" value="643" type="checkbox">ο，ρ'-DDT</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:646"><label><input name="vid[]" value="646" type="checkbox">ρ，ρ'-DDD</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:649"><label><input name="vid[]" value="649" type="checkbox">ρ，ρ'-DDT</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:650"><label><input name="vid[]" value="650" type="checkbox">间，对-二甲苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:675"><label><input name="vid[]" value="675" type="checkbox">氯苯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:679"><label><input name="vid[]" value="679" type="checkbox">氯化铁的质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:681"><label><input name="vid[]" value="681" type="checkbox">氯化亚铁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:683"><label><input name="vid[]" value="683" type="checkbox">氧化铁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:685"><label><input name="vid[]" value="685" type="checkbox">还原性物质</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:687"><label><input name="vid[]" value="687" type="checkbox">氨态氮</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:689"><label><input name="vid[]" value="689" type="checkbox">粒径</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:691"><label><input name="vid[]" value="691" type="checkbox">含泥量</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:693"><label><input name="vid[]" value="693" type="checkbox">盐酸可溶率</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:695"><label><input name="vid[]" value="695" type="checkbox">轻物质</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:697"><label><input name="vid[]" value="697" type="checkbox">重物质</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:699"><label><input name="vid[]" value="699" type="checkbox">破碎率</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:701"><label><input name="vid[]" value="701" type="checkbox">磨损率</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:703"><label><input name="vid[]" value="703" type="checkbox">砾石密度</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:705"><label><input name="vid[]" value="705" type="checkbox">灼烧减量</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:707"><label><input name="vid[]" value="707" type="checkbox">含硅物质</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:709"><label><input name="vid[]" value="709" type="checkbox">明显扁平细长颗粒</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:711"><label><input name="vid[]" value="711" type="checkbox">碘的吸附值</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:713"><label><input name="vid[]" value="713" type="checkbox">亚甲蓝吸附值</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:715"><label><input name="vid[]" value="715" type="checkbox">苯酚吸附值</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:717"><label><input name="vid[]" value="717" type="checkbox">水分</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:719"><label><input name="vid[]" value="719" type="checkbox">有效氯</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:721"><label><input name="vid[]" value="721" type="checkbox">铁（Fe）质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:723"><label><input name="vid[]" value="723" type="checkbox">氯化铁</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:725"><label><input name="vid[]" value="725" type="checkbox">氧化铝含量</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:729"><label><input name="vid[]" value="729" type="checkbox">游离酸质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:735"><label><input name="vid[]" value="735" type="checkbox">高锰酸钾消耗量</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:737"><label><input name="vid[]" value="737" type="checkbox">氯化亚铁质量分数</label></li><li style="width:20%;float: left;list-style-type:none;text-align: left;" title="vid:739"><label><input name="vid[]" value="739" type="checkbox">破碎率与磨损率之和</label></li>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+$(function(){
+
+    //批量修改的保存
+    $("#site_modi_submit").click(function(){
+        var modi_site   = '';
+        $("#checked_site input[name='chose_site_id']:checked").each(function(){
+            modi_site   += $(this).val()+",";
+        });
+        if(modi_site){
+            modi_site   = modi_site.slice(0,-1);
+        }
+        var water_type  = $("#modi_water_type:visible").val();
+        var site_type   = $("#site_type_id:visible").val();
+        var site_xm     = '';
+        $("#xm_modi input[name='vid[]']:visible:checked").each(function(){
+            site_xm += $(this).val()+",";
+        });
+        if(site_xm){
+            site_xm = site_xm.slice(0,-1);
+        }
+        var post_filed  = {};
+        if(modi_site){
+            post_filed['modi_site']  = modi_site;
+        }
+        if(modi_site){
+            post_filed['water_type']  = modi_site;
+        }
+        if(modi_site){
+            post_filed['water_type']  = modi_site;
+        }
+        //参数
+        $.post("{$rooturl}/site/more_site_modi.php",{"action":"more_site_modi","field":post_filed},function(data){
+            console.log(data);
+            /*录屏用*/
+            alert('保存成功');
+            $("#checked_site_box").hide("slide",{direction : "right"},500);
+        },'html')
+    });
+    //水样类型修改区域
+    $("#water_type_button").click(function(){
+        $("#water_type").toggle();
+    });
+    //站点类型修改区域
+    $("#site_type_button").click(function(){
+        if($(this).text() =='显示站点类型'){
+            $(this).text('隐藏站点类型');
+        }else{
+            $(this).text('显示站点类型');
+        }
+        $("#site_type_tr").toggle();
+    });
+    //监测项目修改区域
+    $("#site_xm_button").click(function(){
+        if($(this).text() =='显示默认监测项目'){
+            $(this).text('隐藏监测项目区域');
+        }else{
+            $(this).text('显示默认监测项目');
+        }
+        $(".site_xm_tr").toggle();
+    });
+    //添加站点
+    $("#addSite").click(function(){
+        location.href = '{$rooturl}/site/group_add_sites.php';
+    });
+    //上传站点
+    $("#implodeSite").click(function(){
+        location.href = '{$rooturl}/basis_data_set/site_import.php';
+    });
+    //修改站点信息
+    $(".modi_button").click(function(){
+        var sid = $(this).attr('sid');
+        location.href = '{$rooturl}/site/site_info.php?site_id='+sid;
+    });
+    //点击其他地方隐藏右侧面板
+    $(document).bind('click',function(e){
+        var e = e || window.event; //浏览器兼容性
+        var elem = e.target || e.srcElement;
+        while (elem) { //循环判断至跟节点，防止点击的是div子元素
+            if (elem.id && elem.id=='checked_site_box') {
+                return;
+            }
+            elem = elem.parentNode;
+        }
+        $("#checked_site_box").hide("slide",{direction : "right"},500);
+    });
+    //取消直接选择站点多选框效果，只执行外部div的click效果
+    $("input[name='site_id']").click(function(event){
+        if($(this).is(":checked")){
+            $(this).prop('checked',false);
+        }else{
+            $(this).prop('checked',true);
+        }
+    });
+    //点击站点飞入右侧弹出层效果
+    var offset = $("#end").offset();
+    $(".site-div").click(function(event){
+        //event.stopPropagation();//防止事件冒泡到父亲
+        // event.preventDefault();//取消父级的默认行为,防止label事件触发两次
+        var addcar      = $(this);
+        var addcar_input= addcar.find("input[name='site_id']");//对应多选框
+        var site_id     = addcar_input.val();
+        var site_name   = addcar_input.next('span.site_name').text();
+        if(addcar_input.is(":checked")){
+            addcar_input.prop('checked',false);
+            $(this).removeClass("checked");
+            //取消选中挑选出的对应站点
+            $("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',false).parent("div[class*='col-xs']").removeClass('checked');
+            var chose_site_num  = $("input[name='chose_site_id']:checked").length;
+            $("#modi_site_num").html(chose_site_num).show();//选中站点数量
+        }else{
+            addcar_input.prop('checked',true);
+            $(this).addClass("checked");
+            var content     = addcar.find('.site_name').html();
+            var flyer       = $('<div class="u-flyer">'+content+'</div>');
+            flyer.fly({
+                start: {
+                    left: event.pageX,
+                    top: event.pageY
+                },
+                end: {
+                    left: offset.left+10,
+                    top: offset.top+10,
+                    width: 0,
+                    height: 0
+                },
+                onEnd: function(){
+                    //$("#msg").show().animate({width: '250px'}, 200).fadeOut(1000);
+                    //addcar.unbind('click');
+                    var input_old_num = $("input[name='chose_site_id'][value='"+site_id+"']").length;//已挑选站点的数量
+                    if(input_old_num < '1'){
+                        var site_html   = "<div class='col-xs-1 checked' title='"+site_name+"'><label><input type='checkbox' name='chose_site_id' value='"+site_id+"' checked /><span>"+site_name+"</span></label></div>";
+                        $("#checked_site").append(site_html);
+                    }else{
+                        $("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',true).parent("div[class*='col-xs']").addClass('checked');
+                    }
+                    var chose_site_num  = $("input[name='chose_site_id']:checked").length;
+                    $("#modi_site_num").html(chose_site_num).show();//选出站点数量
+                    this.destory();
+                }
+            });
+        }
+    });
+    //选中站点是统计数量
+    $("#xm_modi input[name='vid[]']").click(function(){
+        count_xm_num();
+    });
+})
+//统计选中项目的数量
+function count_xm_num(){
+    var modi_xm_num = $("#xm_modi input[name='vid[]']:checked").length;
+    $("#modi_xm_num").html(modi_xm_num);
+}
+</script>
+<style>
+    #water_type,#site_type_tr{
+        display: none;
+    }
+    #checked_site_box{/*右侧弹出层*/
+        width:55%;
+        height: 100%;
+        position: fixed;
+        right:0;
+        top:0;
+        z-index: 6;
+        background: #FCFCFC;/*#F4FFFB;*/
+        display: none;
+        border-left:#CCC 2px solid;
+        box-shadow:-1px 2px 10px #aaaaaa;
+        overflow: auto;
+    }
+    #filter_button_box{/*右侧悬浮按钮区域*/
+        width:60px;
+        position: fixed;
+        right:0;
+        top:calc(50% - 50px);
+        z-index: 5;
+    }
+    #modi_site_num{/*右侧选中站点数量的角标*/
+        vertical-align: super;
+        top: 4%;
+        left: -13%;
+        position: absolute;
+        display: none;
+    }
+    #fileter_site_type,#checkec_modi{/*右侧筛选按钮外壳*/
+        margin-top:10px;
+        display:block;
+        color: #FFF;
+        background-color: #428BCA;/*#AAA;*/
+        text-align: center;
+        vertical-align: middle;
+        line-height: normal;
+    }
+    #xm_modi li{
+        overflow: hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+    #fileter_site_type:hover,#checkec_modi:hover{
+        background-color: #438EB9;
+    }
+    #fileter_site_type i,#checkec_modi i{/*右侧筛选按钮图标*/
+        font-size: 40px;
+    }
+    #checkec_modi i{
+        padding-top:3px;
+    }
+    #fileter_site_type:hover i,#checkec_modi:hover i{
+        display: none;
+    }
+    #fileter_site_type span.filter_font,#checkec_modi span.filter_font{/*右侧筛选文字*/
+        font-size: 17px;
+        display: none;
+    }
+    #fileter_site_type:hover span.filter_font,#checkec_modi:hover span.filter_font{
+        display: block;
+    }
+    #site_modi_box{/*右侧站点更改相关信息*/
+        width:calc(100% - 36px);
+        margin:10px 0px 0 26px;
+    }
+    #site_modi_box td,#site_modi_box th{
+        border:1px solid #A8A8A8;
+        text-align:center;
+    }
+    #site_modi_box th{
+        background-color: f3f5f9;
+    }
+    #search{/*搜索框*/
+        min-width:200px;
+        height:35px;
+        width:10%;
+        padding-right:18px;
+        position:inherit;
+        font-size:14px;
+        border-radius: 6px !important;
+    }
+    .icon-search{margin-left: -18px;}/*搜索图标*/
+    .div-title,.div-gongju{/*标题行、蓝色工具行*/
+        width:93%;margin:0 auto;
+    }
+    fieldset{/*站点类型盒子*/
+        width:93%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;
+    }
+    legend{/*站点类型名称*/
+        margin-left:20px;padding:5px;width:auto;margin-bottom: 0px;
+    }
+    .modi_button{/*站点修改的铅笔图标*/
+        position: absolute;
+        right: 2px;
+        bottom: 0;
+        width: 16px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 3;
+        opacity:0;
+    }
+    .item [class*="col-"]:hover .modi_button{
+        opacity:1;
+    }
+    #msg{
+        position:fixed; 
+        top:300px; 
+        right:35px; z-index:10000; width:1px; height:52px; line-height:52px; font-size:20px; text-align:center; color:#fff; background:#360; display:none}
+    .u-flyer{/*飞入右侧弹出层元素的样式*/
+        display: block;
+        width: 133px;
+        height:44px;
+        font-size: 14px !important;
+        border-radius: 8px;
+        background-color:#DFF0D8;
+        border-color:#DFF0D8;
+        text-overflow: ellipsis;
+        position: fixed;
+        z-index: 9999;
+    }
+    .item [class*="col-"] {/*包含站点所有信息的div*/
+        width: 133px;
+        height:44px;
+        margin-top:2px;
+        margin-bottom:2px;
+        position:relative;
+        text-overflow:ellipsis;
+    }
+    .item [class*="col-"]  div.label_div,.item [class*="col-"]  label{
+        //cursor: pointer;
+        position:relative;
+        z-index:2;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        //white-space: nowrap;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        text-align:left;
+    }
+    .item [class*="col-"]:before {
+        position:absolute;
+        top:0; bottom:0;
+        left:2px; right:2px;
+        content:"";
+        display:block;
+        border:1px solid #DDD;
+        z-index: 1;
+    }
+    .item [class*="col-"]:hover:before {
+        background-color:#FCE6A6;
+        border-color:#EFD27A;
+    }
+    .item [class*="checked"]:before {
+        background-color:#DFF0D8;
+        border-color:#DFF0D8;
+    }
+    /*####树状图css8*/
+    #tree{
+        text-align: center;vertical-align:middle;min-height:100px;
+    }
+    .node circle {
+        cursor: pointer;
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+    .node text {
+        font-size: 14px;
+    }
+    path.link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+    .circle_g{
+        stroke:"none";
+        stroke-width:"1" ;
+        fill:"none" ;
+        width:20px;
+        height:20px;
+        /*fill-rule:"evenodd";*/
+    }
+    /*树状图css 结束*/
+    .no_show_tishi{/*搜索不到站点时增加的提示*/
+        text-align: center !important;
+        color:#AFADAD;
+        font-size: 16px;
+    }
+</style>

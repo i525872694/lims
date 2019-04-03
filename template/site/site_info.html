@@ -1,0 +1,385 @@
+<style type="text/css">
+	label{cursor:pointer;}
+	.site_info_form input[type='text'],.site_info_form select{width:100%;}
+	.tjk{display:none;}
+	.duoxuan input{vertical-align: -2px;_vertical-align: -1px;margin-right: 2px;}
+	.srk input{width:90px;}
+	.srk{display:inline-block;}
+	.bianse,.duoxuan label,.duoxuan input{cursor:pointer;}
+	.duoxuan{display:inline-block;width:438px;}
+	#tree{text-align: center;vertical-align:middle;min-height:100px;}
+	/*####树状图css8*/
+	.node circle {
+	    cursor: pointer;
+	    fill: #fff;
+	    stroke: steelblue;
+	    stroke-width: 1.5px;
+	}
+	.node text {
+	    font-size: 14px;
+	}
+	path.link {
+	    fill: none;
+	    stroke: #ccc;
+	    stroke-width: 1.5px;
+	}
+	.circle_g{
+	    stroke:"none";
+	    stroke-width:"1" ;
+	    fill:"none" ;
+	    width:20px;
+	    height:20px;
+	    /*fill-rule:"evenodd";*/
+	}
+	/*树状图css 结束*/
+</style>
+<script>
+//模仿php的in_array
+function in_array(stringToSearch, arrayToSearch) {
+    for (s = 0; s <arrayToSearch.length; s++) {
+        thisEntry = arrayToSearch[s].toString();
+        if (thisEntry == stringToSearch) {
+            return true;
+        }
+    }
+    return false;
+}
+//根据模板选中相应检测项目
+function quan(th){
+	with(th.form){ 
+		var im=mbxm.value;
+		var t=im.split(',');
+		var	v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			if(in_array(v[i].value,t)){
+				v[i].checked=true;
+			}else{
+				v[i].checked=false;
+			}
+		}   
+	}
+    count_xm_num();
+}
+//项目模板设定
+function gt(){
+	jie = $("#mb1 option:selected").val();
+	ming = $("#mb1 option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+	}
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+//关闭弹出层
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+//查看地图
+function gamp(){
+	var id=document.getElementsByName("site_id")[0].value;
+	var actions=document.getElementsByName("actions")[0].value;
+	var site_type=document.getElementsByName("site_type")[0].value;
+	var group_name=document.getElementsByName("current_group_name")[0].value;
+	var jd=document.getElementsByName("jd")[0].value;
+	var wd=document.getElementsByName("wd")[0].value;
+	window.location.href="site_gmap.php?sid="+id+"&group_name="+group_name+'&site_type='+site_type+"&jd="+jd+"&wd="+wd+"&action="+actions;	
+}
+//站点重名判定
+function site_nameyz(th){//相同站名提醒 
+	var hd=th.value;
+	var num = document.getElementsByName("old_name")[0].value;
+	if(hd!=num){
+	if(hd!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?site_name="+hd,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}}
+}
+//站码重复判定
+function zhanmayz(th){//相同站码提醒
+	var hq=th.value;
+	var code = document.getElementsByName("old_code")[0].value;
+	if(hq!=code){
+	if(hq!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?code="+hq,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}}
+}
+</script>
+
+<form action='site_info_save.php' class="site_info_form" method="post">
+<div class="widget-box no-border" style="width:100%;margin-left: auto;
+margin-right: auto;">
+	<div class="widget-box transparent" style="margin:0;">
+        <div class="widget-header center">
+            <h3 class="header smaller title" style="color:#000;"> $site_info[site_name]站点</h3>
+            <div class="widget-toolbar no-border">
+                <!-- <a data-action="columnSettings" href="#">
+                    <i class="icon-cog"></i>
+                </a> -->
+            </div>
+        </div>
+    </div>
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		<input type="hidden" name="site_id" value="$site_info[id]" />
+		<input type="hidden" name="old_name" value="$site_info[site_name]" />
+		<input type="hidden" name="old_code" value="$site_info[site_code]" />
+		<input type="hidden" name="modi[site_type]" value="$site_info[site_type]" />
+		<input type="hidden" name="modi[jingdu]" value="$site_info[jingdu]" />
+		<input type="hidden" name="modi[weidu]" value="$site_info[weidu]" />
+		<input type="hidden" name="old_vid" value="$site_info[assay_values]" />
+		<input type="hidden" name="actions" value="$_GET[action]" />
+        <input type="hidden" name="site_type_id"  id="site_type_id"  value="{$site_type_id}" />
+	</div>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center">
+		<tbody id="myTable">
+		<tr>
+			<td align="center" style='width:13%'>站名:</td>
+			<td><input name="modi[site_name]" type="text" onblur='site_nameyz(this)' placeholder="不能为空" required="required" value='$site_info[site_name]'><span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+			<td align="center" style='width:13%'>样品类型:</td>
+			<td id="sylx"><select name="modi[water_type]" class='sl'>$leix</select></td>
+			<td align="center" >站址:</td>
+			<td><input name="modi[site_address]" type="text" size='35' value='$site_info[site_address]'></td>
+		</tr>
+		<tr>
+			<td align="center" style='width:13%'>站点编码:</td>
+			<td><input name="modi[site_code]" type="text" onblur='zhanmayz(this)' placeholder="不能为空" required="required" value='$site_info[site_code]'><span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+			<td align="center" style='width:13%'>垂线编号:</td>
+			<td ><input name="modi[site_line]" type="text" size='35' value='$site_info[site_line]'></td>
+			<td align="center" >层面编号:</td>
+			<td><input name="modi[site_vertical]" type="text" size='35' value='$site_info[site_vertical]'></td>
+		</tr>
+		<tr>
+			<td align="center" style='width:13%'>水系:</td>
+			<td><input name="modi[water_system]" type="text"  value='$site_info[water_system]'></td>
+			<td align="center" style='width:13%'>流域:</td>
+			<td ><input name="modi[area]" type="text" size='35' value='$site_info[area]'></td>
+			<td align="center" >河流:</td>
+			<td><input name="modi[river_name]" type="text" size='35' value='$site_info[river_name]'></td>
+		</tr>
+		<tr>
+			<td align="center">水功能区名称:</td>
+            <td><input name="modi[sgnq]" type="text" value='$site_info[sgnq]'></td>
+            <td align="center">水功能区编号:</td>
+            <td><input name="modi[sgnq_code]" type="text" value='$site_info[sgnq_code]'></td>
+			<td align="center">行政区:</td>
+            <td><input name="modi[xz_area]" type="text" value='$site_info[xz_area]'></td>
+			
+        </tr>
+		<tr>
+			<td align="center">经度:</td>
+			<!--re = /^(-?((180)|(((1[0-7]\d)|(\d{1,2}))(\.\d+)?)))$/g;(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\.[0-5]|180-->
+			<td><input onclick='up_jwd("经度",this,"$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=jingdu&data=","修改[$site_info[site_name]]的经度,格式:[+|-]xxx度xx分xx.nnnn秒,如果不填写，从下一次现场采样收集实际的数值","$site_info[jingdu]");' name="modi[jingdu]" type="text"  value='$site_info[jingdu]'readonly="readonly">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <!--/^(-?((90)|((([0-8]\d)|(\d{1}))(\.\d+)?)))$/g-->
+            <td align="center">纬度:</td>
+			<td><input onclick='up_jwd("纬度",this,"$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=weidu&data=","修改[$site_info[site_name]]的纬度,格式:[+|-]xxx度xx分xx.nnnn秒,如果不填写，从下一次现场采样收集实际的数值","$site_info[weidu]");' name="modi[weidu]" type="text"  value='$site_info[weidu]' readonly="readonly"style="background-color:white"></td>
+			<td align="center"><span >采样范围:</span></td>
+			<td align="left"><input name="modi[banjing]" onclick='modi("$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=banjing&data=","修改[$site_info[site_name]]的采样点半径(米)","$site_info[banjing]");' type="text" value='$site_info[banjing]' style="width:80%;">(米)&nbsp;&nbsp;&nbsp;</td> 
+		</tr>
+		<tr>
+			<td align="center">水源限制:</td> 
+			<td colspan="5" align=left>$syxz $cc</td>
+		</tr>
+		<tr>
+			<td align="center">备注:</td>
+			<td colspan="5"><textarea name="modi[note]" style="width:100%" id="cttt1">$site_info[note]</textarea></td>
+        </tr>
+        <tr></tr>
+            <td>所属任务类型：</td>
+            <td colspan="5"><div class='tree'  id="tree"><!--树状图--></div></td>
+        </tbody>
+	</table>
+	<div class='jcxm_box'>
+		<table class="table table-striped table-bordered table-hover center">
+			<tbody>
+			<tr align="center" >
+				<td><b>该站点目前监测项目:(<span id="txtHint4">{$yes_jcxm_num}</span> 项)</b>&nbsp;&nbsp;<b>当前已选择 ( <span id='now_xm_num' style='color:red;'>{$yes_jcxm_num}</span> )项</b></td> 
+			</tr>
+			<tr>
+	            <td style="padding-left:50px;" id="txtHint">
+				 $yes_jcxm_html
+	            </td>
+			</tr>
+			</tbody>
+		</table>
+		<table class="table table-striped table-bordered table-hover center"> 
+			<tbody>
+			<tr align="center" >
+				<td >
+	                <b>该站点尚未监测项目:(<span id="txtHint2">{$no_jcxm_num}</span> 项)
+	                选择模板:<select name="mbxm" onchange="quan(this)" id='mb1' style="width:220px;">
+	                    <option value="$site_info[assay_values]">----请选择----</option>
+	                    $mbxm
+	                </select>&nbsp;
+	                <button type="button" class="btn btn-xs btn-primary" onclick='gt()' >项目模板设定</button></b>
+	            </td>
+			</tr>
+			<tr>
+	            <td style="padding-left:50px;" id="txtHint3">
+	                $no_jcxm_html
+	            </td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+    <div style="height:33px;"><!--帮保存按钮撑开一个空间--></div>
+    <div style="width:100%;height:35px;position:fixed;bottom:0px;background-color:#96ABBA;opacity:0.5;"><!--保存按钮的背景条--></div>
+    <input type="submit" name="submit" value="&nbsp;&nbsp;保&nbsp;存&nbsp;&nbsp;"  class="btn btn-xs btn-primary" style="position:fixed;left:calc(50% - 50px);bottom:0px;width:100px;height:33px;opacity:1;" />
+  </div>
+</div>
+</form>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>
+<script>
+//###树状图 js
+//var select_node = {};
+//flare_Data变量在flare.js中定义，使用时一般是ajax请求过来的数据
+var tree = treeSvg({$zNodes},900,300,100,"tree");
+//点击节点后回调函数，全局变量select_node存储当前被选中的节点
+function clickNodetrigger()
+{
+    //console.log(tree);
+    var site_type_list  = [];
+    for(var i in tree.select_node){
+        site_type_list.push(i);
+
+    }
+    var site_type_id    = site_type_list.join(',');
+    $("#site_type_id").val(site_type_id);
+}
+//###树状图结束
+function tjsy(){
+	var syxz = prompt('请输入要添加的文件','');
+	var lianjie = window.location.search;
+	var ljarr = lianjie.split('&syxz');
+	if(syxz){
+		location = "site_info.php"+ljarr[0]+"&syxz="+syxz;
+	}
+}
+$("#bianshe").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+$("#bianshe2").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe2").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+//点击“填加”按钮后，显示出“添加输入框”，并把“添加”图片换成“返回”
+  $(".tianjia").click(function(){
+        $(".tjk").toggle().focus();
+        if(this.name!='fanhui'){
+                //$(".tjk").focus();
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/tianjia.jpg';
+                this.name='tianjia';
+        }
+
+  });
+
+//点击 编辑按钮后，把“多选框”换成“输入框”，并把“编辑”图片换成“返回”
+  $(".bianji").click(function(){
+        $(".duoxuan").toggle();
+        $(".srk").toggle();
+        if(this.name!='fanhui'){
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/bianji.jpg';
+                this.name='bianji';
+        }
+  });
+  function uplx(weizhi){
+        var lxid = weizhi.attributes["lxid"].nodeValue;
+        var zhi  = weizhi.value;
+	if(lxid!=''&&zhi!=''){
+		if(zhi!=weizhi.attributes["huifu"].nodeValue){
+        	$.getJSON("$rooturl/site/ajax_rwlx.php?qufen=xiugai&id="+lxid+"&name="+zhi,function(json){
+                	if(json.zt=='成功'){
+                        	document.getElementById(lxid).innerHTML="<input name='tjcs_name[]' value='"+lxid+"' type='checkbox'>"+zhi;
+							weizhi.setAttribute("huifu",zhi);
+                        	alert('修改成功');
+                	}else {
+						alert('该名称已存在');
+						weizhi.value = weizhi.attributes["huifu"].nodeValue;
+						weizhi.focus();
+					}
+        	});
+			}
+	}
+	else{
+		alert('参数名称不能为空');
+		weizhi.value = weizhi.attributes["huifu"].nodeValue;
+		weizhi.focus();
+	}
+}
+  //鼠标离开“添加输入框”后，增加“多选框”和“编辑输入框”
+  $(".tjk").blur(function(){//重复判断
+        var name = this.value;
+        if(name!=''){
+                $.getJSON("$rooturl/site/ajax_rwlx.php?lxName="+name,function(json){
+                        if(json.zt=='成功'){
+                                $(".duoxuan").append("<label id='"+json.labelId+"'><input type='checkbox' name='tjcs_name[]' value='"+name+"' />"+name+"</label>");
+
+                                $(".srk").append("<span><input type='text' lxid='"+json.labelId+"'  onblur='uplx(this)' value='"+name+"' /></span>");//<img src='../images/shanchu.png' name='shanchu' class='bianse' /></span>");
+                        }
+                        if(json.zt=='分中心中已存在该参数'){alert('分中心中已存在该参数');}
+						if(json.zt=='总中心中已存在该参数'){alert('总中心中已存在该参数');}
+						if(json.zt=='已存在该参数'){ alert('该名称已存在');}
+                        $(".tjk").focus().val('');
+                });
+        }
+  });
+$(function(){
+    $(".jcxm_box input[name='vid[]']").click(function(){
+        count_xm_num();//统计个数
+    });
+})
+function count_xm_num(){
+    var now_xm_num  = $(".jcxm_box input[name='vid[]']:checked").length;
+    console.log(now_xm_num,'asdf');
+    $("#now_xm_num").html(now_xm_num);
+}
+//经纬度验证，如果要是常用的带小数点的，那么直接保存，如果要是以“度分秒”的形式，就进行转换
+function up_jwd(name , obj , url , hint , old_jwd){
+	var val = prompt("请输入"+name+"坐标");
+	var reg = /^[0-9]+.?[0-9]*$/;
+	if(reg.test(val)){
+		var u = url + val +'&handle=direct_save'
+		window.location.href=u;
+	}else{
+		modii(url , val , old_jwd);
+	}
+}
+function modii( url, text, Defaulttext ) { 
+	if( text && text != Defaulttext ){
+		location.replace( url + text );
+	}
+}
+</script>

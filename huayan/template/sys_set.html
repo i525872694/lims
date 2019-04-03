@@ -1,0 +1,89 @@
+<form class="form-horizontal" role="form" style="margin:30px 10px 10px 30px;">
+        <div class="form-group">
+            <label class="col-sm-2" for="form-field-1"> jss/css修改版本号 </label>
+            <div class="col-sm-10">
+                <input type="text" id="form-field-1" name="hyd.v" value="{$global['hyd']['v']}" class="col-xs-10 col-sm-5">
+                <span class="status"><i></i></span>
+            </div>
+        </div>
+        <div class="hr hr-16"></div>
+        <div class="form-group">
+            <label class="col-sm-2" for="form-field-2">曲线公式显示格式</label>
+            <div class="col-sm-10">
+                <input type="text" id="form-field-2" name="hyd.sc_gongshi" value="{$global['hyd']['sc_gongshi']}" class="col-xs-10 col-sm-5">
+                <span class="status"><i></i></span>
+                <br /><br />
+                <span>
+                    {&#36data[CX]}：c²x<br />
+                    {&#36data[CB]}：斜率<br />
+                    {&#36data[<red>CAA</red>]}：截距<br />
+                    曲线完整公式：y=[c²x+]bx+a<br />
+                    默认设置：y={&#36data[CX]}{&#36data[CB]}x{&#36data[<red>CAA</red>]}<br />
+                </span>
+            </div>
+        </div>
+        <div class="hr hr-16"></div>
+        <div class="form-group">
+            <label class="col-sm-2" for="form-field-3">化验单样品排序</label>
+            <div class="col-sm-10">
+                <input type="text" id="form-field-3" name="hyd.bar_code_order" value="{$global['hyd']['bar_code_order']}" class="col-xs-10 col-sm-5">
+                <span class="status"><i></i></span>
+                <br /><br />
+                <span>
+                    默认设置：(CASE WHEN  hy_flag ='-2' THEN 0 ELSE 1 END), RIGHT(LEFT(ao.`bar_code`, 13), 4)
+                </span>
+            </div>
+        </div>
+        <div class="hr hr-16"></div>
+        <div class="form-group">
+            <label class="col-sm-2" for="form-field-4">化验单打印时空白格填充内容</label>
+            <div class="col-sm-10">
+                <input type="text" id="form-field-4" name="hyd.tianchong_empty_cell" value="{$global['hyd']['tianchong_empty_cell']}" class="col-xs-10 col-sm-5">
+                <span class="status"><i></i></span>
+            </div>
+        </div>
+        <div class="hr hr-16"></div>
+        <div class="form-group">
+            <label class="col-sm-2" for="form-field-4">化验单批量合并时的合并规则</label>
+            <div class="col-sm-10">
+                <input type="text" id="form-field-4" name="hyd.pay_hebing_key" value="{$global['hyd']['pay_hebing_key']}" class="col-xs-10 col-sm-5">
+                <span class="status"><i></i></span>
+                <br /><br />
+                0或者空表示默认,使用fid&nbsp;;&nbsp;&nbsp;1表示fid+cy_date
+            </div>
+        </div>
+        <div class="hr hr-16"></div>
+</form>
+<script>
+    $('.form-horizontal').find('input').on('blur change', function(){
+        var that =this;
+        // 添加loading加载图标
+        $(that).parent('div').find('.status i').attr('class', 'icon icon-spinner icon-spin bigger-130');
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            data: {
+                value: $(this).val(),
+                name: '[' + $(this).attr('name').split('.').join('][') + ']'
+            },
+            url: 'ahlims.php?app=sys_set&act=save_sys_set&ajax=1',
+            success: function(data){
+                if( '0' == data.error ){
+                    // save_status_msg(data.content,'success');
+                    // 保存成功图标
+                    $(that).parent('div').find('.status i').attr('class', 'icon icon-ok bigger-130 green');
+                }else{
+                    // save_status_msg(data.content,'danger');
+                    // 保存失败图标
+                    $(that).parent('div').find('.status i').attr('class', 'icon-remove bigger-130 red');
+                }
+            },error: function(data){
+                alert_error(data.responseText);
+            }
+        });
+    });
+    $('.form-horizontal').find('input').on('focus', function(){
+        // 删除图标
+        $(this).parent('div').find('.status i').attr('class', '');
+    });
+</script>

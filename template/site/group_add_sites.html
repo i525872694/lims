@@ -1,0 +1,221 @@
+<style>
+.hand,.update{cursor:pointer;}
+table tr{height:25px;}
+table,table td{border:1px black solid;border-collapse: collapse;font-size:13px;}
+form{text-align:center;}
+#numes{
+    font-weight: bold;
+}
+.xm_label{
+    float: left; 
+    margin-bottom: 1px; 
+    margin-left: 1px; 
+    height: 43px; 
+    width: 132px; 
+    border: 1px solid rgb(215, 215, 215); 
+    background-color: rgb(255, 255, 255); 
+    cursor: pointer;
+    text-align: left;'
+}
+</style>
+<script>
+//模板选择
+function quan(th){
+	with(th.form){ 
+		var im= mbxm.value;
+		var t = im.split(','); 
+		v     = elements['xid[]'];
+		for(var i=0;i<v.length;i++){ //根据模板循环选中项目
+            console.log("aaa"+v[i].value+"aaa",t);
+			 if(in_array(v[i].value,t)){
+				 v[i].checked=true;
+             }else{
+				 v[i].checked=false;
+             }
+		}     
+	}
+	var p=tjxm();//统计选择的项目
+}
+function in_array(stringToSearch, arrayToSearch) {
+    for (s = 0; s <arrayToSearch.length; s++) {
+        thisEntry = arrayToSearch[s].toString();
+        if (thisEntry == stringToSearch) {
+            return true;
+        }
+    }
+    return false;
+}
+
+//统计选择的项目
+function tjxm(){
+    var total   = 0;	//这个变量用来存放我们所要统计的个数值
+    var inputs  = document.getElementsByName("xid[]"); 
+    for (var idx = 0; idx <inputs.length; idx++) 	//遍历所有checkbox
+    {
+    	if(inputs[idx].checked){
+            total += 1;	  //计数器
+        }
+    }
+    $("#numes").html(total);
+}
+
+//全选
+function selectAll(){
+	var ptpts=document.getElementsByName("xid[]");//得到所有的项目
+	//alert(ptpts.length);
+	for(var i=0;i<ptpts.length;i++){//循环选中
+		if(  ptpts[i].type =="checkbox"){
+			ptpts[i].checked="checked";
+		}
+	}
+	var p=tjxm();//统计选择的项目
+}
+//反选
+function reverse(){
+	var ptpts=document.getElementsByName("xid[]");
+	for(var i=0;i<ptpts.length;i++){
+		if(ptpts[i].type  =="checkbox"){
+			if(ptpts[i].checked){
+				ptpts[i].checked="";
+			}else{
+				ptpts[i].checked="checked";
+			}
+		}
+	}
+	var p=tjxm();//统计选择的项目
+}
+//取消选择
+function deSelectAll(){
+	var ptpts=document.getElementsByName("xid[]");//得到所有的项目
+	for(var i=0;i<ptpts.length;i++){//循环取消选中
+		if(ptpts[i].type  =="checkbox"){
+			ptpts[i].checked="";
+		}
+	}
+    var p=tjxm();//统计选择的项目
+}
+</script>
+<script>
+//站码验证重复
+function zhanmayz(th){
+	var hq=th.value;
+	if(hq!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?code="+hq,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*"+json.ming+"中已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+}
+function site_nameyz(th){
+	var hd=th.value;
+	if(hd!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?site_name="+hd,function(json){
+            console.log(json);
+			if(json.zt=='已存在'){
+                $(th).next(".name_chongming_tishi").html('*已存在');
+			}else{
+                $(th).next(".name_chongming_tishi").html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+            }
+		});
+	}else{
+        $(th).next(".name_chongming_tishi").html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+    }
+}
+//项目模板设定（打开项目模板设定弹出层）
+function gt(){
+	ming = $("#mb1 option:selected").html();
+	jie = $("#mb1 option:selected").val();
+	if(ming == '----请选择----'){
+		$("input[name='xid[]']").each(function(){
+		    if($(this).is(":checked")){
+		      jie += ','+$(this).val();
+		    }
+	    });
+	    jie = jie.substring(1);
+	}
+    if(ming == '----请选择----'&&jie == ''){
+    	jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+    }
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+//关闭弹出层
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+</script>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();});
+</script>
+<h3 class="header smaller center title">添加站点</h3>
+<form id="tjzd" method="POST" name="playlist" action="$rooturl/site/group_add_sites_save.php">
+    <div class="widget-box no-border">
+        <div class="widget-header header-color-blue4 center">
+            <div class="widget-toolbar">
+            	<input name="site_type" value="{$site_type}" type="hidden">
+            	<input name="group_name" value="" type="hidden">
+            	<input type="hidden" name="actions" value="$_GET[action]" />
+            </div>
+        </div>
+        <div class="widget-body">
+            <table class="table table-striped table-bordered table-hover center" id="th">
+            	<tbody id="myTable">
+            		{$site_content}
+            	</tbody>
+            	<tfoot>
+            		<tr>
+            			<td colspan="6">
+            				<button name="add_zk_range" type="button"  id="add" class="btn btn-xs btn-primary">添加一行</button>&nbsp;<button name="add_zk_range" type="button"  id="del"  class="btn btn-xs btn-primary">删除一行</button>
+            			</td>
+            		</tr>
+            	</tfoot>
+            </table>
+            <table class="table table-striped table-bordered table-hover center">
+            	<tbody>
+            		<tr align="center" >
+            			<td style="color: red;">你选择了&nbsp;<span id="numes"> 0 </span>&nbsp;个项目</td>
+            		</tr>
+            		<tr align="center" >
+            			<td colspan="2"><table style="border-style:none"><tr><td style="border-style:none">选择模板：<select name="mbxm" onchange="quan(this)" id='mb1'><option selected="selected"  value="">----请选择----</option> $mbxm</select>&nbsp;<button type="button" class="btn btn-xs btn-primary" onclick="gt()" >项目模板设定</button>
+            			</td>
+            			<td style="border-style:none;padding-left:50px"><input type="button" value="全选" onclick="selectAll()"><input type="button" value="反选" onclick="reverse()"><input type="button" value="取消选择" onclick="deSelectAll()"></td></tr></table></td>
+            		</tr>
+            		<tr ><td align="center" colspan="2">只显示本单位具有检测能力的项目</td></tr>
+            		<tr align="center" >
+            			<td colspan="2" id="txtHint">
+            			$xm
+            			</td>
+            		</tr>
+            	</tbody>
+            </table>
+            <div style="height:33px;"></div>
+            <div style="width:100%;height:35px;position:fixed;bottom:0px;background-color:#96ABBA;opacity:0.5;"></div>
+        	<input type="submit" name="submit" value="&nbsp;&nbsp;保&nbsp;存&nbsp;&nbsp;"  class="btn btn-xs btn-primary" style="position:fixed;left:50%;bottom:0px;height:33px;opacity:1;" />
+        </div>
+    </div>
+</form>
+<!-- 弹出层 -->
+<div id="cover" class="modal" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+	<div class="modal-dialog" style='width:800px;'>
+		<div id="con" class='modal-content' style='width:800px;'></div>
+	</div>
+</div>
+
+<script>
+//多站点信息添加，添加一行
+$("#add").click(function (){
+	dzd=$("#myTable").html();
+	$("#th").append("<tbody class='tbody'>"+dzd+"</tbody>");
+    $(".name_chongming_tishi:last").html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+	load_height();
+})
+//删除一行
+$("#del").click(function (){
+    $('.tbody:last-child').detach();
+})
+</script>

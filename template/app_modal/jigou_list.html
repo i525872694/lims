@@ -1,0 +1,50 @@
+<style>
+    .jumpLink {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+</style>
+<div class="widget-box transparent" style="margin:0;">
+    <div class="widget-header center">
+        <h3 class="header smaller title" style="color:#000;">机构基本信息</h3>
+    </div>
+</div>
+
+<div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+        <!--蓝色工具栏-->
+        <input placeholder="搜索......" type="text" oninput="onFilterChanged(this.value)">
+    </div>
+</div>
+<div class="container-fluid">
+    {$ui_ag_grid}
+</div>
+<script>
+    $(function () {
+        $("#myGrid").height($(window).height() - 140);
+        get_ag_grid_data();
+    })
+    //获取数据
+    function get_ag_grid_data() {
+        var url = '{__ROOTURL__}/app_modal/jigou_list.php?ajax=1&fzx='+$('#fzx').val();
+        $.get(url, function (resp) {
+            handle_ag_grid(resp);
+        }, 'json')
+    }
+    function ag_grid_cellClick(obj) {
+        if(obj.colDef.field==='hub_name'){
+            location.href = '{__ROOTURL__}/app_modal/jigou_file.php?id=' + obj.data.id;
+        }
+        if (obj.colDef.field === 'xiugai') {
+            if({$uid}!=obj.data.id){
+                //alert('只能修改本机构的信息');
+            }else{
+                location.href = '{__ROOTURL__}/app_modal/jigou_update.php?id=' + obj.data.id;
+            }
+        }
+    }
+    function onFilterChanged(newFilter) {
+        Q_gridOptions.api.setQuickFilter(newFilter);
+    }
+</script>

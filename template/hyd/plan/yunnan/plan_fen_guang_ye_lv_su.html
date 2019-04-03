@@ -1,0 +1,199 @@
+<h1>{$arow['assay_element']}检测原始记录</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:4%"></td>
+        <td style="width:10%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5.5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+    </tr>
+    <tr>
+        <td colspan="3">检测项目</td>
+        <td colspan="6">{$arow['assay_element']}</td>
+        <td colspan="4">检测方法</td>
+        <td colspan="8">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="3">使用仪器</td>
+        <td colspan="6">{$arow['td4']}</td>
+        <td colspan="4">仪器编号</td>
+        <td colspan="8">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td colspan="3">提取液定容体积V<sub>1</sub>(mL)</td>
+        <td colspan="6"><input type="text" name="td10" value="{$arow['td10']}" /></td>
+        <td colspan="4">比色皿L（mm）</td>
+        <td colspan="8"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+    </tr>
+    <tr>
+        <td colspan="3">计算公式</td>
+        <td colspan="2" class="noborder right js_gs_1" id="js_gs_1"></td>
+        <td colspan="10" class="noborder js_gs_2" id="js_gs_2"></td>
+        <td colspan="3" class="noleft"></td>
+    </tr>
+    <tr>
+        <td rowspan="2">序号</td>
+        <td rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">样品体积V<sub>2</sub>(mL)</td>
+        <td colspan="2">750nm光密度</td>
+        <td colspan="3">664nm光密度</td>
+        <td colspan="3">647nm光密度</td>
+        <td colspan="3">630nm光密度</td>
+        <td rowspan="2">样品浓度<br />({$arow['unit']})</td>
+        <td rowspan="2">平均值<br />({$arow['unit']})</td>
+        <td rowspan="2">相对偏差（%）</td>
+    </tr>
+    <tr>
+        <td>取值</td>
+        <td>平均</td>
+        <td>取值</td>
+        <td>平均</td>
+        <td>校正</td>
+        <td>取值</td>
+        <td>平均</td>
+        <td>校正</td>
+        <td>取值</td>
+        <td>平均</td>
+        <td>校正</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+    <tr>
+        <td align="center">备注</td>
+        <td colspan="17"><textarea name="td30">$arow[td30]</textarea></td>
+    </tr>
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+    var yelvsu = [[11.85,1.54,0.08],[21.03,5.43,2.66],[24.52,7.60,1.67]];
+    // var yelvsu = [[11.64,2.16,0.10],[21.03,5.43,2.66],[24.52,7.60,1.67]];
+    if("{$arow['vid']}" == 86){
+      //叶绿素a
+      var yls_key = 0;
+      var gongshi = 'ρ<sub>chl-a</sub> = ';
+      var gongshi2 = 'V<sub>1</sub>×['+yelvsu[yls_key][0]+'(D<sub>664</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][1]+'(D<sub>647</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][2]+'(D<sub>630</sub>-D<sub>750</sub>)]<hr />V<sub>2</sub>L';
+    }else if("{$arow['vid']}" == 85){
+      //叶绿素
+      var yls_key = 1;
+      var gongshi = 'ρ<sub>chl-b</sub> = ';
+      var gongshi2 = 'V<sub>1</sub>×['+yelvsu[yls_key][0]+'(D<sub>647</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][1]+'(D<sub>664</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][2]+'(D<sub>630</sub>-D<sub>750</sub>)]<hr />V<sub>2</sub>L';
+    }else if("{$arow['vid']}" == 565){
+      var yls_key = 2;
+      var gongshi = 'ρ<sub>chl-c</sub> = ';
+      var gongshi2 = 'V<sub>1</sub>×['+yelvsu[yls_key][0]+'(D<sub>630</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][1]+'(D<sub>647</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][2]+'(D<sub>664</sub>-D<sub>750</sub>)]<hr />V<sub>2</sub>L';
+    }else{
+      //alert('次化验单模板仅用于检测叶绿素，请选择其他模板做化验');
+      // 不同项目好像减的位置也不一样，故把项目对应的具体公式也分开写了
+    }
+     $(".js_gs_1").html(gongshi);
+     $(".js_gs_2").html(gongshi2);
+    </script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+
+function jsgs() {
+    //加 accAdd 减 accsub 乘 accMul 除 accDiv
+    //运算函数在lib.js
+    // 7+8/2 =9
+    // 10+12/2 =11   -9 =13
+    // 14+15/2 =16   -9 =17
+    // 18+19/2 =20   -9 =21
+    if ($.isNumeric(vs['vd7']) && $.isNumeric(vs['vd8'])) {
+
+        vs['vd9'] = roundjs(accDiv(accAdd(vs['vd7'], vs['vd8']), 2), 3);
+    } else {
+        vs['vd9'] = "";
+    }
+    if ($.isNumeric(vs['vd10']) && $.isNumeric(vs['vd12'])) {
+        vs['vd11'] = roundjs(accDiv(accAdd(vs['vd10'], vs['vd12']), 2), 3);
+    } else {
+        vs['vd11'] = "";
+    }
+    if ($.isNumeric(vs['vd14']) && $.isNumeric(vs['vd15'])) {
+        vs['vd16'] = roundjs(accDiv(accAdd(vs['vd14'], vs['vd15']), 2), 3);
+    } else {
+        vs['vd16'] = "";
+    }
+    if ($.isNumeric(vs['vd18']) && $.isNumeric(vs['vd19'])) {
+        vs['vd20'] = roundjs(accDiv(accAdd(vs['vd18'], vs['vd19']), 2), 3);
+    } else {
+        vs['vd20'] = "";
+    }
+    if ($.isNumeric(vs['vd9'])) {
+        if ($.isNumeric(vs['vd11'])) {
+            vs['vd13'] = accsub(vs['vd11'], vs['vd9']);
+        } else {
+            vs['vd13'] = "";
+        }
+        if ($.isNumeric(vs['vd16'])) {
+            vs['vd17'] = accsub(vs['vd16'], vs['vd9']);
+        } else {
+            vs['vd17'] = "";
+        }
+        if ($.isNumeric(vs['vd20'])) {
+            vs['vd21'] = accsub(vs['vd20'], vs['vd9']);
+        } else {
+            vs['vd21'] = "";
+        }
+    } else {
+        vs['vd21'] = vs['vd17'] = vs['vd13'] = "";
+    }
+    if ($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd13']) && $.isNumeric(vs['vd9']) && $.isNumeric(vs['vd17']) && $.isNumeric(vs['vd21'])) {
+        var A750 = vs['vd9'];
+        var A664 = vs['vd13'];
+        var A647 = vs['vd17'];
+        var A630 = vs['vd21'];
+        var d664 = A664;
+        var d647 = A647;
+        var d630 = A630;
+        // var d664  = accsub(A664,A750);
+        // var d647  = accsub(A647,A750);
+        // var d630  = accsub(A630,A750);
+        var V2 = parseFloat(vs['vd1']);
+        var L = accDiv(parseFloat($("input[name=td9]").val()), 10);
+        var V1 = parseFloat($("input[name=td10]").val());
+        if ("{$arow['vid']}" == 86) {
+            //叶绿素a
+            var res1 = accMul(yelvsu[yls_key][0], d664);
+            var res2 = accMul(yelvsu[yls_key][1], d647);
+            var res3 = accMul(yelvsu[yls_key][2], d630);
+        } else if ("{$arow['vid']}" == 85) {
+            //叶绿素b
+            var res1 = accMul(yelvsu[yls_key][0], d647);
+            var res2 = accMul(yelvsu[yls_key][1], d664);
+            var res3 = accMul(yelvsu[yls_key][2], d630);
+
+        } else if ("{$arow['vid']}" == 565) {
+            //叶绿素c
+
+            var res1 = accMul(yelvsu[yls_key][0], d630);
+            var res2 = accMul(yelvsu[yls_key][1], d647);
+            var res3 = accMul(yelvsu[yls_key][2], d664);
+        } else {
+            var res1 = "";
+            var res2 = "";
+            var res3 = "";
+        }
+        var res = accsub(accsub(res1, res2), res3); //第一 减 第二 减三
+        var jg = (res * V1) / (V2 * L);
+        vs['vd0'] = vs['_vd0'] = jsws(jg);
+    } else {
+        vs['vd0'] = vs['_vd0'] = '';
+    }
+}
+
+</script>

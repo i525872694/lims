@@ -1,0 +1,158 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-00</td>
+    </tr>
+</table>
+<h1>离子色谱测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:13%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="2">{$arow['assay_element']}</td>
+        <td>测定方法</td>
+        <td colspan="2">{$arow['td2']}</td>
+        <td>仪器名称</td>
+        <td>{$arow['td4']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器编号</td>
+        <td colspan="2">{$arow['yq_bh']}</td>
+        <td colspan="1">分离柱</td>
+        <td colspan="1"><input type="text" name="td7" value="$arow[td7]" /></td>
+        <td colspan="1">淋洗液浓度</td>
+        <td colspan="2"><input type="text" name="td8" value="$arow[td8]" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">压力</td>
+        <td colspan="2"><input type="text" name="td9" value="$arow[td9]" /></td>
+        <td colspan="1">柱温</td>
+        <td colspan="1"><input type="text" name="td10" value="$arow[td10]" /></td>
+        <td colspan="1">标样浓度</td>
+        <td colspan="2"><input type="text" name="td11" value="$arow[td11]" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">定容体积(mL)</td>
+        <td colspan="2"><input type="text" name="td14" value="$arow[td14]" /></td>
+        <td colspan="1">截距检验</td>
+        <td colspan="1" id="CT">{$arow['CT']}</td>
+        <td colspan="1">相关系数</td>
+        <td colspan="2">{$arow['CR']}</td>
+    </tr>
+    <tr>
+        <td colspan="2" class="change_qx blue_a" title="点击选择曲线">曲线方程</td>
+        <td colspan="4">{$arow['quxian']} 截距a={$arow['CA']} 斜率b={$arow['CB']}</td>
+        <td colspan="1" class="view_qx blue_a" title="查看曲线">绘制日期</td>
+        <td colspan="2">{$arow['sc_ldrq']}</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td colspan="2">水样名称</td>
+        <td colspan="1">采样日期</td>
+        <td>仪器读数</td>
+        <td>稀释倍数</td>
+        <td>含量<br />({$arow['unit']})</td>
+        <td>平均值</td>
+        <td>相对偏差/加标回收率（%）</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白</td>
+        <td></td>
+        <td><input type="text" class='inputc' name="td20" id="td20" value="{$arow['td20']}" onblur="bt()" /></td>
+        <td><input type="text" class='inputc' name="td21" id="td21" value="{$arow['td21']}" onblur="bt()" /></td>
+        <td><input type="text" class='noinputc' name="td22" id="td22" value="{$arow['td22']}" /></td>
+        <td rowspan="2"><input type="text" class='noinputc' name="td26" id="td26" value="{$arow['td26']}" /></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白</td>
+        <td></td>
+        <td><input type="text" class='inputc' name="td23" id="td23" value="{$arow['td23']}" onblur="bt()" /></td>
+        <td><input type="text" class='inputc' name="td24" id="td24" value="{$arow['td24']}" onblur="bt()" /></td>
+        <td><input type="text" class='noinputc' name="td25" id="td25" value="{$arow['td25']}" /></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+    if($('#CT').html()!='' && $('#CT').html()!='不合格'){
+    $('#CT').html('合格');
+  }
+</script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+
+function bt() {
+    var xsbs = v('td21');
+    var len;
+    $.isNumeric(xsbs) ? '' : xsbs = 1;
+    if ($.isNumeric(v('td20'))) {
+        var jg = accMul(v('td20'), xsbs);
+        // jg < 1 ? len = 3 : len = 2;
+        var strArr = v('td20').toString().split(".");
+        if(strArr.length == 2){
+            len = strArr[1].length;
+        }else{
+            len = 0;
+        }
+        setdata('td22', roundjs(jg, len));
+    } else {
+        setdata('td22', '');
+    }
+    var xsbs = v('td24');
+    $.isNumeric(xsbs) ? '' : xsbs = 1;
+    if ($.isNumeric(v('td23'))) {
+        var jg = accMul(v('td23'), xsbs);
+        // jg < 1 ? len = 3 : len = 2;
+        var strArr = v('td23').toString().split(".");
+        if(strArr.length == 2){
+            len = strArr[1].length;
+        }else{
+            len = 0;
+        }
+        setdata('td25', roundjs(jg, len));
+    } else {
+        setdata('td25', '');
+    }
+    if ($.isNumeric(v('td22')) && $.isNumeric(v('td25'))) {
+        var jg = accDiv(accAdd(v('td22'), v('td25')), 2);
+        // jg < 1 ? len = 3 : len = 2;
+        var strArr = v('td22').toString().split(".");
+        if(strArr.length == 2){
+            len = strArr[1].length;
+        }else{
+            len = 0;
+        }
+        setdata('td26', roundjs(jg, len));
+    // } else if ($.isNumeric(v('td22'))) {
+        // setdata('td26', v('td22'));
+    } else {
+        setdata('td26', '');
+    }
+}
+
+function jsgs() {
+    bt();
+    var xsbs = vs['vd2'];
+    $.isNumeric(xsbs) ? '' : xsbs = 1;
+    if ($.isNumeric(vs['vd27'])) {
+        vs['vd0'] = accMul(vs['vd27'], xsbs);
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

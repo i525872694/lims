@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>精密度偏性检验表</title>
+<link href="{$rooturl}/css/ace.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/bootstrap.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/print.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/buttons.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	*{text-align: center;}
+	table{margin: 0 auto; min-width: 28cm;text-align: center;}
+	table.single td{ min-height:40px; min-width: 20px;}
+	table.single td input[type='text']{ width: 100%;}
+	table.single textarea{width: 100%; height: 100%;}
+	.padding_0 td{ padding:0;margin:0;line-height:15px;height:30px;}
+	table.single tr.line:hover{ background-color:#ccc;}
+	table.single td.nohover{ background-color:#FFF;}
+	.overline {
+		text-decoration: overline;
+	}
+	tr.left td{
+		text-indent: 1em;
+		text-align: left;
+	}
+</style>
+</head>
+<body>
+	<div style="margin: 15px;">
+		<table class="single">
+			<tr>
+			<td colspan="15"><h3>精密度偏性检验表</h3></td>
+			</tr>
+			<tr>
+			<td>单位</td>
+			<td colspan="4">{$hub_info['hub_name']}</td>
+			<td colspan="3">分析浓度</td>
+			<td colspan="2"></td>
+			<td colspan="2">分析人员</td>
+			<td colspan="3"></td>
+			</tr>
+			<tr>
+			<td>分析方法</td>
+			<td colspan="4"></td>
+			<td colspan="3">浓度单位</td>
+			<td colspan="2"></td>
+			<td colspan="2">分析日期</td>
+			<td colspan="3"></td>
+			</tr>
+			<tr class="left">
+			<td colspan="4">1．空白批内标准差及检测限</td>
+			<td colspan="11">2．加标回收率检验</td>
+			</tr>
+			<tr>
+			<td colspan="2">项目</td>
+			<td>说明</td>
+			<td>结果</td>
+			<td colspan="3">项目</td>
+			<td colspan="6">说明</td>
+			<td colspan="2">结果</td>
+			</tr>
+			<tr>
+			<td colspan="2">空白批内标准差</td>
+			<td rowspan="2"></td>
+			<td rowspan="2"></td>
+			<td colspan="3" rowspan="2">平均回收率</td>
+			<td colspan="6" rowspan="2">见表六</td>
+			<td colspan="2" rowspan="2"></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>S</font><font>wb</font></td>
+			</tr>
+			<tr>
+			<td colspan="2" rowspan="5">零浓度标准差</td>
+			<td rowspan="5"></td>
+			<td rowspan="5"></td>
+			<td colspan="3">回收率</td>
+			<td colspan="6"><font>当</font><font>95%</font><font>&lt;</font></td>
+			<td colspan="2" rowspan="5"></td>
+			</tr>
+			<tr>
+			<td colspan="3">合格检验</td>
+			<td colspan="6"><font class="font4">&lt;</font><font>105%时；</font></td>
+			</tr>
+			<tr>
+			<td colspan="3"></td>
+			<td colspan="6">合格（是）</td>
+			</tr>
+			<tr>
+			<td colspan="3"></td>
+			<td colspan="6">当</td>
+			</tr>
+			<tr>
+			<td colspan="3"></td>
+			<td colspan="6">在此范围之外时；</td>
+			</tr>
+			<tr>
+			<td colspan="2">检测限</td>
+			<td></td>
+			<td></td>
+			<td colspan="3"></td>
+			<td colspan="6">不合格（否）</td>
+			<td colspan="2"></td>
+			</tr>
+			<tr class="left">
+			<td colspan="15"><font>3</font><font>．分析批内批间变异，检验总标准差</font></td>
+			</tr>
+			<tr>
+			<td colspan="2">项目</td>
+			<td colspan="4">说明</td>
+			<td>0.1C</td>
+			<td colspan="2">0.9C</td>
+			<td colspan="2">天然水样</td>
+			<td colspan="3">加标水样</td>
+			<td>统一标样</td>
+			</tr>
+			<tr>
+			<td colspan="2">批内变异</td>
+			<td colspan="4" rowspan="2"></td>
+			<td rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="3" rowspan="2"></td>
+			<td rowspan="2"></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>（</font><font>a</font><font>）</font></td>
+			</tr>
+			<tr>
+			<td colspan="2">批间变异</td>
+			<td colspan="4" rowspan="2"></td>
+			<td rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="3" rowspan="2"></td>
+			<td rowspan="2"></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>（</font><font>b</font><font>）</font></td>
+			</tr>
+			<tr>
+			<td colspan="2">变异显著性检验</td>
+			<td colspan="4"><font>当</font><font>b/a&lt;F</font><font class="font35"><sub>0.05</sub></font><font>时；无显著性差异</font><font>(NS)</font></td>
+			<td rowspan="3"></td>
+			<td colspan="2" rowspan="3"></td>
+			<td colspan="2" rowspan="3"></td>
+			<td colspan="3" rowspan="3"></td>
+			<td rowspan="3"></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>（</font><font>F</font><font>检验）</font></td>
+			<td colspan="4"><font>当</font><font>F</font><font class="font35"><sub>0.05</sub></font><font>&lt;b/a&lt;F</font><font class="font35"><sub>0.01</sub></font><font>时；显著性证据不足</font><font><span>&nbsp; </span>(*)</font></td>
+			</tr>
+			<tr>
+			<td class="xl98" colspan="2"></td>
+			<td class="xl83" colspan="4"><font>当</font><font>b/a&gt;F</font><font class="font35"><sub>0.01</sub></font><font>时；有显著性差异</font><font>(**)</font></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>总变异（</font><font>f</font><font>）</font></td>
+			<td colspan="4"><font>a + (b </font><font class="font36">-</font><font>a) / n</font></td>
+			<td></td>
+			<td colspan="2"></td>
+			<td colspan="2"></td>
+			<td colspan="3"></td>
+			<td></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>总标准差（</font><font>St</font><font>）</font></td>
+			<td colspan="4"></td>
+			<td></td>
+			<td colspan="2"></td>
+			<td colspan="2"></td>
+			<td colspan="3"></td>
+			<td></td>
+			</tr>
+			<tr>
+			<td colspan="2"><font>指标检出限</font><font>(w</font><font>)</font></td>
+			<td colspan="4"><font>测得浓度的</font><font>5%</font><font>或检出限两者的最大值为</font><font>w</font></td>
+			<td></td>
+			<td colspan="2"></td>
+			<td colspan="2"></td>
+			<td colspan="3"></td>
+			<td></td>
+			</tr>
+			<tr>
+			<td colspan="2">总标准差</td>
+			<td colspan="4"><font>当</font><font>St</font><font>&lt;</font><font>w</font><font>时，总标准差合格</font><font>(</font><font>是</font><font>)</font></td>
+			<td rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="2" rowspan="2"></td>
+			<td colspan="3" rowspan="2"></td>
+			<td rowspan="2"></td>
+			</tr>
+			<tr>
+			<td colspan="2">检验</td>
+			<td class="xl83" colspan="4"><font>当</font><font>St&gt;w</font><font>时，总标准差不合格</font><font>(</font><font>否</font><font>)</font></td>
+			</tr>
+			<tr class="left">
+			<td colspan="15">4．三种检验不合格的原因初步分析及改正措施</td>
+			</tr>
+			<tr height="17">
+			<td class="xl77" height="52" colspan="15" rowspan="3" style='height:39.00pt;border-right:1.0pt solid windowtext;border-bottom:1.0pt solid windowtext;'></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

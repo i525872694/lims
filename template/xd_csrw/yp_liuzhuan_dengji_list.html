@@ -1,0 +1,79 @@
+<style>
+.body_content{
+		display: none;
+	}
+	.loading_div{
+		margin:0 auto;
+		position: fixed;
+		top:40%;
+		height:40%;
+		left:45%;
+		text-align: center;
+	}
+	.loading_img{
+		-webkit-transform: rotate(360deg);
+		animation: rotation 8s linear infinite;
+		-moz-animation: rotation 8s linear infinite;
+		-webkit-animation: rotation 8s linear infinite;
+		-o-animation: rotation 8s linear infinite;
+	}
+	@-webkit-keyframes rotation {
+    	from {-webkit-transform: rotate(0deg);
+	}to {
+		-webkit-transform: rotate(360deg);
+	}}</style>
+<script>
+function redirect( cy_date ){
+    url = "yp_liuzhuan_dengji_list.php?cy_date=" + cy_date;
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+</script>
+<div style="width:100%;margin:0 auto;" class='body_content'>
+	<div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+		<ul>
+			<li><a href="#tabs-1" onclick="location='yp_liuzhuan_dengji_list.php'">样品流转登记表</a></li>
+			<li><a href="#tabs-2" onclick="location='yp_liuzhuan_dengji_list.php?type=ypbc2&tab=1&title=样品保存及调用'">样品保存及调用</a></li>
+			<li><a href="#tabs-3" onclick="location='yp_liuzhuan_dengji_list.php?type=ypbc3&tab=2&title=样品处置'">样品处置</a></li>
+		</ul>
+	<div id="tabs-1">
+    <h3 class="header smaller center title">样品流转登记表</h3>
+    <div class="widget-box no-border">
+      <div class="widget-header header-color-blue4 center">
+      <div class="widget-toolbar">
+        年份选择:<select id="year" {selected} onchange="redirect(get_cy_date())">$year_list</select>
+        月份选择:<select id="month"  {selected}   onchange="redirect(get_cy_date())">$month_list</select> 
+      </div>
+      </div>
+      <div class="widget-body"></div><br/>
+    <table class="table table-striped table-bordered table-hover center" style='table-layout:fixed;width:1000px;'>
+      <tr>
+        <td width="30%">样品编号</td>
+        <td width="12%">采样日期</td>
+        <td width="8%">领用样品数量</td>
+        <td width="10%">领样人</td>
+        <td width="12%">领样日期</td>
+        <td width="10%">归还日期</td>
+        <td width="10%">样品管理人</td>
+        <td width="10%">备注</td>
+      </tr>
+    $lines
+    </table>
+    </div>
+    </div>
+	</div>
+	<div id="tabs-2">{$files_content1}</div>
+  <div id="tabs-3">{$files_content2}</div>
+	</div>
+</div>
+<script>
+	$(function(){
+		$('#tabs').tabs();
+		var active={$tab_active};
+		$('#tabs').tabs({active:active})
+		$(".body_content").show();
+	})
+</script>

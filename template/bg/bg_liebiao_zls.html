@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="$rooturl/css/boxy.css" type="text/css" />
+<script type="text/javascript" src="$rooturl/js/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="$rooturl/js/jquery.boxy.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+$(function(){
+	$(".boxy").boxy();
+});
+
+</script>
+ <style type="text/css">   
+li {list-style-type:none;}  
+.mask{position: absolute;
+        top: 0px; 
+        left: 0px; 
+        filter: alpha(opacity=50);
+        -moz-opacity:0.5;   
+        opacity:0.5; 
+        background-color: #ffffff;
+        z-index: 2; 
+        display: none; border:}
+    
+
+span.bar_code{ cursor: pointer;}
+span.bar_code img{ width:13px; height: 13px;}
+td{white-space: nowrap;}/*td里的文字不换行*/
+</style>
+  <script language='javascript' src="$rooturl/js/jquery.date_input.js"></script>
+  <link rel="stylesheet" href="$rooturl/js/date_input.css" type="text/css">
+<script type="text/javascript">
+$(document).ready(function(){
+  $($.date_input .initialize);
+  $("span.bar_code").next("input").each(function(){
+    $(this).hide();
+  });
+  $("span.bar_code").click(function(){
+    $(this).hide();
+    $(this).next("input").show();
+    $(this).next("input").focus();
+    $(this).next("input").blur(function(){
+      $(this).hide();
+      $(this).prev("span.bar_code").html($(this).val()+'<img src="images/b_edit.png">');
+      $(this).prev("span.bar_code").show();
+    });
+  });
+});
+function select_all(aButton){
+    var forms = aButton.form;
+    for(j=0;j<forms.length;j++){
+      with(forms.elements[j]){
+        if(type=='checkbox' && name=="cid[]"){
+          checked=(aButton.value=='全选')?true:false;
+        }
+      }
+    }
+    aButton.value=(aButton.value=='全选')?'取消全选' : '全选';
+}
+
+function redirect( cy_date ){
+    url = "bg_liebiao.php?cy_date=" + cy_date + "&site_type=" + v('site_type')+"&print_status="+v('print_status');
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+function change_bg_mb(rec_id,t){
+	if(t.value!=''&&t.value!=null&&rec_id!=''&&rec_id!=null){
+		$.post("change_bg_mb.php?ajax=1",{rec_id:rec_id,te_id:t.value},function(data){
+			if(data=='1'){
+				alert("更新成功！");
+			}else{
+				alert("更新失败,请联系系统管理员！");
+				return false;
+			}
+		},'html');
+	}else{
+		alert("无法更改模板,请联系系统管理员！");
+		return false;
+	}
+}
+</script>
+<div style="min-height:500px">
+<form >
+<h3 class="header smaller center title">$title</h3>
+<div   class="widget-header header-color-blue4 center" >
+
+任务性质:<select name="site_type" id="site_type" onchange="redirect(get_cy_date())">{$site_type_list}</select>
+年份选择:<select name="year" id="year" onchange="redirect(get_cy_date())">{$year_list} </select>
+月份选择:<select name="month" id="month" onchange="redirect(get_cy_date())">{$month_list}</select>
+打印状态:<select name="print_status" id="print_status" onchange="redirect(get_cy_date())">{$print_list}</select>
+</div>
+</form>
+<table  width='88%'  class="table table-striped table-bordered table-hover center" >
+
+<tr>
+  <th>序号</th>
+  <th>批次</th>
+  <th>采样单号</th>
+  <th>采样日期</th>
+  <th>超标项目</th>
+  <th>报告打印进度</th>
+  <th>化验项目进度</th>
+  <th width ="20%">操作</th>
+</tr>
+$lines
+</table>
+
+</div>
+<script language="javascript" src="$rooturl/js/lims/jquery.js"></script>
+
+<script language="javascript" src="$rooturl/js/lims/jquery.jBox-2.3.min.js"></script>
+<script language="javascript" src="$rooturl/js/lims/jquery.tools.min.js"></script>
+
+<script language="javascript" src="$rooturl/js/boxy.js"></script>

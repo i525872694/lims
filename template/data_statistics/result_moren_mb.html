@@ -1,0 +1,64 @@
+<style type="text/css">
+    	tr{height: 31pt;}
+        span.chaobiao_vd0{
+            //color:red;
+            font-weight: bold;
+        }
+        td.chaobiao_vd0{
+            background-color:#FAAA8E;
+        }
+        .gdtjContainer .tb tr
+        {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .gdtjContainer .tb td
+        {
+			white-space : normal;
+			border:0.5pt solid;
+            text-align: center;
+            font-weight: normal;
+            font-size: 10pt;
+			mso-height-source:auto;}
+		 .gdtjContainer .no_border td
+		{
+			border:0pt;
+		}
+		td{min-width:{$mintd_width}pt;}
+		.print_fenye {
+            width:100%;
+            height:1px;
+            margin-top:-1px;
+            page-break-after:always;
+        }
+    </style>
+
+    <div class="gdtjContainer">
+        <table class="tb"  style="margin:0 auto;width:1000px;border-collapse:collapse;font-size:10pt;text-align:center;font-family:宋体;"  border="0"  cellpadding="4">
+			<thead style="display:table-header-group;" >
+				<tr>
+					<td align="center" style="font-weight:bold;font-size:20pt;font-family:宋体;border:0px solid;" colspan={$all_cols}>$title_name</td>
+				</tr>
+				<tr>
+					<td style="font-weight:bold;font-size:16pt;font-family:宋体;border:0px solid;text-align:center" colspan={$all_cols}>{$time_start_china}&nbsp;»&nbsp;{$time_end_china}</td>
+				</tr> 
+				<tr align="center" style="mso-height-source:auto;">
+					{$bt_td}
+				</tr>
+				<tr align="center" style="mso-height-source:auto;">{$xm_danwei_td}
+				</tr>
+			</thead>
+			{$result_html_line}
+			<tr>
+				<td colspan={$all_cols} style="text-align:left;font-size:11pt;border:1px solide">
+					备注：*为耗氧量检验地点。
+				</td>
+			</tr>
+			<tr>
+				<td colspan={$all_cols} style="text-align:left;font-size:11pt;border:1px solide">
+					检验：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复核：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日期：
+				</td>
+			</tr>
+        </table>
+    </div>
+

@@ -1,0 +1,89 @@
+<form method=post name=sjqm id=sq onsubmit="return check()" action=sjqm.php?type=$type>
+	$title
+<table class=single align="center">
+	<tr align=center>
+		<td width="80">名称</td>
+		<td width="200">$r[name]</td>
+		<td width="80">别名</td>
+		<td width="200">$r[nice_name]</td>
+	</tr>
+	$fenzishi;
+	<tr align=center>
+		<td>级别</td>
+		<td>$r[jibie]</td>
+		<td>规格</td>
+		<td>$r[guige]</td>
+	</tr>
+	<tr align=center>
+		<td>单价</td>
+		<td>$r[danjia]</td>
+		<td>单位</td>
+		<td>$r[danwei]</td>
+	</tr>
+	<tr align=center>
+		<td>库存</td>
+		<td>$r[kucun]</td>
+		<td>库存提醒</td>
+		<td>$r[KCtixing]</td>
+	</tr>
+	<tr align=center>
+		<td>生产批号</td>
+		<td>$r[pihao]</td>
+		<td>生产厂家</td>
+		<td>$r[changjia]</td>
+	</tr>
+	<tr align=center>
+		<td>有效期</td>
+		<td>$r[youxiaoqi]</td>
+		<td>过期提醒</td>
+		<td>$r[GQtixing]</td>
+	</tr>
+	<tr align=center>
+		<td>备注</td>
+		<td>
+			$r[beizhu]
+		</td>
+		<td>管理员</td>
+		<td>
+			$user_select
+		</td>
+	</tr>
+
+</table>
+<br>
+<input type="hidden" name="type" value="$fl[$type]" />
+$hidid
+	$sub
+</form>
+<script>
+onload=function(){
+	var len = sjqm.length -1;
+	for(var i=0;i<len;i++){
+		sjqm[i].onblur=function(){
+				var str = this.value;
+			str= str.replace(/'/g,"‘");
+			str= str.replace(/"/g,"“");
+			this.value = str.replace(/;/g,"；");	
+		}
+	}
+}
+function check(){
+	var reg = /^\d+$/;
+	var rqreg = /^\d{4}-\d{1,2}-\d{1,2}$/;
+	var rq = document.getElementById('rq').value;
+	var sl = document.getElementById('sl').value;
+	if(!rqreg.test(rq)){
+		alert('日期格式必须为YYYY-mm-dd');
+		return false;
+	}
+	if(!reg.test(sl)){
+		alert('数量必须为整数');
+		return false;
+	}
+	var mc = document.getElementById('mc').value;
+	if(mc==''){
+		alert('名称不能为空');
+		return false;
+	}
+}
+</script>

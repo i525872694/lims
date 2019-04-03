@@ -1,0 +1,130 @@
+<style>
+.value_C{float:left;}
+.widget-body{overflow: hidden;}
+#search{
+	width:180px;
+	padding-right:18px;
+	position:inherit;
+	font-size:14px;
+}
+.icon-search{margin-left: -18px;}
+.no_show_tishi{
+	text-align: center !important;
+	color:#AFADAD;
+	font-size: 16px;
+}
+</style>
+<h3 class="header smaller center title">{$_POST['title']}</h3>
+<div class="widget-box no-border">
+	<div class="widget-header header-color-blue4 center">
+		<div class="widget-toolbar">
+			<!--项目排序 <select ></select>-->
+			<input type="text" name="" value="" id='search' onkeyup="input_search(this);" placeholder="请输入搜索内容！" /><i class="icon-search" onclick='$()'></i>
+			<br>针对系统无法识别的名称：请将此处显示的名称复制到excel表中，再进行导入
+		</div>
+	</div>
+	<div class="widget-body">
+		<div class='left search_con'>
+			{$lines}
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+//搜索(支持空格多项搜索)，应当排除按钮里的文字
+function input_search(search_input){
+	var search_val	= search_input.value;
+	//不能搜索特殊字符
+	var bbb	= /[()<>.+*?^$|\\\[\]]/;
+	if(bbb.test(search_val)){
+		alert('不能输入一下特殊符号:\\r\\n()<>.+*?^$|\[]');//+bbb.source
+		search_input.value=search_val.substr(0,-1);
+		search_input.focus();
+		return false;
+	}
+	//去除首尾的空格和中间多余的空格
+	search_val	= search_val.replace(/(^\s*)|(\s*$)/g, "").replace(/ {2,}/g,' ');
+	//清除掉为了突出提醒而增加的html标签
+	$(".search_con span.js_add").each(function(i){
+		var old_html	= $(this).html().replace(/(<b class="js_add" style="color:red;">(.+?)<\/b>)/g,'$2');
+		$(this).html(old_html).removeClass('js_add');
+	});
+	$(".no_show_tishi").remove();
+	//搜索内容不为空时再进行搜索
+	if(search_val){
+		var search_arr	= search_val.split(' ');
+		//定义搜索内容
+		if(search_arr.length >1){
+			var jquery_search	= ":contains("+search_arr.join("):contains(")+")";
+		}else{
+			var jquery_search	= ":contains("+search_val+")";
+		}
+		//逐行开始检索
+		$(".search_con>span[search!='no_search']").hide();
+		$(".search_con>span[search!='no_search']"+jquery_search).each(function(i){
+			//查找是否有包含搜索内容的td，包含内容的将tr显示，没有的隐藏
+			//对每个td里的搜索内容 变红加粗显示
+			$(this).show().addClass('js_add');//增加一个class，去掉该标签时容易识别
+			//for (var w = 0; w < search_arr.length; w++) {
+				setHeightKeyWord($(this),search_val);
+			//}
+		});
+	}else{
+		$(".search_con>span").show();
+	}
+	//没有搜索内容时，增加提示
+	var show_span_num	= $(".search_con>span:visible").length;
+	console.log("aaa"+show_span_num);
+	if(show_span_num <='0'){
+		$(".search_con").append("<div class='no_show_tishi'>没有搜索到相关项目!</div>");
+	}
+}
+//搜索到的东西变个颜色突出显示
+function setHeightKeyWord(id, keyword) {
+	if (keyword == "" || keyword==' ')
+		return;
+	var tempHTML = id.html();
+	//把html标签特殊标记出来，防止后面匹配时匹配到
+	var htmlReg = new RegExp("\<.*?\>", "i");
+	var arrA = new Array();
+	for (var i = 0; true; i++) {
+		var m = htmlReg.exec(tempHTML);
+		if (m) {
+			arrA[i] = m;
+		}else {
+			break;
+		}
+		tempHTML = tempHTML.replace(m, "&#&%" + i + "%&#&");
+	}
+	//根据传入参数决定将搜索到的内容如何处理
+	var replaceText = "<b class='js_add' style='color:red;'>$1</b>";
+	//可以根据空格进行多次并列搜索
+	var arrayWord = keyword.split(' ');
+	for (var w = 0; w < arrayWord.length; w++) {
+		var ts_zf	= arrayWord[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&");
+		//将js的特殊字符转义一下,并注意注意不要匹配到特殊标记的 html标签//bug 特殊字符的转义失败导致不能搜索特殊字符
+		var r 		= new RegExp("("+ts_zf+")", "ig");
+		//解决 纯数字搜索时会匹配到特殊标记的html标签的bug
+		var str_key	= tempHTML.match(/&#&%[0-9]+?%&#&/g);//记录下所有特殊标记的html标签
+		if(!isNaN(arrayWord[w]) && str_key){//如果搜索的纯数字走这里
+			var str_arr = tempHTML.split(/&#&%[0-9]+?%&#&/);//根据特殊html标记 将字符串分解成数组
+			var finist_str	= '';
+			for (var i = 0; i<str_arr.length; i++) {
+				finist_str += str_arr[i].replace(r, replaceText);
+				if(str_key[i]){
+					finist_str += str_key[i];
+				}
+			}
+			tempHTML	= finist_str;
+		}else{
+			var r = new RegExp("((?!&#&%)" + ts_zf + "(?!%&#&))", "ig");
+			tempHTML = tempHTML.replace(r, replaceText);
+		}
+	}
+	//把被搜索内容中转换的html标签恢复
+	for (var i = 0; i < arrA.length; i++) {
+		tempHTML = tempHTML.replace("&#&%" + i + "%&#&", arrA[i]);
+	}
+	//将改变后的html写回原标签
+	id.html(tempHTML);
+} 
+</script>

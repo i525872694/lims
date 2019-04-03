@@ -1,0 +1,42 @@
+<style>
+	.body_content{
+		display: none;
+	}
+	.loading_div{
+		margin:0 auto;
+		position: fixed;
+		top:40%;
+		height:40%;
+		left:45%;
+		text-align: center;
+	}
+	.loading_img{
+		-webkit-transform: rotate(360deg);
+		animation: rotation 8s linear infinite;
+		-moz-animation: rotation 8s linear infinite;
+		-webkit-animation: rotation 8s linear infinite;
+		-o-animation: rotation 8s linear infinite;
+	}
+	@-webkit-keyframes rotation {
+    	from {-webkit-transform: rotate(0deg);
+	}to {
+		-webkit-transform: rotate(360deg);
+	}}
+</style>
+<div class='loading_div'>
+	<img src="{$rooturl}/img/Loading.png" class='loading_img' alt=""><br/>
+	<h3>正在拼命加载中</h3>
+</div>
+<div style="width:100%;margin:0 auto;" class='body_content'>
+	<h3 class='center'>不符合处理流程</h3>
+	{$files_content0}
+</div>
+<script>
+	$(function(){
+		$('#tabs').tabs();
+		var active={$tab_active};
+		$('#tabs').tabs({active:active})
+		$(".body_content").show();
+			$('.loading_div').remove();
+	})
+</script>

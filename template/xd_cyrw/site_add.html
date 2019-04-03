@@ -1,0 +1,241 @@
+<div id="tabs" style="width:100%;margin:0 auto;" class="center">
+    <ul>
+        <li>
+                <a href="#tabs-1" id="k1">已有站点</a>
+        </li>
+        <li>
+                <a href="#tabs-2" id="k2">添加新站点</a>
+        </li>
+    </ul>
+    <div id="tabs-1">
+    	<div>
+    		<input type='text' name='search_site' value='' id='search'  onkeyup="pySearch(this);" placeholder='请输入搜索内容' class='search_site' />
+    		<i class="icon-search"> </i>
+    	</div>
+    	<div style="text-align:left;margin-top:20px;">
+    		<div class="item" id='sites_box'>
+    		    {$type_site_html}
+    		</div>
+    		<div style="clear:both;"></div>
+    	</div>
+    </div>
+    <div id="tabs-2">
+        <br />数据加载中......<br />
+    </div>
+</div>
+<script>
+$(function(){
+	//防止批次过少，窗口扩展不开的情况。
+	$('body').height($('body').parent().height());
+	$(".chosen").chosen();//可搜索下拉菜单
+	$( "#tabs" ).tabs();
+	if($("#tabs-2:contains('数据加载中')").html()){
+        var lianJie     = "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes&daohang_action={$_GET['daohang_action']}&ajax=$_GET[ajax]";
+        var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+        var str = "<option value='"+group_name+"' selected>"+group_name+"</option>";
+        $("#tabs-2").load(lianJie).find("select[name='group_name']").append(str);
+        $("#tabs-2 select[name='site_type'],#tabs-2 select[name='group_name'],#tabs-2 select[name='fenz[]']").attr("disabled",true);
+    }
+	$("#k2").click(function(){
+		if($("#tabs-2:contains('数据加载中')").html()){
+			var lianJie	= "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes";
+			$("#tabs-2").load(lianJie);
+		}
+		//默认批次名称
+        var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+		$("#tabs-2 input[name='group_name']").val(group_name);
+		//$(window.parent.document).find('iframe').height($('body').height()+$("#tabs-2").height()+300);
+	});
+	//鼠标移动到项目上或者选中的项目，高亮显示
+	$("label.site_label,.group_sites").mouseover(function(){
+    	$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+    }).mouseout(function(){
+    	if(!$(this).children("input").is(":checked")){
+        	$(this).css("background-color","#FFF");
+    	}
+    });
+	//默认将 任务类型、批次名称、分中心  都处理为不可选择
+	$("#tabs-2").on("click","#add",function(){
+		$("#tabs-2 form[name='playlist'] select[name='customers[]']:last").removeAttr("disabled");
+		$("#tabs-2 form[name='playlist'] select[name='fenz[]']").attr("disabled",true);
+		//添加分中心的隐藏域
+		var fzx_id_last	= $("#tabs-2 form[name='playlist'] select[name='fenz[]']:last").val();
+		$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='fenz[]' value='"+fzx_id_last+"' />");
+	});
+	//选择新添加站点提交时改为ajax提交
+	$("#tabs-2").on("submit","form[name='playlist']",
+		function(){
+			//添加一个隐藏域变量，告诉站点添加页面 这里是ajax提交的
+			if($("input[name='action'][value='site_add_ajax']").val()!='site_add_ajax'){
+				$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='action' value='site_add_ajax' />");
+			}
+			var options = {
+				dataType: "json",
+				success:function(result){
+					if(result.jieGuo=='yes'){
+					//批次表格的"批内站点"td里追加选中的站点
+						for(gr_id in result.ajax_group){
+							if(!$("#group_sites input[value='"+gr_id+"']").val()){
+								var site_html   = "<label class='group_sites'><input type='checkbox' name='sites[]' value='"+gr_id+"' checked />"+result.ajax_group[gr_id]+"</label>";
+								$("#group_sites").prepend(site_html);
+								var sum_sites   = parseInt($("#sum_sites").text());
+								if(sum_sites==0){
+									sum_sites	= 1;
+								}else{
+									sum_sites	= sum_sites + 1;
+								}
+								$("#sum_sites").text(sum_sites);
+							}
+						}
+						//把已经添加的站点 改为不可编辑  并隐藏添加站点页面
+						$("#tabs-2 form[name='playlist'] input[type='text'],#tabs-2 form[name='playlist'] select[name='customers[]']").attr("disabled",true);
+						$("#button_site_add").val('点击显示站点添加窗口');
+						$("#fieldset_site_add").toggle('2');
+                          		}else{
+                                		alert('修改失败，请重试');
+                          		}
+                    		},
+                    		timeout:10000
+               		};
+			$(this).ajaxSubmit(options);//ajax提交
+			return false;
+		}
+	);
+	//取消直接选择站点多选框效果，只执行外部div的click效果
+    $("input[name='site_id']").click(function(event){
+        if($(this).is(":checked")){
+            $(this).prop('checked',false);
+        }else{
+            $(this).prop('checked',true);
+        }
+    });
+    //选中站点，变色并在批次中添加站点
+    $(".site-div").click(function(event){
+    	var addcar      = $(this);
+        var addcar_input= addcar.find("input[name='site_id']");//对应多选框
+        var site_id     = addcar_input.val();
+        var site_name   = addcar_input.next('span.site_name').text();
+        if(addcar_input.is(":checked")){
+        	addcar_input.prop('checked',false);
+        	$(this).removeClass("checked");
+        	//取消选中挑选出的对应站点
+            $("input[name='sites[]'][value='"+site_id+"']").parent("label.group_sites").remove();
+	    }else{
+	    	addcar_input.prop('checked',true);
+	        $(this).addClass("checked");
+	        var input_old_num = $("input[name='sites[]'][value='"+site_id+"']").length;//已挑选站点的数量
+            if(input_old_num < '1'){
+                var site_html   = "<label title='"+site_name+"' class='group_sites'><input type='checkbox' name='sites[]' site_id='"+site_id+"' value='"+site_id+"' checked />"+site_name+"</label>";
+                $("#group_sites").prepend(site_html);
+            }else{
+                $("input[name='sites[]'][value='"+site_id+"']").prop('checked',true);
+            }
+	    }
+	    var chose_site_num  = $("input[name='sites[]']:checked").length;
+        $("#sum_sites").html(chose_site_num).show();//选中站点数量
+	});
+})
+
+
+//拼音搜索
+function pySearch(e) {
+	if (e.value == "")
+		$(".site-div").show()
+	else{
+        console.log(e.value)
+		$(".site-div").hide()
+		$('.site-div[data-val*='+e.value+']').show()
+    }
+
+}
+</script>
+<style>
+	.site_label,.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+	.group_sites{float:none;background-color:#C9F2D1}
+	#search{/*搜索框*/
+        min-width:200px;
+        height:35px;
+        width:10%;
+        padding-right:18px;
+        position:inherit;
+        font-size:14px;
+        border-radius: 6px !important;
+    }
+    .icon-search{margin-left: -18px;}/*搜索图标*/
+    fieldset{/*站点类型盒子*/
+        width:93%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;
+    }
+    legend{/*站点类型名称*/
+        margin-left:20px;padding:5px;width:auto;margin-bottom: 0px;
+    }
+    .item [class*="col-"] {/*包含站点所有信息的div*/
+        width: 133px;
+        height:44px;
+        margin-top:2px;
+        margin-bottom:2px;
+        position:relative;
+        text-overflow:ellipsis;
+    }
+    .item [class*="col-"]  div.label_div,.item [class*="col-"]  label{
+        //cursor: pointer;
+        position:relative;
+        z-index:2;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        //white-space: nowrap;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        text-align:left;
+    }
+    .item [class*="col-"]:before {
+        position:absolute;
+        top:0; bottom:0;
+        left:2px; right:2px;
+        content:"";
+        display:block;
+        border:1px solid #DDD;
+        z-index: 1;
+    }
+    .item [class*="col-"]:hover:before {
+        background-color:#FCE6A6;
+        border-color:#EFD27A;
+    }
+    .item [class*="checked"]:before {
+        background-color:#DFF0D8;
+        border-color:#DFF0D8;
+    }
+    /*####树状图css8*/
+    #tree{
+        text-align: center;vertical-align:middle;min-height:100px;
+    }
+    .node circle {
+        cursor: pointer;
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+    .node text {
+        font-size: 14px;
+    }
+    path.link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+    .circle_g{
+        stroke:"none";
+        stroke-width:"1" ;
+        fill:"none" ;
+        width:20px;
+        height:20px;
+        /*fill-rule:"evenodd";*/
+    }
+    /*树状图css 结束*/
+    .no_show_tishi{/*搜索不到站点时增加的提示*/
+        text-align: center !important;
+        color:#AFADAD;
+        font-size: 16px;
+    }
+</style>

@@ -1,0 +1,127 @@
+<table class="hide noborder">
+    <tr align="right">
+        <td colspan="15">监-**</td>
+    </tr>
+</table>
+<h1>五日生化需氧量检验记录</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+        <td style="width:9%">
+    </tr>
+    <tr align="center" class="auto">
+        <td rowspan="2">测定方法</td>
+        <td rowspan="2" colspan="2" class="left">{$arow['td2']}</td>
+        <td rowspan="2">溶解氧测定仪</td>
+        <td colspan="3" class="left">名称:{$arow['td4']}</td>
+        <td rowspan="2">恒温培养箱</td>
+        <td colspan="3" class="left" nowrap="">名称:<input size="12" type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+    </tr>
+    <tr class="auto">
+        <td colspan="3" class="left">编号:{$arow['yq_bh']}</td>
+        <td colspan="3" class="left" nowrap="">编号:<input size="12" type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+    </tr>
+    <tr align="center">
+        <td rowspan="2">序号</td>
+        <td colspan="2" rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td colspan="2">试验水样mL</td>
+        <td rowspan="2">培养前溶解氧浓度（mg/L）</td>
+        <td rowspan="2">培养后溶解氧浓度（mg/L）</td>
+        <td rowspan="2">BOD<sub>5</sub>({$arow['unit']})</td>
+        <td rowspan="2">平均值({$arow['unit']})</td>
+        <td rowspan="2">质控结果(%)</td>
+    </tr>
+    <tr>
+        <td>原水样体积</td>
+        <td>总体积</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白</td>
+        <td></td>
+        <td><input type="text" name="td10" id="td10" value="{$arow['td10']}" onblur="bt()" class="inputc" /></td>
+        <td><input type="text" name="td11" id="td11" value="{$arow['td11']}" onblur="bt()" class="inputc" /></td>
+        <td><input type="text" name="td12" id="td12" value="{$arow['td12']}" onblur="bt()" class="inputc" /></td>
+        <td><input type="text" name="td13" id="td13" value="{$arow['td13']}" onblur="bt()" class="inputc" /></td>
+        <td><input type="text" name="td14" id="td14" value="{$arow['td14']}" onblur="bt()" class="noinputc" /></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function bt() {
+    if ($.isNumeric(v('td12')) && $.isNumeric(v('td13'))) {
+        var jg = roundjs(accsub(v('td12'), v('td13')), 1);
+        setdata('td14', jg);
+    } else {
+        setdata('td14', '');
+    }
+}
+
+function jsgs() {
+    bt();
+    //vd4中的数据,按所有vd4中 小数位数最大的进行修约
+    // var a = $("[name^='vd4[']");
+    // var len = a.length; 
+    // var arr = new Array();
+
+    // for(var i=0; i<len; i++){
+    //   var aivl = a[i].value;
+    //   if(aivl.indexOf('.') != -1){
+    //     var aivllen = aivl.split('.')[1].length;
+    //     arr[i] = aivllen;
+    //   }else{
+    //     arr[i] = 0;
+    //   }
+    // }
+
+    // var maxlen = arr.sort().reverse()[0];
+    // if($.isNumeric(vs['vd4'])){
+    //   vs['vd4'] = roundjs(vs['vd4'],maxlen);
+    // }
+    //至此 修约部分完成
+
+    if (vs['hy_flag'] == '-4') {
+        var vd1 = vs['vd1'];
+        var vd3 = vs['vd3'];
+        var vd4 = vs['vd4'];
+        var vd5 = vs['vd5'];
+        $.isNumeric(v('td13')) ? '' : $('#td13').focus();
+        $.isNumeric(v('td12')) ? '' : $('#td12').focus();
+        //自控样计算公式：[（培养前 - 培养后） - （空白培养前-空白培养后）*（总体积-原体积）/总体积 ] * （总体积/原体积）
+        if ($.isNumeric(vd1) && $.isNumeric(vd3) && $.isNumeric(vd4) && $.isNumeric(vd5) && $.isNumeric(v('td12')) && $.isNumeric(v('td13'))) {
+            var xs1 = accDiv(accsub(vd3, vd1), vd3);
+            var xs2 = accDiv(vd3, vd1);
+            var jg = accMul(accsub(accsub(vd4, vd5),accMul(accsub(v('td12'), v('td13')),xs1)),xs2);
+            vs['vd0'] = jg;
+        } else {
+            vs['vd0'] = '';
+        }
+    } else {
+        var xsbs = 1;
+        if ($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])) {
+            xsbs = accDiv(vs['vd3'], vs['vd1']);
+        }
+        //非自控样：（培养前-培养后） * （总体积/原体积）
+        if ($.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5'])) {
+            vs['vd0'] = accMul(accsub(vs['vd4'], vs['vd5']), xsbs);
+        } else {
+            vs['vd0'] = '';
+        }
+    }
+}
+
+</script>

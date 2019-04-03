@@ -1,0 +1,72 @@
+<html>
+<head>
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<link rel="stylesheet" href="{$rooturl}/css/bootstrap-editable.css" />
+<link rel="stylesheet" href="{$rooturl}/css/select2.css" />
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/x-editable/ace-editable.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/select2.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/fuelux/fuelux.spinner.min.js"></script>
+</head>
+<body>
+<table id="table" class="table center"></table>
+</body>
+<script>
+    $('#table').bootstrapTable({
+    cache:false,//设置为 false 禁用 AJAX 数据缓存。
+    url:"method_lists.php?ajax=1",
+    striped	:true,//设置为 true 会有隔行变色效果。
+    pagination:true,//设置为 true 会在表格底部显示分页条。
+    //pageSize:25,//页面数据条数。
+    pageList: [25, 50, 100, '全选'],//设置可供选择的页面数据条数。设置为 All 或者 Unlimited，则显示所有记录
+    search:true,//显示启用搜索框
+    searchOnEnterKey:true,//回车后搜索，否则自动触发搜索
+    strictSearch:false,//模糊搜索
+    trimOnSearch:true,//去除搜索的前后空格
+    searchText:"",//初始化搜索文字
+    showRefresh:true,//刷新
+    clickToSelect:true,//点击此行选中复选框
+    columns: [{
+        width:"8%",
+        field: 'xh',
+        title: '序号',
+        sortable:true,
+        titleTooltip:'序号',
+    },{
+        width:"20%",
+        field: 'method_number',
+        title: '方法标准号',
+        sortable:true,
+        titleTooltip:'方法标准号',
+        editable: {
+            type:"text",
+            onblur: "submit",
+            showbuttons: true,
+            validate:function (v) {
+                    if (!v) return '内容不能为空';
+                }
+        }
+    },{
+        field: 'method_name',
+        title: '方法标准名称',
+        sortable:true,
+        titleTooltip:'方法标准名称',
+    },],
+    formatSearch: function () {
+		return '请输入要搜索的信息';
+    },
+    onEditableSave: function (field, row, oldValue, $el) {
+        if(row.method_number!=oldValue&&field=="method_number"){
+            $.get("method_lists.php",{id:row.id,method_number:row.method_number},function(data){
+                if(!data){
+                    alert("修改失败");
+                }
+            })
+        }
+    }
+});
+</script>
+<html>

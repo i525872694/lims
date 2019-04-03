@@ -1,0 +1,81 @@
+<style>
+    .jumpLink {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+</style>
+<div style="width:100%;margin:0 auto;">
+    <h3 class="header blue lighter smaller"></h3>
+    <div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+    <ul>
+        <li><a href="#tabs-1" onclick="location='shiwen.php?type=shiwen&tab=0'">室温湿度要求设备表</a></li>
+        <li><a href="#tabs-2" onclick="location='shiwen.php?type=file0&tab=1&title=实验室基本信息管理展示'">实验室基本信息管理展示</a></li>
+        <li><a href="#tabs-3" onclick="location='shiwen.php?type=file1&tab=2&title=功能室配置管理'">功能室配置管理</a></li>
+        <li><a href="#tabs-4" onclick="location='shiwen.php?type=file2&tab=3&title=实验室安全检查记录表'">实验室安全检查记录表</a></li>
+        <li><a href="#tabs-5" onclick="location='shiwen.php?type=file3&tab=4&title=实验室改造维修记录'">实验室改造维修记录</a></li>
+        <li><a href="#tabs-6" onclick="location='shiwen.php?type=file4&tab=5&title=实验室安全生产检查管理记录'">实验室安全生产检查管理记录</a></li>
+        <li><a href="#tabs-7" onclick="location='shiwen.php?type=file5&tab=6&title=实验室出入记录'">实验室出入记录</a></li>
+    </ul>
+    <div id="tabs-1">
+            <div class="widget-box transparent" style="margin:0;">
+                <div class="widget-header center">
+                        <h3 class="header smaller title" style="color:#000;">室温湿度要求设备表 共有{$num}个设备</h3>
+                </div>
+            </div>
+                
+            <div class="widget-header header-color-blue4 center">
+                <div class="widget-toolbar">
+                    <!--蓝色工具栏-->
+                    {$select}
+                    选择年份:
+                    <select name="year" id="year">
+                        <option value='2017'>2017年</option>
+                        <option value='2018'>2018年</option>
+                        <option value='2019'>2019年</option>
+                    </select>
+                    <input placeholder="搜索......" type="text" oninput="onFilterChanged(this.value)">
+                </div>
+            </div>
+            <div class="container-fluid">
+                {$ui_ag_grid}
+            </div>
+    </div>
+    <div id="tabs-2">{$files_content1}</div>
+    <div id="tabs-3">{$files_content2}</div>
+    <div id="tabs-4">{$files_content3}</div>
+    <div id="tabs-5">{$files_content4}</div>
+    <div id="tabs-6">{$files_content5}</div>
+    <div id="tabs-7">{$files_content6}</div>
+    </div>
+</div>
+<script>
+    //ag-grid
+    $(function () {
+        $("#myGrid").height($(window).height() - 140);
+        get_ag_grid_data();
+    })
+    //获取数据
+    function get_ag_grid_data() {
+        var url = '{__ROOTURL__}/app_modal/shiwen.php?type=shiwen&tab=0&ajax=1&fzx='+$('#fzx').val();
+        $.get(url, function (resp) {
+            handle_ag_grid(resp);
+        }, 'json')
+    }
+    function ag_grid_cellClick(obj) {
+        if (obj.colDef.field == 'chakan') {
+            location.href = '{__ROOTURL__}/app_modal/shiwen_yiqi.php?id=' + obj.data.id+'&year='+$('#year').val();
+        }
+    }
+    function onFilterChanged(newFilter) {
+        Q_gridOptions.api.setQuickFilter(newFilter);
+    }
+    function fzx_list(){
+        location.href = '{__ROOTURL__}/app_modal/shiwen.php?type=shiwen&tab=0&fzx='+$('#fzx').val();
+    }
+</script>
+<script>
+    $('#tabs').tabs();
+    var active={$tab_active};
+    $('#tabs').tabs({active:active})
+</script>

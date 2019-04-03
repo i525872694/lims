@@ -1,0 +1,103 @@
+<style>
+      .no >td
+  {
+white-space:nowrap; 
+  }
+  td{
+      padding:5px;
+  }
+  .baocunji td{border: 1px solid black;}
+</style>
+<div class="header title" style="width:800px;margin:0 auto;text-align:right">监-5</div>
+<h2 class="header smaller center title" style="text-align:center"><u>{$header['site_name']}</u>采样原始记录表(一)</h2>
+<div class="header title" style="width:800px;margin:0 auto;text-align:right">{$year}年</div>
+<table border="1" cellspacing="0" cellpadding="0" style="width:800px; border-collapse: collapse;">
+    <tr>
+        <td colspan="8"><span style="margin:0px 20px 0px 120px">{$header['area']}流域</span>
+            <span style="margin:0px 20px">{$header['water_system']}水系</span>
+            <span style="margin:0px 20px">{$header['river_name']}</span>
+            <span style="margin:0px 20px"> 取样方式:{$header['cy_way']}</span>
+            <span style="margin:0px 120px 0px 20px">采样工具:{$header['cy_tool']}</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1">断面地址</td>
+        <td colspan="7"><center>{$header['site_address']}</center></td>
+    </tr>
+    <tr class="no">
+       <td style="width:15%">采样点位置</td>
+       <td >东经:{$header['jingdu']}</td>
+       <td >北纬:{$header['weidu']}</td>
+       <td >左岸:{$header['zuo_an']} m</td>
+       <td >右岸:{$header['you_an']} m</td>
+       <td colspan="2">中弘:{$header['zhong_hong']} m</td>
+       <td style="width:15%">水面宽:{$header['water_width']} m</td>
+    </tr>
+    <tr class="no">
+       <td>采样时气象水文</td>
+       <td>天气:{$header['tian_qi']}</td>
+       <td>气温:{$header['qi_wen']} ℃</td>
+       <td>气压:{$header['qi_ya']} kPa</td>
+       <td >采样深:{$header['cy_ms']} m</td>
+       <td colspan="2">水位:{$header['water_height']} m</td>
+       <td>流量:{$header['liu_l']} m3/s</td>
+    </tr>
+    <tr>
+        <td colspan="7" style='border-bottom: none;'><center>水&nbsp;&nbsp;&nbsp;样</center></td>
+        <td colspan="1" >其他样品</td>
+    </tr>
+    <tr>
+        <td style="white-space:nowrap;border-right:none;">现场加保存剂(打钩)</td>
+        <td colspan="6" rowspan="2" style="border:none;padding:0px;">
+          <table class="baocunji">
+            <tr>
+              {$duihao}
+            </tr>
+            <tr>
+              {$data}
+            </tr>
+            <tr>
+              {$bcj}
+            </tr>
+          </table>
+        </td>
+        <td style="white-space:nowrap">底质、土壤、生物样等</td>        
+    </tr>
+    <tr>
+        <td style="border-right: none;">保存剂加入方法</td>
+        <td style="font-size:12px">藻类,叶绿素,粪大肠菌群,石油类,阴离子表面活性剂,溶解氧,有机样</td>
+    </tr>
+    <tr>
+        <td><center>现场测定项目</center></td>
+        <td colspan="5" style="border-top: none;"><center>{$header['xc_str']}</center></td>
+        <td>采样数量</td>
+        <td>{$header['ping']} 瓶  &nbsp;&nbsp;{$header['tong']} 桶</td>
+    </tr>
+    <tr style="height:60px">
+        <td style="white-space:nowrap">断面污染现象及说明</td>
+        <td colspan="5">{$header['cy_wrxx']}</td>
+        <td>样品状态</td>
+         <td>   {$header['gg_zb']}</td>
+    </tr>
+    <tr>
+        <td>采样时间</td>
+        <td colspan="4" style="text-align:right">{$header['cy_riqi']}</td>
+        <td colspan="3">采样人: {$header['cy_user_qz']}</td>
+    </tr>
+    <tr>
+        <td>化验室收样时间</td>
+        <td colspan="4" style="text-align:right">{$header['ys_date']}</td>
+        <td colspan="3">送样人: {$header['sy_user_qz']}<span  style="float:right"> 收样人: {$header['jy_user']}</span></td>
+    </tr>
+    <tr>
+        <td>备注</td>
+        <td colspan="7">{$header['cy_note']}</td>
+    </tr>
+</table>
+<div style="width:800px;margin:0 auto;page-break-after:always">
+<div style="float:left;">审查: {$header['sc_qz']}<span style="margin-left:50px">时间: {$header['sc_qz_date']}</span></div>
+<div style="float:right;">{$header['jc_dept']}</div></div><br>
+
+    
+    
+

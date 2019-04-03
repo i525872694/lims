@@ -1,0 +1,184 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-8-0</td>
+    </tr>
+</table>
+<h1>仪器法测定五日生化需氧量原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:3.6%"></td>
+        <td style="width:13.2%"></td>
+        <td style="width:7.2%"></td>
+        <td style="width:7.6%"></td>
+        <td style="width:6.6%"></td>
+        <td style="width:6.6%"></td>
+        <td style="width:6.6%"></td>
+        <td style="width:5.6%"></td>
+        <td style="width:5.6%"></td>
+        <td style="width:5.6%"></td>
+        <td style="width:5.6%"></td>
+        <td style="width:5.6%"></td>
+        <td style="width:6%"></td>
+        <td style="width:6.6%"></td>
+        <td style="width:7.6%"></td>
+    </tr>
+    <tr align="left">
+        <td colspan="3">测定方法：{$arow['td2']}</td>
+        <td colspan="4">仪器名称：{$arow['td4']}</td>
+        <td colspan="3">仪器编号：{$arow['yq_bh']}</td>
+        <td colspan="5">培养日期：
+            <input type="text" name="td8" value="$arow[td8]" class="inputc date_Ymd" style="width: 95px;"> 至
+            <input type="text" name="td9" value="$arow[td9]" class="inputc date_Ymd" style="width: 95px;">
+        </td>
+    </tr>
+    <tr align="center">
+        <td rowspan="2">序号</td>
+        <td rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td colspan="2">实验水样 mL</td>
+        <td rowspan="2">取样系数</td>
+        <td rowspan="2">稀释倍数</td>
+        <td colspan="5">测定过程</td>
+        <td rowspan="2">含量<br />（{$arow['unit']}）</td>
+        <td rowspan="2">平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+        <td rowspan="2">相对偏差/<br />加标回收率（%）</td>
+    </tr>
+    <tr align="center">
+        <td>原水样体积</td>
+        <td>总体积</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白</td>
+        <td></td>
+        <td><input type="text" name="td10" value="{$arow['td10']}" class="inputc" id="td10" onblur="bt()"></td>
+        <td><input type="text" name="td11" value="{$arow['td11']}" class="inputc" id="td11" onblur="bt()"></td>
+        <td><input type="text" name="td12" value="{$arow['td12']}" class="inputc" id="td12" onblur="bt()"></td>
+        <td><input type="text" name="td13" value="{$arow['td13']}" class="noinputc" id="td13" onblur="bt()"></td>
+        <td><input type="text" name="td14" value="{$arow['td14']}" class="inputc"></td>
+        <td><input type="text" name="td15" value="{$arow['td15']}" class="inputc"></td>
+        <td><input type="text" name="td16" value="{$arow['td16']}" class="inputc"></td>
+        <td><input type="text" name="td17" value="{$arow['td17']}" class="inputc"></td>
+        <td><input type="text" name="td18" value="{$arow['td18']}" class="inputc" id="td18" onblur="bt()"></td>
+        <td><input type="text" name="td19" value="{$arow['td19']}" class="noinputc" id="td19"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白</td>
+        <td></td>
+        <td><input type="text" name="td20" value="{$arow['td20']}" class="inputc" id="td20" onblur="bt()"></td>
+        <td><input type="text" name="td21" value="{$arow['td21']}" class="inputc" id="td21" onblur="bt()"></td>
+        <td><input type="text" name="td22" value="{$arow['td22']}" class="inputc" id="td22" onblur="bt()"></td>
+        <td><input type="text" name="td23" value="{$arow['td23']}" class="noinputc" id="td23" onblur="bt()"></td>
+        <td><input type="text" name="td24" value="{$arow['td24']}" class="inputc"></td>
+        <td><input type="text" name="td25" value="{$arow['td25']}" class="inputc"></td>
+        <td><input type="text" name="td26" value="{$arow['td26']}" class="inputc"></td>
+        <td><input type="text" name="td27" value="{$arow['td27']}" class="inputc"></td>
+        <td><input type="text" name="td28" value="{$arow['td28']}" class="inputc" id="td28" onblur="bt()"></td>
+        <td><input type="text" name="td29" value="{$arow['td29']}" class="noinputc" id="td29"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+if (!$("[name^='vd3']").val()) {
+    $("[name^='vd3']").val(432);
+}
+if (!$("[name^='vd5']").val()) {
+    $("[name^='vd5']").val(432);
+}
+if (!$("[name^='vd11']").val()) {
+    $("[name^='vd11']").val(432);
+}
+if (!$("[name^='vd12']").val()) {
+    $("[name^='vd12']").val(432);
+}
+
+function bt() {
+    // if ($.isNumeric(v('td10')) && $.isNumeric(v('td11'))) {
+    //     var xs = roundjs(accDiv(v('td11'), v('td10')), 0);
+    //     xs != 1 ? xs = roundjs(accDiv(vs['vd3'], vs['vd5']), 2) : '';
+    //     setdata('td13', xs);
+    // } else {
+    //     setdata('td13', '');
+    // }
+    if ($.isNumeric(v('td10')) && $.isNumeric(v('td11'))) {
+        var xsbs = accDiv(v('td11'), v('td10'));
+    } else {
+        var xsbs = 1;
+    }
+    var td12 = $.isNumeric(v('td12')) ? v('td12') : 1;
+    if ($.isNumeric(v('td18'))) {
+        var jg = accMul(accMul(v('td18'), td12), xsbs);
+        if (jg > 0 && jg < 10) {
+            jg = roundjs(jg, 1);
+        } else {
+            jg = roundjs(jg, 0);
+        }
+        setdata('td19', jg);
+    } else {
+        setdata('td19', '');
+    }
+
+    if ($.isNumeric(v('td20')) && $.isNumeric(v('td21'))) {
+        var xsbs = accDiv(v('td21'), v('td20'));
+    } else {
+        var xsbs = 1;
+    }
+    var td22 = $.isNumeric(v('td22')) ? v('td22') : 1;
+    if ($.isNumeric(v('td28'))) {
+        var jg = accMul(accMul(v('td28'), td22), xsbs);
+        if (jg > 0 && jg < 10) {
+            jg = roundjs(jg, 1);
+        } else {
+            jg = roundjs(jg, 0);
+        }
+        setdata('td29', jg);
+    } else {
+        setdata('td29', '');
+    }
+}
+
+function jsgs() {
+    bt();
+    var hy_flag = vs['hy_flag'];
+    if ($.isNumeric(v('td19')) && $.isNumeric(v('td29'))) {
+        var kb = accDiv(accAdd(v('td19'), v('td29')), 2);
+    } else if ($.isNumeric(v('td19'))) {
+        var kb = v('td19');
+    } else {
+        var kb = 0;
+    }
+    if ($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd5'])) {
+        var xsbs = accDiv(vs['vd3'], vs['vd5']);
+        xsbs != 1 ? xsbs = roundjs(accDiv(vs['vd3'], vs['vd5']), 2) : '';
+        vs['vd2'] = xsbs;
+        // vs['vd2'] = roundjs(xsbs, 0);
+    } else {
+        vs['vd2'] = '';
+    }
+    if ($.isNumeric(vs['vd10'])) {
+        var vd4 = $.isNumeric(vs['vd4']) ? vs['vd4'] : 1;
+        if (hy_flag == '-4' || ($.isNumeric(vs['vd3']) && vs['vd3'] != vs['vd5'])) {
+            //自控样 或 经稀释的非自控样 = 五日×取样系数×稀释倍数 - 空白×稀释倍数
+            vs['vd0'] = accsub(accMul(accMul(vs['vd10'], vd4), accDiv(vs['vd3'], vs['vd5'])), accMul(kb, accDiv(vs['vd3'], vs['vd5'])));
+        } else {
+            //未经稀释的非自控样 = 五日×取样系数
+            vs['vd0'] = accMul(vs['vd10'], vd4);
+        }
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

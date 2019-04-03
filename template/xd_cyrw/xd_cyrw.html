@@ -1,0 +1,876 @@
+<div class="nav-search" id="nav-search">
+    <form class="form-search">
+        <span class="input-icon">
+            <input type="text" placeholder="搜索站点" class="nav-search-input" id="nav-search-input" autocomplete="off" />
+            <i class="icon-search nav-search-icon"></i>
+        </span>
+    </form>
+</div><!-- #nav-search -->
+<div class="outerBox" style="max-width:95%;margin:0 auto;">
+    <!--计划站点-->
+	<div class="widget-box transparent" style="margin:0;">
+		<div class="widget-header center">
+			<h3 class="header smaller title" style="color:#000;">监测计划下达</h3>
+		</div>
+        <div class="widget-toolbar" data-action="collapse">
+            <a href="#">
+                <i class="icon-chevron-up"></i>
+            </a>
+        </div>
+        <div class="header-color-blue" style="padding:5px;">
+            <input type="hidden" name="fzx" value="{$fzx_id}" />
+            <table style="max-width:900px">
+                <tr>
+                    <td>
+                        采样日期：
+                        {echo PublicApp::get_select('year');}
+                        {echo PublicApp::get_select('month',null,false,false);}
+                        {$day_select}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="widget-body cy_jh_div">
+            <div class="widget-main">
+                {if count($jh_sites) >=1}
+	                {loop $jh_sites $date $sites}
+	                <div class="row item" data-item="0">
+	                    <div class="well well-sm date-div" title="点击全选/反选">{$date}监测计划</div>
+	                    {loop $sites['can_check'] $key $site}
+                            <div class='col-xs-1 site-div' title="{$site['sname']}">
+                                <div class='label_div'>
+                                    <input type='checkbox' name='site_id' value="{$site['sid']}" />
+                                    <span class='site_name'>{$site['sname']}</span>
+                                </div>
+                                <span class='modi_button' title='修改站点项目' sid='{$key_sid}'>[{$site['xm_num']}]</span>
+                            </div>
+	                    {/loop}
+                        {loop $sites['canot_check'] $key $site}
+                            <label class="btn btn-white" title="{$site['sname']}" title='已经下达的站点' disabled>
+                                <input type="checkbox" name="sid[]" value="{$site['sid']}" disabled />
+                                <span class="site">{$site['sname']}</span>
+                                <a href="javascript:;">[{$site['xm_num']}]</a>
+                            </label>
+                        {/loop}
+	                </div>
+	                {/loop}
+	            {else}
+	            	<div class="row item" data-item="0" style="text-align: center;">本天没有监测任务</div>
+	            {/if}
+            </div>
+        </div>
+	</div>
+    <!--采样路线-->
+	<div class="widget-box transparent" style="margin:0;">
+        <div class="widget-toolbar" data-action="collapse">
+            <a href="#">
+                <i class="icon-chevron-up"></i>
+            </a>
+        </div>
+        <div class="header-color-orange" style="padding:5px;">
+            <table style="max-width:900px">
+                <tr>
+                    <td>
+                        采样路线
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="widget-body cy_lx_div">
+            <div class="widget-main">
+                <div class="row item" data-item="0">
+                    {loop $cy_group_site_list $key_gid $value_site_list}
+                        <ul class="cy_group">
+                            <li class='group_name'>{$cy_group_list[$key_gid]}</li>
+                            <li class='quanxuan'>全选/反选</li>
+                            {loop $value_site_list $key_i $value_site}
+                                <li class='site_li'>
+                                    <div class='col-xs-1 site-div' title="{$value_site['site_name']}">
+                                        <div class='label_div'>
+                                            <input type='checkbox' name='site_id' value="{$value_site['site_id']}" />
+                                            <span class='site_name'>{$value_site['site_name']}</span>
+                                        </div>
+                                        <span class='modi_button' title='修改站点项目' sid='{$key_sid}'>[{$value_site['xm_num']}]</span>
+                                    </div>
+                                </li>
+                            {/loop} 
+                            <li style="clear:both;"></li>
+                        </ul>
+                       
+                    {/loop}
+                </div>
+            </div>
+        </div>
+	</div>
+    <!--全部站点-->
+	<div class="widget-box transparent" style="margin:0;clear:both;">
+        <div class="widget-toolbar" data-action="collapse">
+            <a href="#">
+                <i class="icon-chevron-up"></i>
+            </a>
+        </div>
+        <div class="header-color-green" style="padding:5px;">
+            <input type="hidden" name="fzx" value="{$fzx_id}" />
+            <table style="max-width:900px">
+                <tr>
+                    <td>
+                        全部站点
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="widget-body item" id='sites_box'>
+        	{$type_site_html}
+        </div>
+	</div>
+</div>
+<!--右边筛选按钮-->
+<div id="filter_button_box">
+    <span id="checkec_modi" title="站点类型筛选">
+        <i id="end"></i>
+        <span class='filter_font'>下达<br>任务</span>
+        <i class="icon-edit bigger-130"> </i>
+        <span class="badge badge-danger" id="modi_site_num">0</span>
+        <!-- <div id="msg">已成功加入站点！</div>  -->
+    </span>
+    <span id="fileter_site_type" title="站点类型筛选">
+        <span class='filter_font'>筛选<br>站点</span><i class="glyphicon glyphicon-indent-right"> </i> 
+    </span>
+</div>
+<!--选中站点后的弹出层-->
+<div id="checked_site_box">
+    <h3 class="smaller title" style="color:#000;text-align: center;">站点类型筛选</h3><hr>
+    <table id='site_modi_box'>
+        <tr>
+            <th style="width:100px;">已选站点</th>
+            <td id="checked_site" class="item"><!--选中站点--></td>
+        </tr>
+        <tr class='site_xm_tr'>
+            <th colspan="2">监测项目修改 <b>已选择 ( <span id='modi_xm_num' style='color:red;'>0</span> )项</b></th>
+        </tr>
+        <tr class='site_xm_tr'>
+            <td id='xm_modi'  colspan="2">
+                <!--项目修改-->
+                {$jcxm_list_html}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div style="width:100%;height:35px;"><!--不要删除 用于防止遮罩层阻挡最后面的站点选中--></div>
+                <div style="width:100%;height:35px;position:fixed;bottom:0px;background-color:#96ABBA;opacity:0.5;"></div>
+                <input class="btn btn-primary btn-sm" type="button" id="site_modi_submit" style="position: fixed;left: calc(75% - 40px);bottom:0px;height:33px;opacity:1;" value="确定修改">
+            </td>
+        </tr>
+    </table>
+    <div class='tree'  id="tree">
+        <!--树状图-->
+    </div>
+</div>
+<script>
+    $("#nav-search-input").typeahead({
+        /*source: function (query, process) {
+            var parameter = {query: query};
+            $.post('@Url.Action("AjaxService")', parameter, function (data) {
+                process(data);
+            });
+        },*/
+        source: ["beijing","shandong","shanghai","zhejiang"],
+        updater: function(c) {
+            console.log(c)
+            $("#nav-search-input").focus();
+            return c
+        }
+    })
+$(function(){
+    var offset = $("#end").offset();//飞入购物车效果的落点
+    //年月日的筛选条件
+    $("select[name='year'],select[name='month'],select[name='day']").change(function(){
+        var year    = $("select[name='year']:eq(0)").val();
+        var month   = $("select[name='month']:eq(0)").val();
+        var day     = $("select[name='day']:eq(0)").val();
+        location.href   = "{$rooturl}/xd_cyrw/xd_cyrw.php?year="+year+"&month="+month+"&day="+day;
+    });
+    //点击日期选中计划中的全部站点
+    $("div.date-div,li.quanxuan").click(function(event){
+        var addcar = $(this);
+        if(addcar.hasClass("date-div")){
+            var each_filed  = $(this).nextAll(".site-div");
+            var content= addcar.html();
+        }else{
+            var each_filed  = $(this).nextAll("li");
+            var content     = addcar.prev("li.group_name").html();
+        }
+        each_filed.each(function(){
+            var addcar_input= $(this).find("input[name='site_id']");//对应多选框
+            if(addcar_input.length == '0'){
+                return false;
+            }
+            var site_id     = addcar_input.val();
+            var site_name   = addcar_input.next('span.site_name').text();
+            if(addcar_input.is(":checked")){
+                addcar_input.prop('checked',false);
+                addcar_input.parent().parent(".site-div").removeClass("checked");
+                //取消选中挑选出的对应站点
+                //$("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',false).parent('label').parent("div.checked").removeClass('checked');
+                $("input[name='chose_site_id'][value='"+site_id+"']").parent('label').parent("div.checked").remove();
+            }else{
+                addcar_input.prop('checked',true);
+                addcar_input.parent().parent(".site-div").addClass("checked");
+                var input_old_num = $("input[name='chose_site_id'][value='"+site_id+"']").length;//已挑选站点的数量
+                if(input_old_num < '1'){
+                    var site_html   = "<div class='col-xs-1 checked' title='"+site_name+"'><label><input type='checkbox' name='chose_site_id' value='"+site_id+"' checked /><span>"+site_name+"</span></label></div>";
+                    $("#checked_site").append(site_html);
+                }else{
+                    $("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',true).parent('label').parent("div[class*='col-xs']").addClass('checked');
+                }
+            }
+        });//.click();//全选/反选内部站点
+        var flyer  = $('<div class="u-flyer">'+content+'</div>');
+        flyer.fly({
+            start: {
+                left: event.pageX,
+                top: event.pageY
+            },
+            end: {
+                left: offset.left+10,
+                top: offset.top+10,
+                width: 0,
+                height: 0
+            },
+            onEnd: function(){
+                var chose_site_num  = $("input[name='chose_site_id']:checked").length;
+                $("#modi_site_num").html(chose_site_num).show();//选出站点数量
+                this.destory();
+            }
+        });
+        /*$(this).parent(".item").find("input[type='checkbox']:not(':disabled')").each(function(){
+            if($(this).is(":checked")){
+                $(this).prop('checked',false);
+
+            }else{
+                $(this).prop('checked',true);
+            }
+        });*///.prop("checked",false);
+        //$(this).parent(".item").find("input[type='checkbox']").not("input:checked").prop("checked",true);
+    });
+    //批量修改的保存
+    $("#site_modi_submit").click(function(){
+        var modi_site   = '';
+        $("#checked_site input[name='chose_site_id']:checked").each(function(){
+            modi_site   += $(this).val()+",";
+        });
+        if(modi_site){
+            modi_site   = modi_site.slice(0,-1);
+        }
+        var site_xm     = '';
+        $("#xm_modi input[name='vid[]']:visible:checked").each(function(){
+            site_xm += $(this).val()+",";
+        });
+        if(site_xm){
+            site_xm = site_xm.slice(0,-1);
+        }
+        var post_filed  = {};
+        if(modi_site){
+            post_filed['modi_site']  = modi_site;
+        }
+        if(site_xm){
+            post_filed['site_xm']  = site_xm;
+        }
+        //参数
+        if(!modi_site){
+            alert('请先选择站点');
+            return false;
+        }
+        if(!post_filed){
+            alert('请设置更改内容');
+            return false;
+        }
+        if(modi_site && post_filed){
+            $.post("{$rooturl}/site/more_site_modi.php",{"action":"more_site_modi","field":post_filed,"ajax":"yes"},function(data){
+                /*录屏用*/
+                alert('保存成功');
+                $("#checked_site_box").hide("slide",{direction : "right"},500);
+                location.reload();
+            },'html')
+        }
+        
+    });
+    //显示右侧弹出层
+    $("#fileter_site_type,#checkec_modi").click(function(){
+        var this_id = $(this).attr('id');
+        if(this_id == 'fileter_site_type'){
+            $("#tree").show();
+            $("#site_modi_box").hide();
+            $(".title").html('站点类型筛选');
+        }else{
+            $("#tree").hide();
+            $("#site_modi_box").show();
+            $(".title").html('监测任务下达');//'站点项目更改'
+            $(".ssite_xm_tr,.site_xm_tr").hide();
+            $("#site_modi_submit").val('确定下达');
+        }
+        $("#checked_site_box").show("slide",{direction : "right"},500);
+        return false;
+    })
+    //点击其他地方隐藏右侧面板
+    $(document).bind('click',function(e){
+        var e = e || window.event; //浏览器兼容性
+        var elem = e.target || e.srcElement;
+        while (elem) { //循环判断至跟节点，防止点击的是div子元素
+            if (elem.id && elem.id=='checked_site_box') {
+                return;
+            }
+            elem = elem.parentNode;
+        }
+        $("#checked_site_box").hide("slide",{direction : "right"},500);
+    });
+    //取消直接选择站点多选框效果，只执行外部div的click效果
+    $("input[name='site_id']").click(function(event){
+        if($(this).is(":checked")){
+            $(this).prop('checked',false);
+        }else{
+            $(this).prop('checked',true);
+        }
+    });
+    //点击站点飞入右侧弹出层效果
+    $(".site-div").click(function(event){
+        //event.stopPropagation();//防止事件冒泡到父亲
+        // event.preventDefault();//取消父级的默认行为,防止label事件触发两次
+        var addcar      = $(this);
+        var addcar_input= addcar.find("input[name='site_id']");//对应多选框
+        var site_id     = addcar_input.val();
+        var site_name   = addcar_input.next('span.site_name').text();
+        if(addcar_input.is(":checked")){
+            addcar_input.prop('checked',false);
+            $(this).removeClass("checked");
+            //取消选中挑选出的对应站点
+            //$("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',false).parent('label').parent("div[class*='col-xs']").removeClass('checked');
+            $("input[name='chose_site_id'][value='"+site_id+"']").parent('label').parent("div[class*='col-xs']").remove();
+            var chose_site_num  = $("input[name='chose_site_id']:checked").length;
+            $("#modi_site_num").html(chose_site_num).show();//选中站点数量
+        }else{
+            addcar_input.prop('checked',true);
+            $(this).addClass("checked");
+            var content     = addcar.find('.site_name').html();
+            var flyer       = $('<div class="u-flyer">'+content+'</div>');
+            flyer.fly({
+                start: {
+                    left: event.pageX,
+                    top: event.pageY
+                },
+                end: {
+                    left: offset.left+10,
+                    top: offset.top+10,
+                    width: 0,
+                    height: 0
+                },
+                onEnd: function(){
+                    //$("#msg").show().animate({width: '250px'}, 200).fadeOut(1000);
+                    //addcar.unbind('click');
+                    var input_old_num = $("input[name='chose_site_id'][value='"+site_id+"']").length;//已挑选站点的数量
+                    if(input_old_num < '1'){
+                        var site_html   = "<div class='col-xs-1 checked' title='"+site_name+"'><label><input type='checkbox' name='chose_site_id' value='"+site_id+"' checked /><span>"+site_name+"</span></label></div>";
+                        $("#checked_site").append(site_html);
+                    }else{
+                        $("input[name='chose_site_id'][value='"+site_id+"']").prop('checked',true).parent('label').parent("div[class*='col-xs']").addClass('checked');
+                    }
+                    var chose_site_num  = $("input[name='chose_site_id']:checked").length;
+                    $("#modi_site_num").html(chose_site_num).show();//选出站点数量
+                    this.destory();
+                }
+            });
+        }
+    });
+    //选中站点是统计数量
+    $("#xm_modi input[name='vid[]']").click(function(){
+        count_xm_num();
+    });
+    //点击批次名称显示批次内的站点
+    $("li.group_name").click(function(){
+        $(this).parent("ul").find("li.site_li,li.quanxuan").toggle()
+        /*.each(function(){
+            var li_input    = $(this).find("input[type='checkbox']");
+            if(li_input.is(":checked")){
+                $(this).parent("ul").find("input[type='checkbox']").prop("checked",false);
+                return false;
+            }else{
+                $(this).parent("ul").find("input[type='checkbox']").prop("checked",true);
+                return false;
+            }
+        })*/;//
+    });
+    //采样计划、采样路线折叠
+    // $(".widget-toolbar").click(function(){
+    //     $(this).nextAll(".widget-body").toggle();
+    // });
+})
+//统计选中项目的数量
+function count_xm_num(){
+    var modi_xm_num = $("#xm_modi input[name='vid[]']:checked").length;
+    $("#modi_xm_num").html(modi_xm_num);
+}
+//###树状图 js
+var filter_start    = 'yes';//初始筛选状态
+//var select_node = {};
+//flare_Data变量在flare.js中定义，使用时一般是ajax请求过来的数据
+var site_tree_width = $("#site_tree").width();
+var tree        = treeSvg({$zNodes},900,300,100,"tree");
+//点击节点后回调函数，全局变量select_node存储当前被选中的节点
+function clickNodetrigger(data)
+{
+    //console.log(select_node);
+    //console.log(data)
+    //$(".cy_jh_div,.cy_lx_div").addClass('collapsed').hide();//隐藏计划和路线
+	var parent_is_true  = tree.now_node_father_is_check;//父级是否被选中
+	var child_is_true   = tree.now_node_child_is_check;//子级是否被选中
+	var prev_parent_id  = tree.now_node_father_checked_id;//紧邻着的父级id
+	var now_node_is_check   = data.check;//当前点击节点是否被选中
+	var now_node_id     = data.id;//当前选中类型的id
+	var caozuo_mark = '';//操作标识
+	if(now_node_is_check){//当前节点被选中
+	    if(child_is_true){//子节点被选中
+	        caozuo_mark = 'no_caozuo';
+	    }else{
+	        if(parent_is_true){//父节点是被选中
+	            caozuo_mark = 'hide_parent';
+	            //如果父级下有其他子类站点
+	        }else{
+	            caozuo_mark = 'show';
+	        }
+	    }
+	}else{//当前节点未选中
+	    if(child_is_true){//子节点是否被选中
+	        caozuo_mark = 'no_caozuo';
+	    }else{
+	        if(parent_is_true){//父节点是否被选中
+	            caozuo_mark = 'show_parent';//显示选中的父节点
+	        }else{
+	            caozuo_mark = 'hide';
+	        }
+	    }
+	}
+	if(filter_start =='yes'){
+	    $(".site-div").hide().attr('search',"no");
+	    filter_start    = 'no';
+	}
+    $(".no_show_tishi").remove();//隐藏js添加的提示框
+	if($.isEmptyObject(tree.select_node)){
+	    filter_start    = 'yes';
+	    $(".site-div").show().attr('search','yes');
+	    $(".site_box").show();
+        //展开采样计划和采样路线
+       // $(".cy_jh_div,.cy_lx_div").removeClass('collapsed').show();
+	    return false;
+	}
+	//根据操作标识筛选相应站点
+	switch(caozuo_mark){
+	    case 'show':
+	        $(".site-div[stid*=',"+now_node_id+",']").show().attr('search','yes').parent(".site_box").show();
+	        break;
+	    case 'hide':
+	        $(".site-div[stid*=',"+now_node_id+",']").hide().attr('search',"no");
+	        break;
+	    case 'show_parent'://显示父级选中选中元素下的站点
+	        $(".site-div[stid*=',"+prev_parent_id+",']").show().attr('search','yes').parent(".site_box").show();
+	        break;
+	    case 'hide_parent'://隐藏父级元素下的站点，只显示本元素下的站点
+	        $(".site-div[stid*=',"+prev_parent_id+",']").hide().attr('search',"no");
+	        $(".site-div[stid*=',"+now_node_id+",']").show().attr('search','yes');
+	        break;
+	    default:
+	        //不处理
+	        break;
+	}
+	//隐藏没有站点的类型
+	$("fieldset:visible").each(function(){
+	    var site_num    = $(this).find('.site-div:visible').length;
+	    if(site_num <= '0'){
+	        $(this).hide();
+	    }else{
+	        $(this).find('.site_num').html(site_num);
+	    }
+	});
+	//没有搜索内容时，增加提示
+	var show_site_num = $("div.site-div[search='yes']:visible").length;
+	if(show_site_num <='0'){
+	    $("#sites_box").append("<div class='no_show_tishi'>没有搜索到相关站点!</div>");
+	}
+}
+//$("#node6").css({'stroke': 'red','stroke-width': '3px'});//测试选中任务树站点类型
+//$("[id*=node]").css({'stroke': 'red','stroke-width': '3px'});//全选
+//###树状图结束
+</script>
+<style type="text/css">
+    .header-color-blue, .header-color-orange, .header-color-green{
+        min-height: 35px;
+    }
+    .well {
+        margin-bottom: 5px;
+    }
+	/*bootstrapTable的header取消margin，防止出现滚动条时th与下面的td数据不对齐*/
+	.fixed-table-header table.table.center {
+		margin: 0px;
+	}
+	.widget-header {
+		-moz-border-bottom-colors: none;
+		-moz-border-left-colors: none;
+		-moz-border-right-colors: none;
+		-moz-border-top-colors: none;
+		background: none;
+		border: none;
+		box-sizing: content-box;
+		color: #669fc7;
+		min-height: 38px;
+		padding-left: 12px;
+		position: relative;
+	}
+	.highlight {
+		color:#000;
+		background:#FFFF00;
+	}
+	.highlight_in {
+		background:#FF9632;
+	}
+	.fixed {
+		top:0;
+		position: fixed;
+		z-index: 1028;
+		display: block;
+		width: 100%;
+		margin-bottom: 20px;
+		background-color: #FFF;
+	}
+	.tab-content {
+		margin-top: 20px;
+	}
+	/*
+        .item [class*="col-"] {
+    		width: 160px;
+    		margin-top:2px;
+    		margin-bottom:2px;
+    		position:relative;
+    		text-overflow:ellipsis;
+    	}
+    	.item [class*="col-"]  label{
+    		cursor: pointer;
+    		position:relative;
+    		z-index:2;
+    		display: inline-block;
+    		overflow: hidden;
+    		text-overflow: ellipsis;
+    		white-space: nowrap;
+    		width: 100%;
+    		height: 100%;
+    		margin: 0;
+    	}
+    	.item [class*="col-"]:before {
+    		position:absolute;
+    		top:0; bottom:0;
+    		left:2px; right:2px;
+    		content:"";
+    		display:block;
+    		border:1px solid #DDD;
+    		z-index: 1;
+    	}
+    	.item [class*="col-"]:hover:before {
+    		background-color:#FCE6A6;
+    		border-color:#EFD27A;
+    	}
+    	.item [class*="checked"]:before {
+    		background-color:#DFF0D8;
+    		border-color:#DFF0D8;
+    	}
+    */
+	.new_add, .new_del {
+		display: none;
+	}
+	.form_sub {
+		position: fixed;
+		bottom: 205px;
+		right: 5px;
+		z-index: 1999;
+	}
+	.btn.btn-white {
+		padding: 2px;
+	}
+	.msg_box {
+		clear:both;
+		margin: 3px 0;
+		padding-left: 10px;
+		border-color: #428bca;
+		background-color: #d9edf7;
+	}
+	.msg_success {
+		clear:both;
+		margin: 3px 0;
+		padding-left: 10px;
+		border-color: #428bca;
+		background-color: #d9edf7;
+	}
+	.msg_danger {
+		clear:both;
+		color: #a94442;
+		font-weight: bold;
+		padding-left: 10px;
+		border-color: #ebccd1;
+		background-color: #f2dede;
+	}
+	ul.select2-results li {
+		white-space:nowrap; 
+	}
+	.fixed_button_box {
+		width: 100%;
+		height: 35px;
+		z-index: 99;
+		text-align: center;
+	}
+	.fixed_button_box .fixed_button_bg_box {
+		bottom: 0px;
+		width: 100%;
+		height: 35px;
+		opacity: 0.5;
+		z-index: 100;
+		position: fixed;
+		background-color:#96ABBA;
+	}
+	.fixed_button_box .fixed_button {
+		bottom: 0px;
+		width: 100%;
+		height: 33px;
+		opacity: 1;
+		z-index: 101;
+		position: fixed;
+		text-align: center;
+	}
+	label.btn-white{
+		margin:1px;
+	}
+	label.btn-white.bg_success{
+		background-color: #dff0d8 !important;
+	}
+	label.btn-white.bg_danger{
+		color: #d15b47 !important;
+		text-decoration:line-through;
+		/*background-color: #d15b47 !important;*/
+	}
+	label.btn-white.bg_info{
+		color: #6fb3e0 !important;
+		/*background-color: #6fb3e0 !important;*/
+	}
+	.save_status_msg {
+		top: 0;
+		left:0;
+		right:0;
+		min-width:500px;
+		max-width: 800px;
+		margin:0 auto;
+		padding: 5px;
+		z-index: 1100;
+		position: fixed;
+		text-align: center;
+		border-radius: 5px;
+		border: 2px solid #e2b709;
+		background: #ffe57e none repeat scroll 0 0;
+
+	}
+</style>
+<style>
+    .cy_group{
+        width:145px;
+        display: block;
+        float:left;
+    }
+    .cy_group:after{
+        display:block;
+        content:".";
+        height:0;
+        clear:both;
+        overflow:hidden;
+        visibility:hidden;
+    }
+    .cy_group li:first-child {
+        text-align:center;
+        background: linear-gradient(#ACD0E4,#8CCCF2);background: -moz-linear-gradient(#ACD0E4,#8CCCF2);
+        height:30px;
+        line-height: 30px;
+        display: block;
+    }
+    .cy_group li{
+        list-style:none;
+        display: none;
+        //display: block;
+    }
+    li.quanxuan{/*采样路线全选功能*/
+        text-align: center;
+        background-color: #EAE9A5;
+        cursor:pointer;
+    }
+	.modi_button{/*站点修改的铅笔图标*/
+        position: absolute;
+        right: 4px;
+        bottom: 0;
+        width: 33px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 3;
+        opacity:1;
+        text-align:right;
+    }
+    #checked_site_box{/*右侧弹出层*/
+        width:55%;
+        height: 100%;
+        position: fixed;
+        right:0;
+        top:0;
+        z-index: 6;
+        background: #FCFCFC;/*#F4FFFB;*/
+        display: none;
+        border-left:#CCC 2px solid;
+        box-shadow:-1px 2px 10px #aaaaaa;
+        overflow: auto;
+    }
+    #filter_button_box{/*右侧悬浮按钮区域*/
+        width:60px;
+        position: fixed;
+        right:0;
+        top:calc(50% - 50px);
+        z-index: 5;
+    }
+    #modi_site_num{/*右侧选中站点数量的角标*/
+        vertical-align: super;
+        top: 4%;
+        left: -13%;
+        position: absolute;
+        display: none;
+    }
+    #fileter_site_type,#checkec_modi{/*右侧筛选按钮外壳*/
+        margin-top:10px;
+        display:block;
+        color: #FFF;
+        background-color: #428BCA;/*#AAA;*/
+        text-align: center;
+        vertical-align: middle;
+        line-height: normal;
+    }
+    #xm_modi li{
+        overflow: hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+    #fileter_site_type i,#checkec_modi i{/*右侧筛选按钮图标*/
+        font-size: 40px;
+    }
+    #checkec_modi i{
+        padding-top:3px;
+    }
+    #fileter_site_type:hover i,#checkec_modi:hover i{
+        display: none;
+    }
+    #fileter_site_type span.filter_font,#checkec_modi span.filter_font{/*右侧筛选文字*/
+        font-size: 17px;
+        display: none;
+    }
+    #fileter_site_type:hover span.filter_font,#checkec_modi:hover span.filter_font{
+        display: block;
+    }
+    #site_modi_box{/*右侧站点更改相关信息*/
+        width:calc(100% - 36px);
+        margin:10px 0px 0 26px;
+    }
+    #site_modi_box td,#site_modi_box th{
+        border:1px solid #A8A8A8;
+        text-align:center;
+    }
+    #site_modi_box th{
+        background-color: f3f5f9;
+    }
+    fieldset{/*站点类型盒子*/
+        width:100%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;
+    }
+    legend{/*站点类型名称*/
+        margin-left:20px;padding:5px;width:auto;margin-bottom: 0px;
+    }
+    .u-flyer{/*飞入右侧弹出层元素的样式*/
+        display: block;
+        width: 133px;
+        height:44px;
+        font-size: 14px !important;
+        border-radius: 8px;
+        background-color:#DFF0D8;
+        border-color:#DFF0D8;
+        text-overflow: ellipsis;
+        position: fixed;
+        z-index: 9999;
+    }
+    .item [class*="col-"] {/*包含站点所有信息的div*/
+        width: 143px;
+        height:44px;
+        margin-top:2px;
+        margin-bottom:2px;
+        padding-right:30px;
+        position:relative;
+        text-overflow:ellipsis;
+    }
+    .item [class*="col-"]  div.label_div,.item [class*="col-"]  label{
+        //cursor: pointer;
+        position:relative;
+        z-index:2;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        //white-space: nowrap;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        text-align:left;
+    }
+    .item [class*="col-"]:before {
+        position:absolute;
+        top:0; bottom:0;
+        left:2px; right:2px;
+        content:"";
+        display:block;
+        border:1px solid #DDD;
+        z-index: 1;
+    }
+    .item [class*="col-"]:hover:before {
+        background-color:#FCE6A6;
+        border-color:#EFD27A;
+    }
+    .item [class*="checked"]:before {
+        background-color:#DFF0D8;
+        border-color:#DFF0D8;
+    }
+    /*####树状图css8*/
+    #tree{
+        text-align: center;vertical-align:middle;min-height:100px;
+    }
+    .node circle {
+        cursor: pointer;
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+    .node text {
+        font-size: 14px;
+    }
+    path.link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+    .circle_g{
+        stroke:"none";
+        stroke-width:"1" ;
+        fill:"none" ;
+        width:20px;
+        height:20px;
+        /*fill-rule:"evenodd";*/
+    }
+    /*树状图css 结束*/
+    .no_show_tishi{/*搜索不到站点时增加的提示*/
+        text-align: center !important;
+        color:#AFADAD;
+        font-size: 16px;
+    }
+</style>

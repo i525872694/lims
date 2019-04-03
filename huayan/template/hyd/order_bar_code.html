@@ -1,0 +1,236 @@
+<link rel="stylesheet" type="text/css" href="css/hyd.css">
+<script type="text/javascript" src="./js/hyd.js"></script>
+<style type="text/css" title="default" media="screen">
+	.outerBox {
+		margin: 0 auto;
+		margin: 20px 50px;
+	}
+
+	.proxy-dd {
+		position: absolute;
+		z-index: 99999;
+		border: 2px dotted #666;
+	}
+
+	.proxy-rectselector {
+		position: absolute;
+		z-index: 99999;
+		border: 1px dotted #666;
+		overflow: hidden;
+	}
+
+	.proxy-layoutPosition {
+		position: absolute;
+		z-index: 99999;
+		background: red;
+		height: 2px;
+		width: 20px;
+		overflow: hidden;
+	}
+
+	.section-ctn {
+		border: 1px solid #3d3;
+		padding: 5px;
+		margin: 10px auto;
+		width: 100%;
+		zoom: 1;
+	}
+
+	.inlineModuleCtn {
+		width: 45%;
+		height: 480px;
+		margin: 10px;
+		float: left;
+		border: solid black 1px;
+		overflow-y: auto;
+	}
+
+	.code_box_right{
+		float: left;
+	}
+
+	.code_box_right{
+		float: right;
+	}
+
+	.draggable {
+		border: solid black 1px;
+		float: left;
+		width: 140px;
+		height: 20px;
+		background-color: #C0E0E0;
+		margin: 5px;
+		zoom: 1;
+		cursor: move;
+		font-size: 12px;
+		line-height: 20px;
+		overflow: hidden;
+	}
+
+	input[name=saomiao_code],input[name=saomiao_code]:focus{
+		width: 1px;
+		border:none;
+		outline:none;
+		color: transparent;
+		background:transparent;
+	}
+	.ace-spinner{
+		position: relative;
+		top: 10px;
+	}
+</style>
+<div class="alert alert-warning">
+	在本页面您可以拖动排序,或者使用扫描枪扫面条形码进行扫码排序。扫码时请切换至英文输入法,以确保系统能够正确识别样品编号。
+	<input type="text" name="saomiao_code" autofocus="autofocus" autocomplete="off">
+	<!-- <img style="height: 25px; width: 150px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMoAAABACAIAAADULH9BAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABB0lEQVR4nO3UQWrDMBRAQSn3v7OyKcE0kXFLHyVhZhVHsvwxD48BmXm8WGuNMeacj99fm+b8dttu9fj/cfV5/5UTds89P/N59Xdz7u46n+rKtOcnn7+r67P99P3sztyt7iY/7rm9fAb8CXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSFyF5EZIXIXkRkhcheRGSF6G51vrvGfhYvl7Ae7oDjLdUeBd4MSAAAAAASUVORK5CYII=">保存 -->
+	<br>
+</div>
+<div class="outerBox">
+	<div class="widget-box transparent" style="margin:0;">
+		<div class="widget-header center">
+			<h3 class="header smaller title" style="color:#000;">化验样品排序</h3>
+		</div>
+	</div>
+	<div class="header-color-blue4" style="padding:10px;line-height: 30px;text-align: right;">
+		样品编号长度: <input class="spinner" type="text" name="len1" value="">
+		流水编号长度: <input class="spinner" type="text" name="len2" value="">
+		<button class="btn btn-xs btn-primary order_bun" data-type="ASC">一建升序⇈</button>
+		<button class="btn btn-xs btn-primary order_bun" data-type="DESC">一建降序⇊</button>
+	</div>
+	<div id='main'>
+		<form method="post" name="code_px" action="#" id="code_px">
+			<div class="section-ctn row">
+				<div class="inlineModuleCtn code_box_left">
+					<!-- 已选择 -->
+				</div>
+				<div class="inlineModuleCtn code_box_right">
+					<!-- 未选择 -->
+					{loop $bar_codes $i $value}
+					<div class="draggable" title="{$value['bar_code']}">【{$i}】{$value['bar_code']}<input name="id[]" value="{$value['id']}"
+						 type="hidden"></div>
+					{/loop}
+				</div>
+			</div>
+		</form>
+		<center style="clear:both">
+			<button type="button" class="btn btn-xs btn-primary" style="width:100px;height:30px;" onclick="sub_reset()">重置</button>
+			<button type="button" class="btn btn-xs btn-primary" style="width:100px;height:30px;" onclick="sub_form()">保存</button>
+		</center>
+	</div>
+</div>
+<script src="{$rooturl}/js/fuelux/fuelux.spinner.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/lims/tuo_dong/apps/core_dom_pure.js"></script>
+<script type="text/javascript">
+	function initModuleLayoutDrag2() {
+		var containers = QW.NodeH.query(0, ".inlineModuleCtn");
+		var objs = QW.NodeH.query(0, ".draggable");
+		var siblings = objs;
+		for (var i = 0; i < objs.length; i++) {
+			var obj = objs[i];
+			var d = new QW.LayoutDrag({ oSrc: obj, hdlObj: obj, siblings: siblings, containers: containers, isInline: true, needAnim: true });
+		}
+	}
+	// 重新排序函数
+	function resetOrder() {
+		var containers = QW.NodeH.query(0, ".inlineModuleCtn");
+		var objs = QW.NodeH.query(0, ".draggable");
+		for (var i = 0; i < objs.length;) {
+			var obj = objs[i];
+			obj.style.backgroundColor = "#C0E0E0";
+			obj.innerHTML = obj.innerHTML.replace(/\【\d{0,}\】/, '【' + (++i) + '】');
+		}
+	}
+	resetOrder();
+	initModuleLayoutDrag2();
+	// 刷新页面重置排序
+	function sub_reset(){
+		window.location.reload();
+	}
+	// 数据提交
+	function sub_form() {
+		// 只提交改动过顺序的项目
+		var order_values = {};
+		$('#code_px [name="id[]"]').each(function (i) {
+			var id = $(this).val();
+			order_values[id] = i;
+		})
+		$.ajax({
+			type: 'post',
+			data: {
+				order_values: order_values,
+				len1: $(".spinner:eq(0)").val(),
+				len2: $(".spinner:eq(1)").val(),
+			},
+			dataType: 'json',
+			url: './ahlims.php?app=assay&act=order_bar_code_save',
+			success: function (data) {
+				if (data.error == '0') {
+					// save_status_msg('保存成功');
+					window.parent.location = '{AH_URL}/assay_form.php?tid={$tid}';
+				} else {
+					alert_error('修改失败，请刷新页面重试！');
+				}
+			},
+			error: function (data) {
+				console.log(data.responseText);
+			}
+		});
+		return false;
+	}
+	// 保持焦点锁定
+	setInterval(function () {
+		$("[name=saomiao_code]").focus();
+	}, 1000);
+	$("[name=saomiao_code]").bind("change", function () {
+		saomiao();
+	})
+	function saomiao() {
+		var bar_code = $("[name=saomiao_code]").val();
+		// 清空输入框内容等待下次扫码
+		$("input[name=saomiao_code]").val('');
+		if(bar_code == '112233445566'){
+			sub_form();
+		}else if(!$(".code_box_right [title='" + bar_code + "']").length){
+			save_status_msg('没找到编号:' + bar_code, 'danger');
+		}else{
+			$(".code_box_left").append($(".code_box_right [title='" + bar_code + "']"));
+			$(".code_box_right [bar-code='" + bar_code + "']").remove();
+		}
+		// 重置排序
+		resetOrder();
+		return false;
+	}
+	// 数字
+	$('.spinner:eq(0)').ace_spinner({value:{$code_len['len1']},min:8,max:20,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
+	$('.spinner:eq(1)').ace_spinner({value:{$code_len['len2']},min:2,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'});
+	$(".order_bun").click(function(){
+		$.ajax({
+			type: 'get',
+			data: {
+				tid: '{$tid}',
+				len1: $(".spinner:eq(0)").val(),
+				len2: $(".spinner:eq(1)").val(),
+				order_type: $(this).data('type')
+			},
+			dataType: 'json',
+			url: './ahlims.php?app=assay&act=order_bar_code',
+			success: function (data) {
+				if (data.error == '0') {
+					$(".inlineModuleCtn .draggable").remove();
+					for (var i = 0; i < data.content.length; i++) {
+						$(".code_box_right").append(
+							'<div class="draggable" title="'+data.content[i]['bar_code']+'">【'+i+'】'+data.content[i]['bar_code']+'<input name="id[]" value="'+data.content[i]['id']+'" type="hidden"></div>'
+						);
+					}
+					resetOrder();
+				} else {
+					alert_error('数据获取失败，请刷新页面重试！');
+				}
+			},
+			error: function (data) {
+				console.log(data.responseText);
+			}
+		});
+		return false;
+	});
+</script>

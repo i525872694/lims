@@ -1,0 +1,60 @@
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,input,textarea,p,table,tr,th,td,span,strong,em{padding:0;margin:0;font-style:normal;font-size:12px;}
+ol,ul,li{list-style:none;} 
+li{border-bottom:1px solid #d9d9d9}
+li:hover{background-color:#d9d9d9} 
+table{border-collapse: collapse;border-spacing: 0;}
+.clearboth{clear:both;}
+.fl{float:left;}
+.fr{float:right;}
+/*多选框位置*/
+.tyue-checkbox{
+   vertical-align: middle;
+   display: inline-block;
+   position: relative;
+   white-space: nowrap;
+}
+/*盒子样式*/
+.tyue-checkbox-txt{margin-left: 6px;margin-right: 8px;}
+.ty-transfer-list{width:200px;height:350px;border:1px solid #d9d9d9;border-radius:3px;background:#fff;}
+.ty-transfer-list-head{height:32px;line-height:32px;text-align:center;font-size:14px;color:#666;font-weight: bold;}
+.ty-transfer-list-body{border-top:1px solid #d9d9d9;padding:4px 10px;height:285px;overflow-y:auto;box-sizing:border-box;}
+.ty-transfer .ty-tree-select-ul{padding-left:38px;}
+.ty-transfer .ty-tree-div .tyc-check-blue{margin:8px 6px;}
+.ty-transfer .ty-tree-div{height:30px;line-height:30px}
+.ty-transfer .ty-tree-text{height:30px;line-height:30px;line-height:30px; cursor: pointer;}
+.ty-transfer .ty-tree-switcher{height:28px;}
+/*按钮*/
+.ty-transfer-operation{padding:107px 20px 0 40px;}
+.ty-transfer-operation span{
+    display:block;
+    width:43px;
+    height:28px;
+    text-align: center;
+    position: relative;
+    cursor:pointer;
+    border:1px solid #d9d9d9;
+    border-radius:4px;
+    background-image:url("ue-icon-little.png");
+    background-repeat: no-repeat;
+    background-color:#f3f3f3;
+    transition: background-color 0.3s linear;
+}
+.ty-transfer-operation span+span{margin-top:25px;}
+.ty-transfer-operation span:hover{border:1px solid #3dadf2;background-color:#7AC7F8;}
+.ty-transfer-operation span:hover i{
+    color:#fff;
+}
+.ty-transfer-btn-toright,.ty-transfer-btn-toright.disabled:hover{background-position:17px -150px;}
+.ty-transfer-btn-toright:hover,.ty-transfer-btn-toright.active,.ty-transfer-btn-toright.active:hover{background-position:17px -175px; }
+.ty-transfer-btn-toleft,.ty-transfer-btn-toleft.disabled:hover{background-position:17px -206px;}
+.ty-transfer-btn-toleft:hover,.ty-transfer-btn-toleft.active,.ty-transfer-btn-toleft.active:hover{background-position:17px -231px;}
+.ty-transfer-operation span.active{border:1px solid #3dadf2;background-color:#00A0E8;}
+.ty-transfer-operation span.active i{color: #fff;}
+
+
+
+
+
+
+
+

@@ -1,0 +1,550 @@
+<link href='$rooturl/js/table-master/bootstrap-table.css' rel="stylesheet" type="text/css">
+<link href='$rooturl/css/sweetalert2.css' rel="stylesheet" type="text/css">
+<link href='$rooturl/css/fileinput.css' rel="stylesheet" type="text/css">
+<link href='$rooturl/css/bootstrap-datetimepicker.min.css' rel="stylesheet" type="text/css">
+<link href='$rooturl/css/bootstrap-editable.css' rel="stylesheet" type="text/css">
+<script src='$rooturl/js/sweetalert2.js'></script>
+<script src='$rooturl/js/fileinput.js'></script>
+<script src='$rooturl/js/date-time/bootstrap-datetimepicker.min.js'></script>
+<script type="text/javascript" src="$rooturl/js/date-time/bootstrap-datetimepicker.zh.js" charset="UTF-8"></script>
+<script src='$rooturl/js/table-master/bootstrap-table.js'></script>
+<script src='$rooturl/js/table-master/bootstrap-editable.js'></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/x-editable/ace-editable.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/laydate/laydate.js"></script>
+<div class="outerBox">
+<h1 align="center">人员培训</h1>
+<br/>
+<center>
+    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#train_add" onclick="add_modal()">
+        新建培训
+    </button>
+    <button class="btn btn-danger btn-xs" id="remove">
+            删除
+        </button>
+</center>
+<br/>
+</div>
+<table id="table">
+</table>
+<!--添加的弹出框-->
+<div class="modal fade" id="train_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="clear_form()">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加人员培训
+                    </h4>
+                </div>
+                <div class="modal-body">
+                        <form class="form-horizontal"  role="form" onsubmit="return add_train()" enctype="multipart/form-data" id="upload_form" method="post">
+                            <input type="hidden" value='' id='edit_id'>
+                            <div class="form-group file_hide">
+                                    <label for="add_name" class="col-sm-2 control-label">课程名称*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="add_name" name="add_name"
+                                               placeholder="请输入课程名称" required oninvalid="setCustomValidity('请输入课程名称');" oninput="setCustomValidity('');">
+                                    </div>
+                            </div>
+                            <div class="form-group file_hide">
+                                    <label for="add_didian" class="col-sm-2 control-label">培训地点*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="add_didian" 
+                                               placeholder="请输入培训地点" required oninvalid="setCustomValidity('培训地点不能为空');" oninput="setCustomValidity('');">
+                                    </div>
+                            </div>
+                            <div class="form-group file_hide">
+                                    
+                                    <label for="add_time" class="col-sm-2 control-label">培训时间*</label>
+                                    <div class="col-sm-10">
+                                            <input size="16" type="text" id="add_time" value="{$time}" readonly class="form_datetime form-control" oninvalid="setCustomValidity('培训时间不能为空');" oninput="setCustomValidity('');">
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                    <label for="add_didian" class="col-sm-2 control-label">培训文件</label>
+                                    <div class="col-sm-10">
+                                            <input type="file" class="file"id="files" name="file[]" multiple>  
+                                    </div>
+                            </div>
+                           
+                            <div class="form-group file_hide">
+                                    <label for="add_content" class="col-sm-2 control-label">培训目的及参培人员*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="add_content" 
+                                               placeholder="请输入培训目的及参培人员" required oninvalid="setCustomValidity('该信息不能为空');" oninput="setCustomValidity('');">
+                                    </div>
+                            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clear_form()">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+            </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+<script>
+    $(document).ready(function () {
+        var table = $('#table');
+        $('#table').bootstrapTable({
+            method:'get',
+            url:"user_train.php?ajax=data",
+            cache:false,
+            height: get_height(),
+            toolbar: "#toolbar2",
+            toolbarAlign: "left",
+            toolbarClass: "header-color-blue4",
+            pagination:true,
+            clickToSelect:true,
+            pageSize:15,
+            pageList:[15,30,50,100,'ALL'],
+            showColumns: true,
+            showRefresh: true,
+            search: true,
+            showExport: true,                    
+            exportDataType: 'all',
+            exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
+            columns: [{
+                field: 'state',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            },
+                {
+                field: 'xuhao',
+                title: '编号',
+                sortable: true,
+                align:'center'
+            }, {
+                field: 'bh',
+                title: '培训编号',
+                sortable: true,
+                align:'center',
+            }, {
+                field: 'name',
+                title: '课程名称',
+                sortable: true,
+                align:'center',
+                editable: {
+                    type: 'text',
+                    title: '课程名称',
+                    validate: function (value) {
+                        value = $.trim(value);
+                        if (!value) {
+                            return '不能为空';
+                        }
+                        return '';
+                    }
+                },
+            }, {
+                field: 'content',
+                title: '培训目的及参培人员',
+                sortable: true,
+                align:'center',
+                editable: {
+                    type: 'text',
+                    title: '培训目的及参培人员',
+                    validate: function (value) {
+                        value = $.trim(value);
+                        if (!value) {
+                            return '不能为空';
+                        }
+                        return '';
+                    }
+                },
+            }, {
+                field: 'didian',
+                title: '培训地点',
+                sortable: true,
+                align:'center',
+                editable: {
+                    type: 'text',
+                    title: '培训地点',
+                    validate: function (value) {
+                        value = $.trim(value);
+                        if (!value) {
+                            return '不能为空';
+                        }
+                        return '';
+                    }
+                },
+            },
+            {
+                field: 'files',
+                title: '培训文件',
+                sortable: true,
+                align:'center'
+            },
+            {
+                field: 'time',
+                title: '培训时间',
+                sortable: true,
+                align:'center',
+                editable: {
+                    type: 'text',
+                    title: '培训时间',
+                    class:'form_datetime'
+                },
+            },{
+                field: 'operation',
+                title: '操作',
+                sortable: true,
+                align:'center'
+            },{
+                field: 'id',
+                title: 'id',
+                sortable: true,
+                align:'center'
+            },],
+            //编辑单元格保存事件
+            onEditableSave: function (field, row, oldValue, $el) {
+                $.get('user_train.php?ajax=edit',{field:field,value:row},function(data){
+                    if(data=='ok'){
+
+                    }else{
+
+                    }
+                })
+            },
+        });
+        $('#table').bootstrapTable('hideColumn', 'id');
+    });
+    // 重置表格高度
+    $(window).resize(function () {
+        $('#table').bootstrapTable('resetView', { height: get_height() });
+    });
+    function get_height() {
+        var height = $(window).height() - $(".outerBox").height()- $(".footer").height()-50;
+        return height < 300 ? 300 : height;
+    }
+
+</script>
+<script>
+//上传控件初始化
+$("#files").fileinput({  
+   language: 'zh',
+   uploadUrl:'.',
+   uploadAsync: false, //设置上传同步异步 此为同步  
+   maxFileSize: 100000,//上传大小
+   showUpload: false, 
+   maxFileCount: 10, //表示允许同时上传的最大文件个数
+   enctype: 'multipart/form-data',
+   //隐藏上传按钮
+   layoutTemplates:{
+       actionUpload:'',
+   }
+});
+//$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii',language:'zh-CN'});//日期输入框初始化
+laydate.render({ 
+  elem: '.form_datetime'
+  ,range: '~'
+});
+//添加培训发送数据
+function add_train(){
+    setReturnValueFalse();//阻止form跳转页面
+    name = $('#add_name').val();
+    time = $('#add_time').val();
+    didian = $('#add_didian').val();
+    content = $('#add_content').val();
+    id=$('#edit_id').val();
+    var ajax_upload=new Promise(function (resolve, reject) {
+        if (name && time && didian && content) {
+        //用formdata获取表单数据
+        var formData = new FormData(document.getElementById('upload_form')); 
+        //发送数据
+        var xhr = new XMLHttpRequest();
+        formData.append('name', name );
+        formData.append('time', time );
+        formData.append('didian', didian );
+        formData.append("file",document.getElementById("files"))
+        formData.append('content', content );
+        formData.append('id', id );
+        xhr.open('POST', 'user_train.php',true);
+        xhr.onreadystatechange = function() {
+            if ( xhr.readyState === 4 ) {
+                if ( Number(xhr.responseText) === 200 ) {
+                    resolve('ok');
+                } else {
+                    resolve('');
+                }
+            }
+        }
+        xhr.send( formData );
+    } else {
+        reject('');
+    }
+    });
+    ajax_upload.then(function(value) {
+        $('#train_add').modal('hide');
+        swal({
+            type: 'success',
+            title: '添加成功',
+            html: ' '
+        });
+        $('#table').bootstrapTable("refresh",{url:"user_train.php?ajax=data"});
+        clear_form();
+    }, function(value) {
+        
+    });
+}
+//清楚form数据
+function clear_form(){
+    $('#add_name').val('');
+    $('#add_time').val('');
+    $('#add_didian').val('');
+    $('#add_content').val('');
+    $('#files').fileinput('clear');
+}
+//删除文件
+function del_file(id,file_id){
+    swal(
+      {
+        title: "您确定要删除这个文件吗?",
+        text: "删除后将无法恢复，请谨慎操作！",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "是的，我要删除！",
+        cancelButtonText: "让我再考虑一下…",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then(
+      function (isConfirm) {
+        if (isConfirm === true) {
+            $.get('user_train.php?ajax=del_file',{id:id,file_id:file_id},function(data){
+                if(data=='ok'){
+                    swal({
+                        title: "成功",
+                        text: "删除成功。",
+                        type: "success"
+                    });
+                    $('#table').bootstrapTable("refresh",{url:"user_train.php?ajax=data"});
+                }else{
+
+                }
+            });
+        }
+        else {
+          swal({
+            title: "已取消",
+            text: "您取消了删除操作！",
+            type: "info"
+          })
+        }
+      }
+    )
+}
+var table = $('#table'),remove = $('#remove');
+//获取选中的行 id
+function getIdSelections() {
+    return $.map(table.bootstrapTable('getSelections'), function (row) {
+        return row.id
+    });
+}
+//删除按钮的触发事件
+remove.click(function () {
+    var ids = getIdSelections();
+    if(ids===''||ids==''||ids==null){
+        swal({
+            title: "",
+            text: "您没有选择要删除内容。",
+            type: "info"
+        })
+        return false;
+    }
+    swal(
+      {
+        title: "您确定要删除吗?",
+        text: "删除后将无法恢复，请谨慎操作！",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "是的，我要删除！",
+        cancelButtonText: "让我再考虑一下…",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then(
+      function (isConfirm) {
+        if (isConfirm === true) {
+            $.get('user_train.php?ajax=del',{ids:ids},function(data){
+                if(data=='ok'){
+                    table.bootstrapTable('remove', {
+                        field: 'id',
+                        values: ids
+                    });
+                }else{
+                    swal({
+                        title: "错误",
+                        text: "删除失败，请稍候重试",
+                        type: "error"
+                    })
+                }
+            });
+        }
+        else {
+          swal({
+            title: "已取消",
+            text: "您取消了删除操作！",
+            type: "info"
+          })
+        }
+      }
+    )
+});
+//删除单个培训
+function train_del(id){
+    swal(
+      {
+        title: "您确定要删除吗?",
+        text: "删除后将无法恢复，请谨慎操作！",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "是的，我要删除！",
+        cancelButtonText: "让我再考虑一下…",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then(
+      function (isConfirm) {
+        if (isConfirm === true) {
+            $.get('user_train.php?ajax=del',{id:id},function(data){
+                if(data=='ok'){
+                    $('#table').bootstrapTable("refresh",{url:"user_train.php?ajax=data"});
+                }else{
+                    swal({
+                        title: "错误",
+                        text: "删除失败，请稍候重试",
+                        type: "error"
+                    })
+                }
+            });
+        }
+        else {
+          swal({
+            title: "已取消",
+            text: "您取消了删除操作！",
+            type: "info"
+          })
+        }
+      }
+    )
+}
+function add_modal(){
+    clear_form();
+    $('.file_hide').show();
+    $('#myModalLabel').text('添加人员培训');
+    $('#edit_id').val();
+    //$('#add_time').val('{$time}');
+}
+function add_file(id){
+    $('#train_add').modal('show');
+    $('#edit_id').val(id);
+    $('#add_name').val('1');
+    $('#add_time').val('1');
+    $('#add_didian').val('1');
+    $('#add_content').val('1');
+    $('.file_hide').hide();
+    $('#myModalLabel').text('添加培训附件');
+}
+</script>
+<script>  
+    
+  /*firefox----在火狐下使用event对象----*/  
+    
+      function __firefox(){  
+    
+          HTMLElement.prototype.__defineGetter__("runtimeStyle", __element_style);  
+    
+          window.constructor.prototype.__defineGetter__("event", __window_event);  
+    
+          Event.prototype.__defineGetter__("srcElement", __event_srcElement);  
+    
+      }  
+    
+      function __element_style(){  
+    
+          return this.style;  
+    
+      }  
+    
+      function __window_event(){  
+    
+          return __window_event_constructor();  
+    
+      }  
+    
+      function __event_srcElement(){  
+    
+          return this.target;  
+    
+      }  
+    
+      function __window_event_constructor(){  
+    
+          if(document.all){  
+    
+              return window.event;  
+    
+          }  
+    
+          var _caller = __window_event_constructor.caller;  
+    
+          while(_caller!=null){  
+    
+              var _argument = _caller.arguments[0];  
+    
+              if(_argument){  
+    
+                  var _temp = _argument.constructor;  
+    
+                  if(_temp.toString().indexOf("Event")!=-1){  
+    
+                      return _argument;  
+    
+                  }  
+    
+              }  
+    
+              _caller = _caller.caller;  
+    
+          }  
+    
+          return null;  
+    
+      }  
+    
+      if(window.addEventListener){  
+    
+          __firefox();  
+    
+      }  
+    
+    
+function setReturnValueFalse()  
+  
+{    
+  
+    if(document.all)  
+  
+    {  
+  
+        window.event.returnValue = false;  
+  
+    }  
+  
+    else  
+  
+    {  
+  
+        event.preventDefault();  
+  
+    }  
+  
+}  
+  </script> 

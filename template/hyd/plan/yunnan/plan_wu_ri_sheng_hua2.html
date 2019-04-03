@@ -1,0 +1,445 @@
+<table class="hide noborder">
+    <tr class="hide" align="right">
+        <td colspan="15">监-11</td>
+    </tr>
+</table>
+<h1>五日生化需氧量检验记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:5%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:5%"></td>
+        <td style="width:10%"></td>
+        <td style="width:5%"></td>
+    </tr>
+    <tr align="center">
+        <td colspan="2">测定方法</td>
+        <td colspan="15" style="text-align: left">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">培养前</td>
+        <td colspan="15" style="text-align: left">
+            日期:<input type="text" name="td7" class="inputc date_Ymd" value="{$arow['td7']}" style="width: 100px;margin-right: 50px;">
+            C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>)=<input type="text" name="td8" class="inputc" value="{$arow['td8']}" id="c0" style="width: 80px;">mol/L
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">培养后</td>
+        <td colspan="15" style="text-align: left">
+            日期:<input type="text" name="td9" class="inputc date_Ymd" value="{$arow['td9']}" style="width: 100px;margin-right: 50px;">
+            C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>)=<input type="text" name="td10" class="inputc" value="{$arow['td10']}" id="c5" style="width: 80px;">mol/L
+        </td>
+    </tr>
+    <tr align="center">
+        <td rowspan="2">序号</td>
+        <td rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td colspan="3">试验水样mL</td>
+        <td colspan="4">培养前硫代硫酸钠用量mL</td>
+        <td colspan="4">培养后硫代硫酸钠用量mL</td>
+        <td colspan="1" rowspan="2">含量<br />({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+        <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+    <tr>
+        <td>原水样体积</td>
+        <td>总体积</td>
+        <td>滴定体积</td>
+        <td>终点</td>
+        <td>始点</td>
+        <td>用量</td>
+        <td>平均用量</td>
+        <td>终点</td>
+        <td>始点</td>
+        <td>用量</td>
+        <td>平均用量</td>
+    </tr>
+    <tr>
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2">空白</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"><input type="text" name="btdata[101]" value="{$arow['btdata'][101]}" class="inputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[102]" value="{$arow['btdata'][102]}" class="inputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[103]" value="{$arow['btdata'][103]}" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[104]" value="{$arow['btdata'][104]}" id="bt104" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[105]" value="{$arow['btdata'][105]}" id="bt105" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[106]" value="{$arow['btdata'][106]}" id="bt106" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[107]" value="{$arow['btdata'][107]}" id="bt107" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[108]" value="{$arow['btdata'][108]}" id="bt108" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[109]" value="{$arow['btdata'][109]}" id="bt109" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[110]" value="{$arow['btdata'][110]}" id="bt110" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[111]" value="{$arow['btdata'][111]}" id="bt111" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2" title="原始均值: {$arow['btdata'][119]}">
+            <input type="text" name="btdata[118]" value="{$arow['btdata'][118]}" id="bt118" class="noinputc">
+            <input type="hidden" name="btdata[119]" value="{$arow['btdata'][119]}" id="bt119">
+            <input type="hidden" name="btdata[p0]" value="{$arow['btdata'][p0]}" id="p0">
+            <input type="hidden" name="btdata[p5]" value="{$arow['btdata'][p5]}" id="p5">
+        </td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+    </tr>
+    <tr>
+        <td rowspan="1"><input type="text" name="btdata[112]" value="{$arow['btdata'][112]}" id="bt112" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[113]" value="{$arow['btdata'][113]}" id="bt113" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[114]" value="{$arow['btdata'][114]}" id="bt114" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[115]" value="{$arow['btdata'][115]}" id="bt115" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[116]" value="{$arow['btdata'][116]}" id="bt116" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[117]" value="{$arow['btdata'][117]}" id="bt117" onblur="btfunc()" class="noinputc"></td>
+    </tr>
+    <tr>
+        <td rowspan="2">&nbsp;</td>
+        <td rowspan="2">验证</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"><input type="text" name="btdata[201]" value="{$arow['btdata'][201]}" id="bt201" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[202]" value="{$arow['btdata'][202]}" id="bt202" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[203]" value="{$arow['btdata'][203]}" id="bt203" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[204]" value="{$arow['btdata'][204]}" id="bt204" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[205]" value="{$arow['btdata'][205]}" id="bt205" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[206]" value="{$arow['btdata'][206]}" id="bt206" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[207]" value="{$arow['btdata'][207]}" id="bt207" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[208]" value="{$arow['btdata'][208]}" id="bt208" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[209]" value="{$arow['btdata'][209]}" id="bt209" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[210]" value="{$arow['btdata'][210]}" id="bt210" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2"><input type="text" name="btdata[211]" value="{$arow['btdata'][211]}" id="bt211" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="2" title="原始均值: {$arow['btdata'][219]}">
+            <input type="text" name="btdata[218]" value="{$arow['btdata'][218]}" id="bt218" class="noinputc">
+            <input type="hidden" name="btdata[219]" value="{$arow['btdata'][219]}" id="bt219"></td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+    </tr>
+    <tr>
+        <td rowspan="1"><input type="text" name="btdata[212]" value="{$arow['btdata'][212]}" id="bt212" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[213]" value="{$arow['btdata'][213]}" id="bt213" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[214]" value="{$arow['btdata'][214]}" id="bt214" onblur="btfunc()" class="noinputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[215]" value="{$arow['btdata'][215]}" id="bt215" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[216]" value="{$arow['btdata'][216]}" id="bt216" onblur="btfunc()" class="inputc"></td>
+        <td rowspan="1"><input type="text" name="btdata[217]" value="{$arow['btdata'][217]}" id="bt217" onblur="btfunc()" class="noinputc"></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function btfunc() {
+    var c0 = $('#c0').val();
+    var c5 = $('#c5').val();
+    $.isNumeric(c5) ? '' : $('#c5').focus();
+    $.isNumeric(c0) ? '' : $('#c0').focus();
+
+    var bt104 = $('#bt104').val();
+    var bt105 = $('#bt105').val();
+    var strArr = bt104.toString().split(".");
+    if (strArr.length == 2) {
+        var len = strArr[1].length;
+    } else {
+        var len = 0;
+    }
+    if ($.isNumeric(bt104) && $.isNumeric(bt105)) {
+        var data = roundjs(accsub(bt104, bt105), len);
+        $('#bt106').val(data);
+    } else {
+        $('#bt106').val('');
+    }
+
+    var bt108 = $('#bt108').val();
+    var bt109 = $('#bt109').val();
+    if ($.isNumeric(bt108) && $.isNumeric(bt109)) {
+        var data = roundjs(accsub(bt108, bt109), len);
+        $('#bt110').val(data);
+    } else {
+        $('#bt110').val('');
+    }
+
+    var bt112 = $('#bt112').val();
+    var bt113 = $('#bt113').val();
+    if ($.isNumeric(bt112) && $.isNumeric(bt113)) {
+        var data = roundjs(accsub(bt112, bt113), len);
+        $('#bt114').val(data);
+    } else {
+        $('#bt114').val('');
+    }
+
+    var bt115 = $('#bt115').val();
+    var bt116 = $('#bt116').val();
+    if ($.isNumeric(bt115) && $.isNumeric(bt116)) {
+        var data = roundjs(accsub(bt115, bt116), len);
+        $('#bt117').val(data);
+    } else {
+        $('#bt117').val('');
+    }
+
+    var bt114 = $('#bt114').val();
+    var bt106 = $('#bt106').val();
+    if ($.isNumeric(bt106) && $.isNumeric(bt114)) {
+        var data = roundjs(accDiv(accAdd(bt106, bt114), 2), len);
+        $('#bt107').val(data);
+    } else if ($.isNumeric(bt106)) {
+        $('#bt107').val(bt106);
+    } else {
+        $('#bt107').val('');
+    }
+
+    var bt110 = $('#bt110').val();
+    var bt117 = $('#bt117').val();
+    if ($.isNumeric(bt110) && $.isNumeric(bt117)) {
+        var data = roundjs(accDiv(accAdd(bt110, bt117), 2), len);
+        $('#bt111').val(data);
+    } else if ($.isNumeric(bt110)) {
+        $('#bt111').val(bt110);
+    } else {
+        $('#bt111').val('');
+    }
+
+    var bt107 = $('#bt107').val();
+    if ($.isNumeric(bt107) && $.isNumeric(c0)) {
+        //用量*溶液浓度*80  计算用修约5位的数据
+        var data = roundjs(accMul(accMul(bt107, c0), 80), 5);
+        var p0 = data;
+        $('#p0').val(p0);
+    } else {
+        var p0 = '';
+        $('#p0').val('');
+    }
+
+    var bt111 = $('#bt111').val();
+    if ($.isNumeric(bt111) && $.isNumeric(c5)) {
+        //用量*溶液浓度*80  计算用修约5位的数据
+        var data = roundjs(accMul(accMul(bt111, c5), 80), 5);
+        var p5 = data;
+        $('#p5').val(p5);
+    } else {
+        var p5 = '';
+        $('#p5').val('');
+    }
+
+    if ($.isNumeric(p0) && $.isNumeric(p5)) {
+        var data = accsub(p0, p5);
+        $('#bt119').val(data);
+        var rd = roundjs(data, 1);
+        $('#bt118').val(rd);
+    } else {
+        $('#bt118').val('');
+        $('#bt119').val('');
+    }
+
+    var bt204 = $('#bt204').val();
+    var bt205 = $('#bt205').val();
+    var strArr = bt204.toString().split(".");
+    if (strArr.length == 2) {
+        var len = strArr[1].length;
+    } else {
+        var len = 0;
+    }
+    if ($.isNumeric(bt204) && $.isNumeric(bt205)) {
+        var data = roundjs(accsub(bt204, bt205), len);
+        $('#bt206').val(data);
+    } else {
+        $('#bt206').val('');
+    }
+
+    var bt208 = $('#bt208').val();
+    var bt209 = $('#bt209').val();
+    if ($.isNumeric(bt208) && $.isNumeric(bt209)) {
+        var data = roundjs(accsub(bt208, bt209), len);
+        $('#bt210').val(data);
+    } else {
+        $('#bt210').val('');
+    }
+
+    var bt212 = $('#bt212').val();
+    var bt213 = $('#bt213').val();
+    if ($.isNumeric(bt212) && $.isNumeric(bt213)) {
+        var data = roundjs(accsub(bt212, bt213), len);
+        $('#bt214').val(data);
+    } else {
+        $('#bt214').val('');
+    }
+
+    var bt215 = $('#bt215').val();
+    var bt216 = $('#bt216').val();
+    if ($.isNumeric(bt215) && $.isNumeric(bt216)) {
+        var data = roundjs(accsub(bt215, bt216), len);
+        $('#bt217').val(data);
+    } else {
+        $('#bt217').val('');
+    }
+
+    var bt214 = $('#bt214').val();
+    var bt206 = $('#bt206').val();
+    if ($.isNumeric(bt206) && $.isNumeric(bt214)) {
+        var data = roundjs(accDiv(accAdd(bt206, bt214), 2), len);
+        $('#bt207').val(data);
+    } else if ($.isNumeric(bt206)) {
+        $('#bt207').val(bt206);
+    } else {
+        $('#bt207').val('');
+    }
+
+    var bt210 = $('#bt210').val();
+    var bt217 = $('#bt217').val();
+    if ($.isNumeric(bt210) && $.isNumeric(bt217)) {
+        var data = roundjs(accDiv(accAdd(bt210, bt217), 2), len);
+        $('#bt211').val(data);
+    } else if ($.isNumeric(bt210)) {
+        $('#bt211').val(bt210);
+    } else {
+        $('#bt211').val('');
+    }
+
+    var bt207 = $('#bt207').val();
+    if ($.isNumeric(bt207) && $.isNumeric(c0)) {
+        //用量*溶液浓度*80  计算用修约5位的数据
+        var p01 = roundjs(accMul(accMul(bt207, c0), 80), 5);
+    }
+
+    var bt211 = $('#bt211').val();
+    if ($.isNumeric(bt211) && $.isNumeric(c5)) {
+        //用量*溶液浓度*80  计算用修约5位的数据
+        var p51 = roundjs(accMul(accMul(bt211, c5), 80), 5);
+    }
+
+    if ($.isNumeric(p01) && $.isNumeric(p51)) {
+        var bt201 = $('#bt201').val();
+        var bt202 = $('#bt202').val();
+        var data = accsub(p01, p51);
+        if ($.isNumeric(bt201) && (bt201 === bt202)) {
+            $('#bt219').val(data);
+            var rd = roundjs(data, 1);
+            $('#bt218').val(rd);
+        } else if ($.isNumeric(bt201) && $.isNumeric(bt202)) {
+            var p0 = $('#p0').val();
+            var p5 = $('#p5').val();
+            if ($.isNumeric(p0) && $.isNumeric(p5)) {
+                var jg = accDiv(accsub(data, accMul(accsub(p0, p5), accDiv(accsub(bt202, bt201), bt202))), accDiv(bt201, bt202));
+                $('#bt219').val(jg);
+                var rj = roundjs(jg, 1);
+                $('#bt218').val(rj);
+            } else {
+                $('#bt218').val('');
+                $('#bt219').val('');
+            }
+        } else {
+            $('#bt218').val('');
+            $('#bt219').val('');
+        }
+    } else {
+        $('#bt218').val('');
+        $('#bt219').val('');
+    }
+}
+
+function jsgs() {
+    btfunc();
+    var c0 = $('#c0').val();
+    var c5 = $('#c5').val();
+    $.isNumeric(c5) ? '' : $('#c5').focus();
+    $.isNumeric(c0) ? '' : $('#c0').focus();
+
+    var vd5_split = String(vs['vd5']).split('.');
+    if (vd5_split.length == 2) {
+        var diding_ws = vd5_split[1].length;
+    } else {
+        var diding_ws = 2;
+    }
+
+    if ($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])) {
+        vs['vd7'] = roundjs(accsub(parseFloat(vs['vd5']), parseFloat(vs['vd6'])), diding_ws);
+    } else {
+        vs['vd7'] = '';
+    }
+    if ($.isNumeric(vs['vd13']) && $.isNumeric(vs['vd14'])) {
+        vs['vd15'] = roundjs(accsub(parseFloat(vs['vd13']), parseFloat(vs['vd14'])), diding_ws);
+    } else {
+        vs['vd15'] = '';
+    }
+    if ($.isNumeric(vs['vd7']) && $.isNumeric(vs['vd15'])) {
+        vs['vd21'] = roundjs(accDiv(accAdd(vs['vd7'], vs['vd15']), 2), diding_ws);
+    } else if ($.isNumeric(vs['vd7'])) {
+        vs['vd21'] = vs['vd7'];
+    } else {
+        vs['vd21'] = '';
+    }
+
+    if ($.isNumeric(vs['vd9']) && $.isNumeric(vs['vd10'])) {
+        vs['vd11'] = roundjs(accsub(parseFloat(vs['vd9']), parseFloat(vs['vd10'])), diding_ws);
+    } else {
+        vs['vd11'] = '';
+    }
+    if ($.isNumeric(vs['vd17']) && $.isNumeric(vs['vd18'])) {
+        vs['vd19'] = roundjs(accsub(parseFloat(vs['vd17']), parseFloat(vs['vd18'])), diding_ws);
+    } else {
+        vs['vd19'] = '';
+    }
+    if ($.isNumeric(vs['vd11']) && $.isNumeric(vs['vd19'])) {
+        vs['vd22'] = roundjs(accDiv(accAdd(vs['vd11'], vs['vd19']), 2), diding_ws);
+    } else if ($.isNumeric(vs['vd11'])) {
+        vs['vd22'] = vs['vd11'];
+    } else {
+        vs['vd22'] = '';
+    }
+
+    if ($.isNumeric(vs['vd21'])) {
+        vs['vd8'] = roundjs(accMul(accMul(80, c0), vs['vd21']), 5);
+    } else {
+        vs['vd8'] = '';
+    }
+    if ($.isNumeric(vs['vd22'])) {
+        vs['vd12'] = roundjs(accMul(accMul(80, c5), vs['vd22']), 5);
+    } else {
+        vs['vd12'] = '';
+    }
+    if ($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])) {
+        //f1 = (Vt-Ve)/Vt
+        var Ve = parseFloat(vs['vd1']);
+        var Vt = parseFloat(vs['vd3']);
+        var f1 = accDiv(accsub(Vt, Ve), Vt);
+        //f2 = Ve/Vt
+        var f2 = accDiv(Ve, Vt);
+        if (vs['vd1'] != vs['vd3']) {
+            var p0 = $('#p0').val();
+            var p5 = $('#p5').val();
+            //f1*(p0-p5)  稀释水的溶解氧
+            if ($.isNumeric(p0) && $.isNumeric(p5)) {
+                var f1_3_4 = accMul(f1, accsub(p0, p5));
+            } else {
+                var f1_3_4 = '';
+            }
+        } else {
+            var f1_3_4 = 0;
+        }
+        if ($.isNumeric(vs['vd8']) && $.isNumeric(vs['vd12']) && $.isNumeric(f1_3_4)) {
+            var p1_p2 = accsub(parseFloat(vs['vd8']), parseFloat(vs['vd12']));
+            var jg = accDiv(accsub(p1_p2, f1_3_4), f2);
+        } else {
+            var jg = '';
+        }
+
+        // console.log('空白0：' + p0);
+        // console.log('空白5：' + p5);
+        // console.log('水样0：' + vs['vd8']);
+        // console.log('水样5：' + vs['vd12']);
+        // console.log('');
+
+        if ($.isNumeric(jg)) {
+            vs['vd0'] = jsws(jg);
+        } else {
+            vs['vd0'] = '';
+        }
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

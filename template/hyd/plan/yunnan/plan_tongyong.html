@@ -1,0 +1,70 @@
+<table class="noborder">
+    <tr align="right">
+	    <td colspan="15">监-00</td>
+	</tr>
+</table><h1>{$arow['assay_element']}测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+  <tr class="noborder">
+    <td style="width:13%"></td>
+    <td style="width:20%"></td>
+    <td style="width:13%"></td>
+    <td style="width:10%"></td>
+    <td style="width:10%"></td>
+    <td style="width:13%"></td>
+    <td style="width:21%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检测依据</td>
+    <td colspan="2">{$arow['td2']}<input type="hidden" name="td2" value="{$arow['td2']}"></td>
+    <td>检出限({$arow['unit']})</td>
+    <td>{$arow['td3']}<input type="hidden" name="td3" value="{$arow['td3']}"></td>
+  </tr>
+  <tr>
+    <td>仪器名称</td>
+    <td>{$arow['td4']}</td>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td colspan="1">定容体积(mL)</td>
+    <td colspan="1"><input type="text" name="td6" class="inputl" value="{$arow['td6']}"></td>
+    <td colspan="1">截距检验</td>
+    <td colspan="2" id="CT">{$arow['CT']}</td>
+    <td colspan="1">相关系数</td>
+    <td colspan="1">{$arow['CR']}</td>
+  </tr>
+  <tr>
+    <td colspan="1" class="change_qx blue_a" title="点击选择曲线">曲线方程</td>
+    <td colspan="4">{$arow['quxian']}  截距a={$arow['CA']}  斜率b={$arow['CB']}
+    <td colspan="1" class="view_qx blue_a" title="查看曲线">绘制日期</td>
+    <td colspan="1">{$arow['sc_ldrq']}</td>
+  </tr>
+  <tr>
+    <td >序号</td>
+    <td>$zhanming</td>
+    <td>采样日期</td>
+    <td>含量({$arow['unit']})</td>
+    <td colspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  {$aline}
+  <tr class="noborder"></tr>
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+  if($('#CT').html()!='' && $('#CT').html()!='不合格'){
+    $('#CT').html('合格');
+  }
+</script>
+<script type="text/javascript">
+  eval($(".extrajs_{$arow['id']}").html());
+  function jsgs(){
+    if($.isNumeric(vs['vd0'])){
+      vs['vd0'] = roundjs(vs['vd0'],4);
+    }
+  }
+</script>

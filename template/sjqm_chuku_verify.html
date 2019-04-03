@@ -1,0 +1,34 @@
+<h1 class="center">出库确认</h1>
+<input type='button' value='打印' class="btn btn-xs btn-primary" onclick="print_();"  class="no_print"/>
+<input type='button' value='批量确认' class="btn btn-xs btn-primary" onclick="chukus_();"  class="no_print"/>
+<form>
+<table class='table table-striped table-bordered table-hover center' style="border: 2px solid #ddd">
+	<tr align=center>
+		<td>序号</td>
+		<td>物品名称</td>
+		<td>规格</td>
+		<td>级别</td>
+		<td>出库数量</td>
+		<td>领用人</td>
+		<td>出库日期</td>
+		<td class="no_print">操作</td>
+	</tr>
+	$lines
+</table>
+<!-- <input type=button value='确认出库' onclick="window.location.href='sjqm_rck.php?action=get_out&id='+$('input[name=id]').val()+'&num='+$('input[name=shuliang]').val()+'&user='+$('input[name=user]').val()+'&pro_id='+$('input[name=pro_id]').val();"> -->
+</form>
+<style>     
+@media print {   
+.no_print {    
+display: none    
+}   
+}   
+</style>
+<script>
+	function print_(){
+		window.print();
+	}
+	function chukus_(){
+		window.location.href="kf_lingyong.php?handle=chukus_";
+	}
+</script>

@@ -1,0 +1,87 @@
+<script src='../js/ajaxfileupload.js'></script>
+<script>
+function redirect( cy_date ){
+    url = "wtcy_list.php?cy_date=" + cy_date;
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+function gengxin(id){
+  $("span[name='gengxin"+id+"']").hide();
+  $("span[name='qrgengxin"+id+"']").show();
+  $("input[name='wenjian"+id+"']").hide();
+  $("input[name='file"+id+"']").show();
+}
+function qrgengxin(id){
+  $("span[name='gengxin"+id+"']").show();
+  $("span[name='qrgengxin"+id+"']").hide();
+  var pi = 'file'+id;
+  var cyd_id = id;
+  var filepatd=$("input[name='file"+id+"']").val();
+  var extStart=filepatd.lastIndexOf(".");
+  var ext=filepatd.substring(extStart,filepatd.lengtd).toUpperCase();
+  if(ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG"&&ext!=".jpeg"&&ext!=".jpg"&&ext!=".gif"&&ext!=".png"){
+  // alert("图片限于png,gif,jpeg,jpg格式");
+  layer.msg('图片限于png,gif,jpeg,jpg格式', {shift: 6});
+  $(this).attr('value','');
+  return false;
+  }else{
+  $.ajaxFileUpload(
+  {
+  url:'wtcy_qrd_ajax.php?cyd_id='+cyd_id+'&pi='+pi,
+  secureuri:false,
+  fileElementId:'file'+cyd_id,
+  dataType: 'text',
+  success: function(data){
+  if(data=='error'){
+  alert('系统错误', {shift: 6});
+  return false;
+  }else{
+     var zong = data.split('<')[0];
+    if((zong.split('+')[0])!="更新失败"){
+       $("input[name='file"+id+"']").replaceWith("<input type='file' id='file' name='file"+id+"' style='display:none;'/>"); 
+      $("input[name='wenjian"+id+"']").show();
+      $("input[name='file"+id+"']").hide();
+      $("input[name='wenjian"+id+"']").val(zong.split('+')[0]);
+      $(".xiazai"+id).attr('download',zong.split('+')[0]);
+      $(".xiazai"+id).attr('href',zong.split('+')[1]);
+       alert("更新成功");
+       window.location.reload();
+     
+    }else{
+      $("span[name='gengxin"+id+"']").hide();
+      $("span[name='qrgengxin"+id+"']").show();
+       alert(data.split('<')[0]);
+    }
+}}
+});}}
+</script>
+<from id="formId" action="" method="POST">
+<h3 class="header smaller center title">委托检测采样确认单</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		
+		年份选择:<select id="year" name="year"     onchange="redirect(get_cy_date())">$year_list</select>
+		月份选择:<select id="month" name="month"    onchange="redirect(get_cy_date())">$month_list</select> 
+		<a href="wtcy_shangchuan_list.php"><input type="submit" name="sub" value="上传" /></a>
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center">
+  <tr>
+    <th width="5%" style='min-width:35px;'>序号</th>
+    <th width="10%" style='min-width:80px;'>采样日期</th>
+    <th width="10%" style='min-width:90px;'>采样单号</th>
+    <th width="23%" style='min-width:110px;'>委托单位</th>
+    <th width="15%" style='min-width:60px;'>采样人</th>
+    <th width="17%" style='min-width:110px;'>文件</th>
+    <th width="20%" style='min-width:168px;'>操作</th>
+  </tr>
+  $lines
+</table>
+</div>
+</div>
+</from>

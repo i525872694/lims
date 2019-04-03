@@ -1,0 +1,134 @@
+<style>
+	.body_content{
+		display: none;
+	}
+	.loading_div{
+		margin:0 auto;
+		position: fixed;
+		top:40%;
+		height:40%;
+		left:45%;
+		text-align: center;
+	}
+	.loading_img{
+		-webkit-transform: rotate(360deg);
+		animation: rotation 8s linear infinite;
+		-moz-animation: rotation 8s linear infinite;
+		-webkit-animation: rotation 8s linear infinite;
+		-o-animation: rotation 8s linear infinite;
+	}
+	@-webkit-keyframes rotation {
+    	from {-webkit-transform: rotate(0deg);
+	}to {
+		-webkit-transform: rotate(360deg);
+	}}
+</style>
+<div class='loading_div'>
+	<img src="{$rooturl}/img/Loading.png" class='loading_img' alt=""><br/>
+	<h3>正在拼命加载中</h3>
+</div>
+<div style="width:100%;margin:0 auto;" class='body_content'>
+	<div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+		<ul>
+			<li><a href="#tabs-1" onclick="location='hw_userwoke.php?type=default&tab=0'">上岗项目统计</a></li>
+			<li><a href="#tabs-2" onclick="location='hw_userwoke.php?type=file6&tab=1&title=上岗考核'">上岗考核</a></li>
+			<li><a href="#tabs-3" onclick="location='hw_userwoke.php?type=file0&tab=2&title=采样'">采样</a></li>
+			<li><a href="#tabs-4" onclick="location='hw_userwoke.php?type=file1&tab=3&title=检测'">检测</a></li>
+			<li><a href="#tabs-5" onclick="location='hw_userwoke.php?type=file2&tab=4&title=操作设备'">操作设备</a></li>
+			<li><a href="#tabs-6" onclick="location='hw_userwoke.php?type=file3&tab=5&title=签发报告'">签发报告</a></li>
+			<li><a href="#tabs-7" onclick="location='hw_userwoke.php?type=file4&tab=6&title=质量监督'">质量监督</a></li>
+			<li><a href="#tabs-8" onclick="location='hw_userwoke.php?type=file5&tab=7&title=计量检定'">计量检定</a></li>
+		</ul>
+	<div id="tabs-1">
+		<h1 align="center">上岗项目统计</h1>
+		{$sel}
+		<form method=post action="hw_userwoke.php">
+		<table class='table table-striped table-bordered table-hover center'  style="width:18cm">
+		<tr >
+		<td class=noborder>持上岗证人数　$rsx</td>
+		<td class=noborder style='text-align:center' colspan="2">检测项目</td>
+		<td class=noborder><input type=text id='c1' list="xm" name="xxm" size=10 value="$xmm" colspan='2'/></td>
+			<datalist  id='xm'>
+				$xms
+			</datalist>
+		<td class=noborder style='text-align:left'><input class='btn btn-xs btn-primary' type="button" value='查询' onclick = "show()">$new</td>
+	
+		</tr>
+		<tr align=center>
+		<td>序号</td>
+		<td colspan=2>姓名</td>
+		<td>项目总数(项)</td>
+		<td colspan=2>操作</td>
+		</tr>
+		$lines
+		</table>
+		<div align="center">
+		<input type=button class='btn btn-xs btn-primary' value=返回 onClick="location.href='hw_userwoke.php'"></div>
+		</form>
+	</div>
+	<div id="tabs-2">{$files_content1}</div>
+    <div id="tabs-3">{$files_content2}</div>
+    <div id="tabs-4">{$files_content3}</div>
+    <div id="tabs-5">{$files_content4}</div>
+    <div id="tabs-6">{$files_content5}</div>
+	<div id="tabs-7">{$files_content6}</div>
+	<div id="tabs-8">{$files_content7}</div>
+	</div>
+</div>
+<script>
+$('#c1').blur(function(){
+	var item = $(this).val();
+	item = $.trim(item);
+	if(item != ''){
+		$.get('hw_userwoke.php?m=datalist&item='+item,function(datalist){
+			if(datalist){
+				data = $.parseJSON(datalist);
+				$('#ff').empty().html(data);
+			}
+		});
+	}
+});
+function show(){
+	var xiangmu = $('#c1').val();
+	 var fzx = $('#dayin').val();
+	location.href="hw_userwoke.php?fzx="+fzx+"&xmm="+xiangmu;
+}
+function cfzx(ab){
+    var fzx = $(ab).val();
+    location = "?fzx="+fzx;
+}
+/*
+window.onload=function(){
+	var inp = document.getElementsByTagName("input");
+	zhuru(inp);
+}
+function zhuru(obj){
+	var len = obj.length -1;
+	for(var i=0;i<len;i++){
+		if(obj[i].type=='text'){
+			obj[i].onblur=function(){
+				var str = this.value;
+				str= str.replace(/'/g,"‘");
+				str= str.replace(/"/g,"“");
+				this.value = str.replace(/;/g,"；"); 
+			}
+		}
+	}
+}
+*/
+//下载表单
+function download(obj){
+	var fzx_id = $("select[name='fzx']").find("option:selected").val();
+	var fzx_name = $("select[name='fzx']").find("option:selected").text();
+	window.location.href = "hw_userwoke_download.php?handle=download&fzx_id="+fzx_id+"&fzx_name="+fzx_name;
+}
+</script>
+<script>
+	$(function(){
+		$('#tabs').tabs();
+		var active={$tab_active};
+		$('#tabs').tabs({active:active})
+		$(".body_content").show();
+			$('.loading_div').remove();
+	})
+</script>

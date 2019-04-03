@@ -1,0 +1,235 @@
+<style>
+table.single td input{width: 100%}
+input[type='text']{
+    min-width:50px;
+}
+</style>
+<link rel="stylesheet" href="$rooturl/css/swiper.min.css">
+<script src="$rooturl/js/swiper.min.js"></script>
+<script type="text/javascript" src="$rooturl/js/lims/hyd.js"></script>
+<script type="text/javascript">
+function select_value(value){
+	var class_name = $(value).attr("class");
+   $("."+class_name).val($(value).val());
+}
+//点击输入框显示下拉
+/*function show_type(inpu){
+ $("input[id='"+inpu+"']").click();
+}*/
+function yanse(id){
+  var content=$("select[id='shuiti_yanse["+id+"]'] option:selected").text();
+  $("input[id='yanse["+id+"]']").val(content);
+}
+function zhuangtai(id){
+  var content=$("select[id='shuiti_zhuangtai["+id+"]'] option:selected").text();
+  $("input[id='zhuangtai["+id+"]']").val(content);
+}
+//点击输入框显示下拉
+function show_types(){
+	var id=$("#hid").val();
+  $("input[name='d["+id+"][tian_qi]']").click();
+}
+/*无水处理*/
+$(document).ready(function(){
+    //可输入下拉菜单，选中下拉菜单选项后将选中内容写入输入框
+    $("select.input_select").change(function(){
+        var content=$(this).val();//$("select[id='"+selectid+"'] option:selected").text();
+        console.log(content);
+        var inputid = $(this).attr("inputid");
+        $("#"+inputid+"").val(content);
+        //同步所有相同字段的标签
+        var field   = $(this).attr('field');
+        $("input[field="+field+"]").val(content);
+    });
+    $("input[field]").change(function(){
+        var field   = $(this).attr('field');
+        var result  = $(this).val();
+        $("input[field="+field+"]").val(result);
+    });
+	$("#yin").dblclick(function(){
+			$("select[name$='[status]']").css({display:"none"});
+	});
+	$(".chosen-select").chosen();
+    cyd_id  = "{$_GET['cyd_id']}";
+    if("{$load_cy}" =='yes'){
+        get_duijie_result(cyd_id);//获取对接表数据,注意签字后就不获取了
+    }
+});
+//同步龙慧系统的采样数据
+function get_duijie_result(cyd_id,is_force=false){
+    if("{$load_cy}" !='yes'){
+        alert('已签字，不能同步');
+        exit;
+    }
+    if(cyd_id){
+        var alert_obj = $.alert({title: '加载中...',content:'正在同步采样系统数据...<img src="{$rooturl}/img/loading.gif"/>',confirmButton:'',});//,autoClose: 'confirm|3000'
+        var url   = "{$duijie_url}xd_cyrw/cy_duijie_url.php?ajax=1";
+        var bar_code_str    = "{$bar_code_str}";
+        $.post(url,{'fzx_id':"{$fzx_id}",'bar_code_str':bar_code_str,'is_force':is_force,'action':'cyToLims'},function(data){
+            switch(data.status){
+                case 'yes':
+                    console.log(data.cy_arr);
+                    alert_obj.close();
+                    insert_lims_result(cyd_id,data.cy_arr);//将最新采样信息更新到本地数据库
+                break;
+                case 'not_result':
+                    console.log(data.sql);
+                    alert_obj.close();
+                    alert_obj = $.alert({title:'同步完成！',content:'没有最新采样数据',autoClose: 'confirm|2000'});
+                break;
+                default:
+                    alert_obj.close();
+                    alert_obj = $.alert({title:'同步出现问题！',content:'对接系统找不到相应数据，请联系管理员。'});
+                break;
+            }    
+        },'json');
+    }
+}
+//将最新采样信息更新到本地数据库
+function insert_lims_result(cyd_id,cy_arr){
+    if(cyd_id){
+        var url   = "{$rooturl}/xd_cyrw/cy_duijie_url.php?ajax=1";
+        var bar_code_str    = "{$bar_code_str}";
+        $.post(url,{'cyd_id':cyd_id,'cy_arr':cy_arr,'action':'lims_insert'},function(data){
+            $.alert({title:'同步完成！',content:'成功同步'+data.update_num+'条数据！正在刷新页面，请稍等...<img src="{$rooturl}/img/loading.gif"/>',autoClose: 'confirm|3000'});
+            setTimeout('window.location.href="{$rooturl}/cy/cy_record.php?cyd_id="+cyd_id+"&load_cy=no"',2000);
+        },'json')
+    }
+}
+function show_wus(id){
+	//alert($("input[name$='[cy_beizhuw]']")[id].width());
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "block";
+}
+function hide_wus(id){
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "none";
+	if(objDiv.value=="-1"){ 
+		var objj=document.getElementById ("cttt"+id).value;
+		f=objj.replace(/\(无水样\)/g,'');
+		var ob=document.getElementById ("cttt"+id).value +="\(无水样)";
+	}else{
+		var objj=document.getElementById ("cttt"+id).value;
+		f=objj.replace(/\(无水样\)/g,'');
+		var ob=document.getElementById ("cttt"+id).value=f;
+	}
+}
+
+function yanzheng(){//保存验证
+	var tt="";
+	var d="";
+	var dd="";
+	if(d!=""){f=d.replace(/,/g,'').length;alert("序号"+d+"为无水站点，共"+f+"个");return $("form").submit();
+	}
+}
+function time(zhi){
+	var zhiCl   = zhi.value.replace(/[^\d\- :]/g,"");//只能输入数字
+	var maoArr  = zhiCl.match(/:/g);//匹配“:”
+	var wei     = zhiCl.substring((zhiCl.length-1));//取出最后一个数字
+	zhi.value   = zhiCl;  
+	if(zhiCl.length>5){
+		zhiCl=zhiCl.substring(0,5);
+		zhi.value=zhiCl;
+	}
+	document.onkeydown = function (e) {
+	　　var theEvent = window.event || e;
+	　　var code = theEvent.keyCode || theEvent.which;
+		if(code!=8){//如果按得是删除键不做任何处理
+
+			if(zhiCl.length=='2'){
+				zhi.value = zhiCl+":";
+			}
+		}
+　　}
+}
+/*
+function check_date(t){
+	var date=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null&&date!=''){
+		alert("采样日期格式错误！");
+		window.setTimeout(function () { $(t).val(t.value).focus();},0); 
+				return false;
+	}
+}*/
+function check_time(t){
+	var time=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{2}\:{1}\d{2}/)==null&&time!=''){ 
+		alert("采样时间格式错误！正确格式00:00");
+		window.setTimeout(function () { $(t).val("").focus();},0);
+				return false;
+	}
+}
+</script>
+<div class='body_css'  id="yin">
+<div style="max-width:98%;margin:0 auto;">$tuiHuiTiShi</div>
+<center class="no_print">$dayin $syd $tongbu</center>
+<form name="cyrec" action="cy_record_save.php" method="post" id="cy_record_form">
+<!--<input type="hidden" name="current_user" value='登陆的人' />变量line_qz中-->
+<input type="hidden" name="cy_user" value="{$cyd['cy_user']}" />
+<input type="hidden" name="ajax" value="1"/>
+<input type="hidden" name="cy_flag" value="{$cyd['cy_flag']}" />
+<input type="hidden" name="cyd_id" id="cyd_id" value="{$_GET['cyd_id']}" />
+<input type="hidden" name="cyd_bh" id="cyd_id" value="{$_GET['cyd_bh']}" />
+<input type="hidden" name="cyd[save_flag]" value="1" />
+
+ <table  style="width:98%;" class="single center" id='cyjl'>
+ 	<caption style="font-size:24px; line-height:48px; ">
+		采样（验收）记录表  
+	</caption>
+  <tr align="center">
+    <td rowspan="{$bt_rowspan_num}"><div style='width:25px'>序号</div></td>
+	<td rowspan="{$bt_rowspan_num}"><div style='width:60px'>站点名称</div></td>
+	<td rowspan="{$bt_rowspan_num}"><div style='width:80px'>样品编号 </div></td>
+	<td rowspan="{$bt_rowspan_num}"><div style='width:80px'>采样日期</div></td>
+	<td rowspan="{$bt_rowspan_num}"><div style='width:50px'>采样<br/>时间</div></td>
+    {$cy_record_bt_str}
+    <td colspan="$xc_jcxm_total">现场测定记录</td>
+    <td rowspan="{$bt_rowspan_num}">水体状态</td>
+    <td rowspan="{$bt_rowspan_num}">水体颜色</td>
+	<td rowspan="{$bt_rowspan_num}" width="70px" >备注</td>
+	<td rowspan="{$bt_rowspan_num}">图片</td>
+  </tr>
+  <tr>
+    $xc_jcxm
+  </tr>
+  <tr>
+  	$xcxm_xs
+  </tr>
+	{$cy_record_lines}
+  <tr align="center" height="60px">
+  <td colspan="2">备注：</td>
+    <td colspan={$cols_num} style="padding:0px"><textarea style="width:100%;height:45px;text-align:left" name="cyd[cy_note]" id='cy_note' >{$cyd['cy_note']}</textarea>
+	</td>
+  </tr>
+</table>
+$line_qz
+
+$huiTuiButton
+<script type="text/javascript">
+
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+$("#cyjl").enter_sheet_input();
+
+function look_pic(id){
+	window.open('$rooturl/cy/look_img.php?id='+id);
+}
+function sc_qz(id){
+    $.get('./sc_qz.php',{id:id},function(data){
+        if(data!='error'){
+            console.log(data);
+            $('.sc_qz').parent().html('审查：'+data.qz);
+            $('.sc_qz_date').html('日期：'+data.qz_date);
+        }
+    },"json")
+}
+</script>
+</form>
+</div>

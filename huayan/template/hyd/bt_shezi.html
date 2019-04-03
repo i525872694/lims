@@ -1,0 +1,125 @@
+<!-- 表头修改{if $isJexcel} -->
+<form action="#" class="assay_form" method="post">
+	<div class="bt_modi" style="margin:30px auto; padding:0; width: {$zongheng};">
+		<div><span style="margin-right: 20px;">
+			纵横版：
+			<label><input type="radio" class="ace" name="zongheng" {$zong} value="zong"><span class="lbl" style="margin-right: 20px;">纵版</span></label>
+			<label><input type="radio" class="ace" name="zongheng" {$heng} value="heng"><span class="lbl" style="margin-right: 20px;">横版</span></label>
+		</div>
+		<div id="bt_modi_{$tid}"></div>
+	</div>
+</form>
+<script type="text/javascript">
+	$(document).ready(function(){
+		btSetVars = {
+			arowData: {$arowData},
+			linesData: [],
+			initText: window.clientVars.initText
+		};
+		try{
+			btSetVars.data = $.parseJSON(btSetVars.initText)
+			btSetSheet = $("#bt_modi_{$tid}").jExcel_init(btSetVars);
+			// 删除行数据
+			var config = btSetSheet.config;
+			var preCell = $(btSetSheet.div).find('#0-' + (config.lineNum - 1));
+			if($(preCell).hasClass('hide')){
+				preCell = $(btSetSheet.div).find('#' + $(preCell).data('merge'));
+			}
+			var rowNumber = $(preCell).prop('id').split('-')[1];
+			var numOfRows = parseInt($(preCell).prop('rowspan')) + parseInt(config.lineCount);
+			$(btSetSheet.div).jexcel('deleteRow', parseInt(rowNumber), parseInt(numOfRows));
+			// 表头数据更改时实时更新
+			btSetSheet.onchange = function(obj, cell, newVal){
+				if(typeof obj == 'object'){
+					var id = $(cell).prop('id').split('-');
+					var upData = btSetSheet['cellDataArray'][id[1]][id[0]];
+					upData.value = val;
+					upData.isJexcel = true;
+					var fileName = upData['link'][0].split('.')[1];
+				}else{
+					var newVal = cell;
+					var fileName = obj;
+				}
+				$.ajax({
+					url: 'ahlims.php?app=assay&act=bt_modify&ajax=1',
+					type: 'post',
+					data: {
+						tid: '{$tid}',
+						fid: '{$fid}',
+						isJexcel: true,
+						fileValue: newVal,
+						fileName: fileName
+					},
+					dataType: 'json',
+					success: function(data){
+						if(data.error == '0'){
+							save_status_msg('修改成功');
+						}else if(data.error == '1'){
+							save_status_msg(data.content, 'danger');
+						}
+					},
+					error: function(data){
+						console.log(data.responseText);
+					}
+				});
+			}
+			// 纵横版修改
+			$('.bt_modi input[name=zongheng]').on('change', function(){
+				btSetSheet.onchange('zongheng', $(this).val())
+			})
+		}catch(e){
+			console.error(e);
+		}
+	});
+</script>
+<!-- {else} -->
+<form action="ahlims.php?app=assay&act=bt_modify&ajax=1" class="assay_form" method="post">
+	<input type="hidden" name="tid" value="{$tid}" />
+	<input type="hidden" name="fid" value="{$fid}" />
+	<div class="bt_modi" id="bt_modi_{$tid}" style="margin:0 auto; padding:0; width: {$zongheng};">
+		{$plan}
+	</div>
+</form>
+<script type="text/javascript">
+	var isTrue = false;
+	$(".bt_modi table.noborder").remove();
+	$("#bt_modi_{$tid} .bt_hidden").show();
+	$("#bt_modi_{$tid} .single").first().find("tr").each(function(){
+		var tdHtml = $(this).find("td:first").html();
+		if(true==isTrue || tdHtml=='序号'){
+			isTrue = true;
+			$(this).remove();
+		}
+	})
+	$("#bt_modi_{$tid} .single").append('<tr class="auto"><td></td></tr>');
+	var last_tr = $("#bt_modi_{$tid} .single tr:last")
+	var btSetHtml = '<div>'
+	+'<span>纵横版：</span>'
+	+'<span>'
+	+'<label><input type="radio" class="ace" {$zong} name="zongheng" value="zong" /><span class="lbl">纵版</span></label>'
+	+'<label><input type="radio" class="ace" {$heng} name="zongheng" value="heng" /><span class="lbl">横版</span></label>'
+	+'</span>'
+	+'<span><button class="btn btn-primary btn-sm">保存</button></span>'
+	+'</div>';
+	var colspan = $("#bt_modi_{$tid} .single .noborder td").length;
+	last_tr.find("td:first").html(btSetHtml).prop("colspan",colspan).find("span").css("margin-right","20px");
+
+	//容量法的校正系数设置
+	var fanwei		= String($("#bt_modi_{$tid} .ddg_fw").val()).split(',');
+	var jiaozheng	= String($("#bt_modi_{$tid} .ddg_jz").val()).split(',');
+	for(var i=0;i<$("#bt_modi_{$tid} input.fanwei").length;i++){
+		$("#bt_modi_{$tid} .fanwei:eq("+i+")").val(fanwei[i]);
+		$("#bt_modi_{$tid} .jiaozheng:eq("+i+")").val(jiaozheng[i])
+	};
+	$("#bt_modi_{$tid} input.fanwei,#bt_modi_{$tid} input.jiaozheng").blur(function(){
+		var fw = ['','','','','','','','',''];
+		var jz = ['','','','','','','','',''];
+		for(var i=0;i<$("#bt_modi_{$tid} input.fanwei").length;i++){
+			fw[i]=$("#bt_modi_{$tid} .fanwei:eq("+i+")").val();
+			jz[i]=$("#bt_modi_{$tid} .jiaozheng:eq("+i+")").val();
+		}
+		$("#bt_modi_{$tid} .ddg_fw").val(fw.join(','));
+		$("#bt_modi_{$tid} .ddg_jz").val(jz.join(','));
+	})
+</script>
+<!-- {/if}End -->

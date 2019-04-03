@@ -1,0 +1,442 @@
+<!--下达采样任务页面 xd_cyrw_index.html-->
+<style>
+div{text-align:center;}
+table{margin:0 auto;min-width:100%;text-align:center;}
+#mask{
+display:none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 1;
+    width:100%;
+    height:100%;
+    background-color: #FFF;
+    z-index: 2;
+}
+.table-striped td{background-color:#FFFFFF !important;}
+label{cursor:pointer;}
+h1{text-align:center;}
+.date_selector *{box-sizing:content-box;}
+.widget-toolbar:before{border-style:none;}
+.hand{cursor:pointer;color:blue;}
+table#xdrw_content tr td{height: 30px;padding: 2px}
+.site_label,.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;overflow: hidden;}
+.group_sites{float:none;background-color:#C9F2D1}
+</style>
+<form id="xdrw" action="$rooturl/xd_cyrw/xd_cyrw_save.php" method="post" onkeydown="if(event.keyCode==13)return false;">
+	{$close}
+	<input type="hidden" name="cyd_id" value="{$_GET['cyd_id']}" />
+	<input type="hidden" name="site_type" id="site_type" value="{$_GET['site_type']}" />
+	<h2 class="header smaller center title">{$xdcy_title}</h2>
+	<table style="width:100%;" id="xdrw_content" class="table table-striped table-bordered center">
+		<tr>
+			<td align=left>
+				采样单位:
+				<label>检测单位<input type="radio" name="cy_flag"  value='1' checked $cy_checked onclick="cy_disp(this)" /></label>
+				<label>委托单位<input type="radio" id="bcy" name="cy_flag"  value='0' $bcy_checked onclick="cy_disp(this)" /></label>&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+			<td align=left style="min-width:260px">
+				采样日期:
+				<label>
+					<img src="$rooturl/img/date_input.png" height='26px' alt="点击设置采样日期" /><input type="text" class="date_input" style="height:26px;width:86px;vertical-align:middle;" title='在此处输入计划采样日期' name="cy_riqi" maxlength="10" value="$cy_date" oninput="this.value=this.value.replace(/[^\d\- :]/g,'');" />
+					<span style="position:relative;">
+					<span id="tishi_cy_riqi" style="color:red;position:absolute;left:0px;top:0px;width:200px;text-align:left;height:25px;line-height:25px;"></span>
+					</span>
+				</label>
+			</td>
+	        <td align=left>
+	        	现场检测项目(<span id="xcjc_tishi">$xcjc_value_num</span> 项):
+	            $xcjc_value_checkbox
+	        </td>
+		</tr>
+		<tr id="group_content">
+			<td align=left>批次名称:
+				<input type="text" name="group_name" value="$group_name" style="width:230px;" placeholder="批名不能为空!" required/></td>
+			<td class="cy_user"  style="border-right:none;" align=left>
+				采样人员:
+			
+	            <select name="jdrw[cy_user]" class="chosen" style="min-width:80px;">
+	                    $option_user
+	            </select>
+	            <select name="jdrw[cy_user2]" class="chosen" style="min-width:80px;">
+					<option value=''>未选择</option>
+	                    $option_user2
+	            </select>
+	        </td>
+			<td align=left>全程序空白样<span class="hand" onclick="qckb_value_modify('jdrw','qckb','')"><span name="jdrw[qckb_num]" value='$qckb_value_num'>(默认)</span></span>:
+				<label><input type="checkbox" name="jdrw[qckb]" value=""/>全程序空白</label>
+				<label><input type="checkbox" name="jdrw[snkb]" value="yes" $disabled/>同时检测室内空白
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				本批任务选择的站点
+			</td>
+		</tr>
+		<tr style="background-color:#99CCFF;font-weight:bold;height:25px;">
+				<td style="border-bottom:0px;background-color:#99CCFF !important;font-weight:bold;height:25px;">站点名称</td>
+				<td style="border-bottom:0px;background-color:#99CCFF !important;font-weight:bold;height:25px;"><span style="font-weight:bold;color:blue;cursor:pointer;" onclick="qckb_value_modify('监督任务','jdrw_group_value','')" name='jdrw_group_value' value=''>检测项目设定</span></td>
+				<td style="border-bottom:0px;background-color:#99CCFF !important;font-weight:bold;height:25px;">现场平行样</td>
+		</tr>
+		<tr id="no_site"><td colspan="3">在下面“站点选择区域”内选择本批采样任务的站点</td></tr>
+		<!--$lines-->
+	</table>
+	<div style="width:100%;height:30px;position:fixed;bottom:0px;background-color:#96ABBA;opacity:0.5;"></div>
+	<input class="btn btn-primary btn-sm" type="submit" style="position:fixed;left:50%;margin-left:-52px;bottom:0px;height:30px;" value="{$xdcy_title}" >
+</form>
+<fieldset id="fieldset_site_add" style="width:100%;padding-top:0px;margin:0 auto;border:2px dashed #A8A8A8;" align="center">
+	<legend style="width:auto;margin-left:30px;border:0px;margin-bottom: 10px;margin-top:-10px;"><BLINK>站点选择区域：</BLINK> </legend>
+	<div class="site_content">
+		<div style="width:100%;margin:0 auto;margin-bottom:10px;padding-left:0px;padding-right:0px;" class="widget-header header-color-blue4 center">
+			<p class="center xdrw_search">
+				<!--任务性质:
+				<select name="site_type" id="site_type" onchange="redirect()" {$disabled2}>
+					$site_type_options
+				</select>-->
+				分中心列表:
+				<select name="fzx_id"   id="fzx_id" {$disabled2} class="chosen" style="max-width:150px;">
+					$fp_fzx_options
+				</select>
+				流域:
+				<select name="area" id="area" {$disabled2} class="chosen" style="max-width:150px;">
+					$site_area_options
+				</select>
+				统计参数:
+				<select name="tjcs" id="tjcs" class="chosen" style="max-width:150px;max-width:210px;">
+					<option value="全部">全部</option>
+					$tjcs_options
+				</select>
+				站点名称:
+				<select name="site_name" id="site_name" class="chosen" style="max-width:150px;">
+		                        <option value="全部">全部</option>
+					$site_options
+		                </select>
+			</p>
+		</div>
+		<table id="table_site_old">
+			$lines
+		</table>
+	</div>
+</fieldset>
+<div style="width:100%;height:30px;"><!--不要删除 用于防止遮罩层阻挡最后面的站点选中--></div>
+<!--全程序空白/现场平行项目设置界面加载区域-->
+<div id="mask"></div>
+<div id="qckb_value_modify" style="display:none;visibility: visible; display:none; position:fixed; width:100%;height:100%;overflow:auto; top:0px;left:0px; z-index: 4;">
+	
+	<div id="content">
+		
+		加载中......
+	</div>
+</div>
+<script language="javascript">
+//全程序空白、现场平行、添加新批次、批次更改、站点项目修改等功能的点击修改时的弹框
+function qckb_value_modify(tjcs_name,action,value){
+	var lianJie	= '';
+	if(action=='qckb'){
+		//获取已选站点的id  获取每个站点在页面上存储的项目（监督任务设置站点时，项目会直接存储在页面input里）
+    	var sites       = '';
+    	var site_value	= '';
+    	$("input[name*='"+tjcs_name+"[sites]']:checked").each(function(){
+			var site_id     = $(this).val();
+			var group_id	= $(this).attr("group_id");
+	    	if(sites==''){
+	    		sites    = site_id;
+	    	}else{
+	    		sites   += ','+site_id;
+	    	}
+	    	site_value	+= "&site_value%5B"+group_id+"%5D="+$("input[name='jdrw[sites_value]["+group_id+"]']").val();
+    	});
+		if(sites==''){
+			alert('请先选择站点！再设置全程序空白项目');
+			//取消选中全程序空白选框
+			$("input:checkbox[name='"+tjcs_name+"[qckb]']").prop("checked",false);
+			return false;
+		}else{
+			//自动选中“同时检测室内空白”，后期加入参数控制
+			$("input:checkbox[name='"+tjcs_name+"[snkb]']").removeAttr('disabled');
+			//默认选中全程序空白按钮
+			if($("input:checkbox[name='"+tjcs_name+"[qckb]']").is(":checked")){
+				$("input:checkbox[name='"+tjcs_name+"[qckb]']").prop("checked",false);
+			}
+			var qckb	= $("input[name='"+tjcs_name+"[qckb]']").val();
+			lianJie	= "$rooturl/xd_cyrw/values_modify.php?site_type=$site_type&action=xdrw&group_name="+tjcs_name+"&sites="+sites+"&qckb="+qckb+"&no_daohang=yes&ajax=1"+site_value;
+		}
+	}else if(action=='xcpx'){
+		if(parseInt($("#"+value+"").html())<=0 || !parseInt($("#"+value+"").html())){
+			alert('请先设置站点项目，再设置 现场平行样 的项目');
+			return false;
+		}
+		//var sites	= value;
+		//var site_name	= $("input:checkbox[name='"+group_name+"[sites][]'][value='"+sites+"']").parent("label").text();
+		var site_name	= $("input[name*='sites[]'][group_id='"+value+"']").parent("label").text();
+		//默认选中现场平行按钮
+		/*if($("input:checkbox[name='"+group_name+"[xcpx][]'][value='"+sites+"']").is(":checked")){
+        	$("input:checkbox[name='"+group_name+"[xcpx][]'][value='"+sites+"']").prop("checked",false);
+        }*/
+        var site_value	= $("input[name='jdrw[sites_value]["+value+"]']").val();
+		//传一个站点名称
+        lianJie = "$rooturl/xd_cyrw/values_modify.php?site_type=$site_type&action=xdrw_xcpx&gr_id="+value+"&site_name="+site_name+"&site_value="+site_value+"&no_daohang=yes&ajax=1";	
+	}else if(action=='tjcs_add' || action=='tjcs_modify'){
+		lianJie	= "$rooturl/xd_cyrw/tjcs_add.php?site_type=$site_type&action="+action+"&no_daohang=yes&ajax=1";
+	}else if(action=='site_value' || action=='jdrw_site_value'){
+		var site_value	= $("input[name='jdrw[sites_value]["+value+"]']").val();
+		//这里tjcs_name的内容其实是 站点名称
+		lianJie = "$rooturl/xd_cyrw/values_modify.php?site_type=$site_type&gr_id="+value+"&site_name="+tjcs_name+"&action="+action+"&site_value="+site_value+"&no_daohang=yes&ajax=1";
+	}else if(action=='group_value' || action=='jdrw_group_value'){
+		var jdrw_sites	= $("span[name='jdrw_group_value']").val();
+		if(action=='jdrw_group_value' && jdrw_sites=='' || typeof(jdrw_sites)=='undefined'){
+			alert('请先选择此批次要采样的站点');
+			return false;
+		}
+		lianJie = "$rooturl/xd_cyrw/values_modify.php?site_type=$site_type&group_name="+tjcs_name+"&jdrw_sites="+jdrw_sites+"&action="+action+"&no_daohang=yes&ajax=1";
+	}
+	if(lianJie!=''){
+		//显示覆盖层
+                $("#mask,#qckb_value_modify").css("display","block");
+		$("#content").load(lianJie);
+		$("body").css({"overflow":"hidden"});
+	}else{
+		alert('正在开发中');
+		$("#mask,#qckb_value_modify").css("display","none");
+	}
+	
+	
+}
+$(function(){
+	load_height();//该函数执行拓高
+	$(".chosen").chosen();//可搜索下拉菜单
+	$(".date_input").date_input();//日期输入框
+	//点击切换采样单位后 对应显示隐藏采样员的选框
+        $("input:radio[name='cy_flag']").click(function(){
+                if(this.value=='0'){
+                        $(".cy_user").css("display","none");
+                }else{
+                        $(".cy_user").css("display","");
+                }
+        });
+	//采样日期格式判定
+	$("input[name='cy_riqi']").blur(function(){
+		if(this.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null){
+			$("#tishi_cy_riqi").html('*采样日期格式不对');
+			/*setTimeout(function() {
+				$("input[name='cy_riqi']").focus();
+			},0);*/
+		}else{
+			$("#tishi_cy_riqi").html('');
+		}
+	});
+	//采样任务提交前确定
+	$("#xdrw").submit(function(){
+		if($("input[name='cy_riqi']").val().match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null){
+			$("#tishi_cy_riqi").html('*采样日期格式不对');
+			setTimeout(function() {
+                                $("input[name='cy_riqi']").focus();
+                        },0);
+			return false;
+		}
+	});
+	//搜索区域的组合搜索
+	$(".xdrw_search select").change(function(){
+		var site_type	= $("#site_type").val();
+		var fzx_id	= $("#fzx_id").val();
+		var area	= $("#area").val();
+		var tjcs	= $("#tjcs").val();
+		var site_id	= $("#site_name").val();
+		if(tjcs=='全部' && site_id=='全部'){
+			$("#table_site_old").html("<div id='loading' style='background:#CC4444;color:#FFF;width:100%;line-height:30px;height:30px;padding:0 3px'>正在获取最新站点，请稍后...</div>");//("<div style='text-align:center;background-color:'>正在获取最新站点，请稍后...</div>");
+		}
+		url = "xd_jdrw_index.php";
+		$.get(url,{action:'ajax_site_old',site_type:site_type,fzx_id:fzx_id,tjcs:tjcs,site_id:site_id,area:area},function(data){
+			//alert(data.lines);
+			$("#table_site_old").html(data);
+		})
+		.error(function() { alert("无法获取站点信息，请检查网络。或联系系统管理员"); })
+		;
+	});
+	/*//统计参数选择搜索
+	$("#tjcs").change(function(){
+		if(this.value=='全部'){
+			$("tr[tjcs]:hidden").show();
+		}else{
+			$("tr[tjcs][tjcs!='"+this.value+"']:visible").hide();
+			$("tr[tjcs='"+this.value+"']").show();
+		}
+	});
+	//站点名称选择搜索
+	$("#site_name").change(function(){
+		if(this.value=='全部'){
+                        $("tr[tjcs]").show();
+                }else{
+			$("tr[tjcs]").hide();
+                        $("input[value='"+this.value+"']").each(function(){
+				var tjcs_tr	= $(this).parent().parent().parent("tr");
+				var tjcs	= tjcs_tr.attr("tjcs");
+				tjcs_tr.show();
+				$("tr[tjcs='"+tjcs+"']:eq(0)").show();
+			});
+                }
+	});*/
+	//选择现场检测项目后，相应改变前面显示的数量
+	$("input:checkbox[name='xcjc_value[]']").click(function(){
+		var xcjc_num	= parseInt($("#xcjc_tishi").text());
+		if($(this).is(":checked")){
+			xcjc_num++;
+		}else{
+			xcjc_num--;
+		}
+		$("#xcjc_tishi").text(xcjc_num);
+	});
+	//关闭遮罩层
+	$("#close").click(function(){
+		//隐藏父级元素的覆盖层（下达采样任务页面）
+		$("#mask,#qckb_value_modify").css("display","none");
+		$("#content").html('加载中......');
+		}).mouseover(function(){
+		$(this).css({"opacity":"1"});
+	}).mouseout(function(){
+		$(this).css({"opacity":"0.8"});
+	});
+	//选择站点后将现场平行变为可选状态
+//	$("input[name*='sites']").click(function(){
+//		var tjcs	= $(this).parent().parent().parent("tr").attr("tjcs");
+//		var site_id	= $(this).val();
+//		var group_id	= $(this).attr("group_id");
+//		if($(this).is(":checked")){
+//			$("tr[tjcs='"+tjcs+"']").find("input[value='"+site_id+"']").removeAttr('disabled');
+			//选中的站点增加一个隐藏域传递group表的id
+//                        $("form").append("<input type='hidden' name='jdrw[gr_ids][]' value='"+group_id+"' />");
+			/*$("input[name='jdrw[qckb]']").removeAttr('disabled');
+			if($("input:checkbox[name='jdrw[qckb]']").is(":checked")){
+                                $("input:checkbox[name='jdrw[snkb]']").removeAttr('disabled');
+                        }*/
+//		}else{
+			/*var checked_num	= 0;
+			$("input[name*='sites']:checked").each(function(i){
+				checked_num++;
+				return false; 
+			});
+			if(checked_num==0){
+				//$("input:checkbox[name='jdrw[qckb]'],input:checkbox[name='jdrw[snkb]']").attr("disabled",true);
+			}*/
+//			$("tr[tjcs='"+tjcs+"']").find("input[name*='xcpx'][value='"+site_id+"']").attr("disabled",true);
+			//取消选择时，去掉添加的隐藏域
+//			$("input[name='jdrw[gr_ids][]'][value='"+group_id+"']").remove();
+//		}
+//	});
+	//只有选中了全程序空白才能选择 同时检测室内空白
+	$("input[name*='qckb']").click(function(){
+		var group_name	= $(this).attr("group_name");
+		if($(this).is(":checked")){
+			$("input[name*='snkb']").removeAttr('disabled');
+		}else{
+			$("input[name*='snkb']").attr("disabled",true);
+		}
+	});
+	//站点没有选择项目时，不允许下达此站点的采样任务
+        $("input[name*='sites']").parent("label").on(
+		'click',function(){
+                var site_id     = $(this).find("input").attr("group_id");
+                if($("#"+site_id+"").text()==0){
+                        alert("请先设置此站点的检测项目");
+                }
+        });
+	/*//点击批次右边的折叠按钮，该批次隐藏站点
+	$("a.zheDie").click(function(){
+		var tjcs	= $(this).attr('tjcs');
+		var zheDieFu	= $(this).find("i");
+		if(zheDieFu.hasClass('icon-chevron-up')){//隐藏
+			zheDieFu.removeClass("icon-chevron-up");
+			zheDieFu.addClass('icon-chevron-down');
+			$("tr[tjcs='"+tjcs+"']:gt(0)").hide();
+		}else{//显示站点
+			zheDieFu.removeClass("icon-chevron-down");
+                        zheDieFu.addClass('icon-chevron-up');
+			$("tr[tjcs='"+tjcs+"']:gt(0)").show();
+		}
+	});*/
+	//鼠标移动到项目上或者选中的项目，高亮显示
+	$("#table_site_old").on("mouseover","label.site_label,.group_sites",function(){
+    	$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+    });
+    $("#table_site_old").on("mouseout","label.site_label,.group_sites",function(){
+    	if(!$(this).children("input").is(":checked")){
+        	$(this).css("background-color","#FFF");
+    	}
+    });
+    //选中站点后，在批次站点区域添加一行该站点的信息
+   	$("#table_site_old").on("click","input[site_old]",function(){
+   		var site_id		= $(this).attr("site_id");
+   		var site_gr_id	= $(this).val();
+   		var site_name_text	= $(this).parent("label").text();
+  		var site_name_html	= $(this).parent("label").html();////为了将提示信息的灰色字显示出来，改为html()；
+  		var site_value_num	= $(this).attr("site_value_num");
+  		var site_xcpx_num	= $(this).attr("xcpx_value_num");;
+  		var site_title	= $(this).parent("label").attr("title");
+		var disabled	= '';
+		var checked		= 'checked';
+		if(site_value_num<=0){
+			var disabled	= "disabled='disabled'";
+			var checked		= '';
+		}
+		if(site_xcpx_num==site_value_num){
+			site_xcpx_num	= "(默认)";
+		}else{
+			site_xcpx_num	= "("+site_xcpx_num+" 项)";
+		}
+		//里面有很多重复的 site_group表的id。都有用。 若要去除，要对应修改其他关联的地方
+		var new_site_html	= "<tr><td title='"+site_title+"' style='padding-left:30px;' align=left><label><input name='jdrw[sites][]' value='"+site_id+"' group_id='"+site_gr_id+"' type='checkbox' "+disabled+"  "+checked+">"+site_name_html+"</label><input type='hidden' name='jdrw[sites_value]["+site_gr_id+"]' value='' /> </td><td align='center'><span class='tishi_site_value_num' id='"+site_gr_id+"' site_name='"+site_name_text+"' gr_id='"+site_gr_id+"' group_id='"+site_gr_id+"' site_action='jdrw_site_value' style='color:blue;cursor:pointer;'>"+site_value_num+"</span></td><td align='center'><label><input name='jdrw[xcpx][]' value='"+site_id+"' group_id='"+site_gr_id+"' type='checkbox' "+disabled+">现场平行<span style='color:blue;cursor:pointer;' class='xcpx_site' xcpx_value_zt='no' xcpx_group_name='160' site_name='"+site_name_text+"' site_action='xcpx' group_id='"+site_gr_id+"' xcpx_num_id='"+site_gr_id+"'>"+site_xcpx_num+"</span></label></td></tr>";
+		if($(this).is(":checked")){
+			//先判断，是不是已经有这个站点的信息
+			$("#no_site").css({"display":"none"});
+			var is_have_site	= $("#xdrw_content input[value='"+site_id+"']").val();
+			if(!is_have_site){
+				$("#xdrw_content").append(new_site_html);// tr:last
+				$("#xdrw_content .check_sites[site_id='"+site_id+"']").remove();//删掉之前label中没用的html
+				//将group_id添加到，批次项目修改 的value中(修改时会用到此参数)
+				var group_value_old	= $("span[name='jdrw_group_value']").val();
+				if(group_value_old==''){
+					var group_value_new	= site_gr_id;
+				}else{
+					var group_value_new	= group_value_old+","+site_gr_id;
+				}
+				$("span[name='jdrw_group_value']").val(group_value_new);
+			}else{
+				$("#xdrw_content input[name='jdrw[sites][]'][value='"+site_id+"']").prop("checked",true);
+				$("#xdrw_content input[name='jdrw[xcpx][]'][value='"+site_id+"']").attr("disabled",false);
+			}
+			//选中的站点增加一个隐藏域传递group表的id
+			$("form").append("<input type='hidden' name='jdrw[gr_ids][]' value='"+site_gr_id+"' />");
+		}else{
+			$("#xdrw_content input[value='"+site_id+"'],input[site_id='"+site_id+"']").attr("checked",false);
+			$("#xdrw_content input[name='jdrw[xcpx][]'][value='"+site_id+"']").attr("disabled",true);
+			//取消选择时，去掉添加的隐藏域
+			$("input[name='jdrw[gr_ids][]'][value='"+site_gr_id+"']").remove();
+		}
+   	});
+	//选择站点后将现场平行变为可选状态
+	$("#xdrw_content").on("click","input[name='jdrw[sites][]']",function(){
+		var site_id	= $(this).val();
+		var group_id= $(this).attr("group_id");
+		if($(this).is(":checked")){
+			//$("input[site_id='"+site_id+"']").prop("checked",true);
+			$("#xdrw_content input[name='jdrw[xcpx][]'][value='"+site_id+"']").attr("disabled",false);
+			//选中的站点增加一个隐藏域传递group表的id
+            $("form").append("<input type='hidden' name='jdrw[gr_ids][]' value='"+group_id+"' />");
+		}else{
+			$("input[site_id='"+site_id+"']").attr("checked",false);
+			$("#xdrw_content input[name='jdrw[xcpx][]'][value='"+site_id+"']").attr("disabled",true);
+			//取消选择时，去掉添加的隐藏域
+			$("input[name='jdrw[gr_ids][]'][value='"+group_id+"']").remove();
+		}
+	});
+	//站点项目设置
+	$("#xdrw_content").on("click",".tishi_site_value_num,.xcpx_site",function(){
+		var site_name	= $(this).attr("site_name");
+		var action		= $(this).attr("site_action");
+		var site_gr_id	= $(this).attr("group_id");
+		qckb_value_modify(site_name,action,site_gr_id);
+	});
+})
+
+
+</script>

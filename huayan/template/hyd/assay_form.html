@@ -1,0 +1,250 @@
+<link href="{$rooturl}/css/boxy.css" rel="stylesheet" type="text/css" />
+<link href="./css/hyd.css?v={$global['hyd']['v']}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{$rooturl}/js/boxy.js"></script>
+<script type="text/javascript" src="./js/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="./js/zhikong.js?v={$global['hyd']['v']}"></script>
+<!-- jExcel插件 -->
+<script type="text/javascript" src="./js/jexcel/js/jquery.jexcel.js?v={$global['hyd']['v']}"></script>
+<link rel="stylesheet" type="text/css" href="./js/jexcel/css/jquery.jexcel.css?v={$global['hyd']['v']}">
+<!-- 计算公式插件 -->
+<script type="text/javascript" src="./js/jexcel/js/excel-formula.min.js"></script>
+<!-- 自定义数据格式插件 -->
+<script type="text/javascript" src="./js/jexcel/js/jquery.mask.min.js"></script>
+<!-- 日历插件 -->
+<script type="text/javascript" src="./js/jexcel/js/jquery.jcalendar.js"></script>
+<link rel="stylesheet" type="text/css" href="./js/jexcel/css/jquery.jcalendar.css">
+
+<div style="width:100%;margin:0 auto;margin-top:20px;">
+	<div id="hyd_tabs_{$tid}" style="width:90%;margin:0 auto;padding:0;">
+		<ul>
+			<li><a class="tabs_1" href="#hyd_shuju_{$tid}">数据录入</a></li>
+			<li><a class="tabs_2" href="#tabs_div" data-href="ahlims.php?app=assay&act=bt_set&tid={$tid}&fid={$arow['fid']}&ajax=1">表头设置</a></li>
+			<li><a class="tabs_3" href="#tabs_div" data-href="module/assay_shuyuan.php?tid={$tid}&ajax=1">数据溯源</a></li>
+			<li><a class="tabs_7" href="#yiqi_update">仪器信息</a></li>
+			<li><a class="tabs_4" href="#xmfa_set">检验方法设置</a></li>
+			<li><a class="tabs_5" href="#zhikong_set">质控计算设置</a></li>
+			<!-- {if $u['admin']} -->
+			 <li><a class="tabs_6" href="#tabs_div" data-href="ahlims.php?app=sys_set&ajax=1">系统设置</a></li> 
+			<!-- {/if} -->
+			{if strpos($global['hyd']['bar_code_order'], 'order_id') !== false}
+			<!-- 如果按照order_id排序则显示编号自定义排序功能 -->
+			<li><a class="tabs_8" href="#order_bar_code">编号排序</a></li>
+			{/if}
+			<p style="margin:0;padding-top:8px;">{$arow['xmfb_msg']}</p>
+			<button class="btn btn-primary btn-xs" type="button" id="open_editer" style="display: none;">编辑表格</button>
+			<button class="btn btn-primary btn-xs" type="button" id="toggle_header" style="display: none;">显示标题</button>
+		</ul>
+		<div id="tabs_div"></div>
+		<div id="yiqi_update"></div>
+		<div id="hyd_shuju_{$tid}" style="border-left:none;border-right:none;margin-top: 50px;">
+			{$assay_form}<!-- 化验单数据表格 -->
+		</div>
+		<div id="xmfa_set" style="border-left:none;border-right:none;" ></div>
+		<div id="zhikong_set" style="border-left:none;border-right:none;" ></div>
+		<div id="order_bar_code" style="border-left:none;border-right:none;" ></div>
+		<div class="alert alert-danger" style="display:none;">
+			<strong><i class="icon-remove"></i> </strong>你请求的 <strong>{$tid}</strong> 号化验单不存在！
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//初始化标签页
+	$("#hyd_tabs_{$tid}").tabs();
+	//错误提示
+	if(''=="{$arow['id']}"){
+		$(".alert.alert-danger").show();
+	}
+	$(window).resize(function(){
+		var height = $(window).height() - 100;
+		height < 300 && (height = 300);
+		$("#xmfa_set, #zhikong_set, #yiqi_update, #order_bar_code").find("iframe").height(height).css({
+			width: "100%",
+			border: "none",
+			"margin-top": "15px"
+		});
+	});
+	// tabs_div
+	$("#hyd_tabs_{$tid} a[href='#tabs_div']").bind("click", function(){
+		$('#tabs_div').html('');
+		$.get($(this).data('href'),function(str){
+			$('#tabs_div').html(str);
+		})
+	})
+	// 仪器信息
+	var yiqi_update = function(){
+		$("#yiqi_update").html('<iframe src="{$rooturl}/yiqi/yiqi_update.php?action=查看&yid={$arow[yq_id]}&page=1&from=yilan" ></iframe>');
+		$("[href=#yiqi_update]").unbind("click", yiqi_update);
+		$(window).resize();
+	}
+	$("a[href=#yiqi_update]").bind("click", yiqi_update);
+
+	// 加载检测方法配置
+	var get_xmfa_set = function(){
+		$("#xmfa_set").html('<iframe src="ahlims.php?app=jcxm&act=jcxm_set&ajax=1&leixing=全部&vid={$arow[vid]}&fid={$arow[fid]}" ></iframe>');
+		$("[href=#xmfa_set]").unbind("click", get_xmfa_set);
+		$(window).resize();
+	}
+	$("a[href=#xmfa_set]").bind("click", get_xmfa_set);
+	// 加载质控计算设置
+	var get_zhikong_set = function(){
+		$("#zhikong_set").html('<iframe src="ahlims.php?app=zhikong" ></iframe>');
+		$("[href=#xmfa_set]").unbind("click", get_zhikong_set);
+		$(window).resize();
+	}
+	$("a[href=#zhikong_set]").bind("click", get_zhikong_set);
+	 // 样品编号排序
+	var get_order_bar_code = function(){
+        $("#order_bar_code").html('<iframe src="ahlims.php?app=assay&act=order_bar_code&tid={$tid}&ajax=1" ></iframe>');
+        $("[href=#order_bar_code]").unbind("click", get_zhikong_set);
+        $(window).resize();
+	}
+	$("a[href=#order_bar_code]").bind("click", get_order_bar_code);
+    // 打开指定标签页
+    var hash = document.location.hash;
+    if(hash){
+    	hash =  hash.replace('#', '');
+    	$('a.'+hash).length || (hash = "tabs_1");
+	    $('a.'+hash).trigger("click");
+	}
+	// 刷新化验单
+	// $("a[href=#hyd_shuju_{$tid}]").bind("click", function(){
+	// 	reloade_hyd("{$tid}");
+	// });
+	// 质控操作中的popover
+	$(document).ready(function(){
+		$("#modal_zhikong [data-rel=popover]").popover({html:true});
+	})
+</script>
+<!-- 质控操作 -->
+<div id="modal_zhikong" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-draggable="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="zhikong_title"></h3>
+			</div>
+			<form name="form_zhikong">
+			<input type="hidden" name="tid" value="" />
+			<input type="hidden" name="flag" value="" />
+			<input type="hidden" name="action" value="" />
+			<input type="hidden" name="data-orid" value="" />
+			<input type="hidden" name="data-type" value="" />
+			<!-- 错误提醒 -->
+			<div class="modal-body ui-state-error center"></div>
+			<!-- 空白信号值 -->
+			<div class="modal-body" data-type="kongbai">
+				<table>
+					<tr>
+						<td>信号值 ：</td>
+						<td><input type="text" autofocus="autofocus" size="10" name="xhz" value="" /></td>
+					</tr>
+				</table>
+			</div><!-- End -->
+			<!-- 自控样（单点标液） -->
+			<div class="modal-body" data-type="zky">
+				<table>
+					<tr>
+						<td>样品名称 ：</td>
+						<td><input type="text" autofocus="autofocus" size="10" name="barCode" value="" /></td>
+					</tr>
+					<tr>
+						<td>批号 ：</td>
+						<td><input type="text" autofocus="autofocus" size="10" name="piHao" value="" /></td>
+					</tr>
+					<tr>
+						<td>标准值 <b class="red">*</b>：</td>
+						<td><input type="number" min="0" max="10000" name="bzz" value="" />
+							<select name="bzzdw">
+								<option value="mg/L">mg/L</option>
+								<option value="µg/mL">µg/L</option>
+								<!--<option value="mol/L">mol/L</option>-->
+								<option value="μS/cm">μS/cm</option>
+								<option value="无量纲">无量纲</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>不确定度 <b class="red">*</b>：</td>
+						<td style="padding-left: 0;">±&nbsp;<input type="text" min="0" max="10000" name="bqdd" value="" />
+							<select name="bqdddw">
+								<option value="%">%</option>
+								<option value="mg/L">mg/L</option>
+								<!--<option value="µg/L">µg/L</option>
+								<option value="mol/L">mol/L</option>-->
+								<option value="μS/cm">μS/cm</option>
+								<option value="无量纲">无量纲</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right"></div>
+						<div class="col-md-7"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right"></div>
+						<div class="col-md-7"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right"></div>
+						<div class="col-md-7" style="left:-0.8em;"></div>
+					</div>
+				</div>
+			</div><!-- End -->
+			<!-- 加标回收 -->
+			<div class="modal-body" data-type="jiabiao">
+				<table>
+						<tr>
+							<td>原水样稀释倍数 <b class="red">*</b>：</td>
+							<td><input type="number" autofocus="autofocus" min="0" max="10000" name="x_y" value="" /> </td>
+						</tr>
+						<tr>
+							<td>加标样稀释倍数 <b class="red">*</b>：</td>
+							<td><input type="number" min="0" max="10000" name="x_j" value="" /> </td>
+						</tr>
+						<tr>
+							<td>原水样体积 <b class="red">*</b>：</td>
+							<td><input type="number" autofocus="autofocus" min="0" max="10000" name="v_y" value="" /> mL</td>
+						</tr>
+						<tr>
+							<td>标液浓度 <b class="red">*</b>：</td>
+							<td><input type="number" min="0" max="10000" name="c_c" value="" />
+								<select name="c_c_unit">
+									<option value="mg/L">mg/L</option>
+									<option value="µg/L">µg/L</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>标液体积 <b class="red">*</b>：</td>
+							<td><input type="number" min="0" max="10000" name="v_c" value="" />
+								<select name="v_c_unit">
+									<option value="mL">mL</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>其他体积
+								<a href="javascript:void(0);" class="glyphicon glyphicon-question-sign tooltip-default" data-rel="popover" title="" data-content="其他体积是指化验过程中加入的辅助介质(包含试剂、酸、碱等)的体积或者进行加标实验时加入的混标标液中其他项目标液所占的体积。<br>如果是辅助试剂则原水样及加标样都需要考虑,若是混标标液,只有加标样需要考虑,而原水样不需要考虑。" data-original-title="其他体积"></a><b class="red">*</b>：
+							</td>
+							<td><input type="number" min="0" max="10000" name="v_o" value="" />
+								<select name="v_o_unit">
+									<option value="mL">mL</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>体积系数 <b class="red">*</b>：</td>
+							<td><input type="number" min="0" max="10000" name="x_v" value="" /></td>
+						</tr>
+					</table>
+			</div><!-- End -->
+			</form>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="zhikong_modal_submit">确定</a>
+				<a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+			</div>
+		</div>
+	</div>
+</div>

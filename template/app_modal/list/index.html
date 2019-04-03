@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<div class="ty-transfer mt20 ml20" id="ued-transfer-1">
+    <div class="fl ty-transfer-list transfer-list-left">
+        <div class="ty-transfer-list-head">
+            列表1
+        </div>
+        
+        <div class="ty-transfer-list-body">
+            <ul class="ty-tree-select" id="sortable1">
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容 ---- 1">
+                                内容 ---- 1
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容 ---- 2">
+                                内容 ---- 2
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容内容 ---- 3">
+                                内容 ---- 3
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容---- 4">
+                                内容 ---- 4
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="fl ty-transfer-operation">
+        <span class="ty-transfer-btn-toright to-switch">
+        </span>
+        <span class="ty-transfer-btn-toleft to-switch">
+        </span>
+    </div>
+    <div class="fl ty-transfer-list transfer-list-right">
+        <div class="ty-transfer-list-head">
+            列表2
+        </div>
+        <div class="ty-transfer-list-body">
+            <ul class="ty-tree-select" id="sortable">
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容 ---- 5">
+                                内容 ---- 5
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容 ---- 6">
+                                内容 ---- 6
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="穿梭框内容穿梭框内容穿梭框内容 ---- 7">
+                               内容 ---- 7
+                            </span>
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox">
+                                <input type="checkbox" class="tyue-checkbox-input" id="tyue-checkbox-blue">
+                                <span class="tyue-checkbox-circle">
+                                </span>
+                            </span>
+                            <span class="tyue-checkbox-txt" title="内容内容 ---- 8">
+                                内容 --- 8
+                            </span>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearboth">
+    </div>
+            
+</div>
+        
+<!--过滤筛选 end-->
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery-ui.js"></script>
+<script type="text/javascript" src="Transfer.js"></script>
+<script type="text/javascript">
+	$("#ued-transfer-1").transferItem();
+ $(function() {
+    $( "#sortable" ).sortable({
+      revert: true
+    });
+    $( "#draggable" ).draggable({
+      connectToSortable: "#sortable",
+      helper: "clone",
+      revert: "invalid"
+    });
+    $( "ul, li" ).disableSelection();
+  });
+ $(function() {
+    $( "#sortable1" ).sortable({
+      revert: true
+    });
+    $( "#draggable" ).draggable({
+      connectToSortable: "#sortable1",
+      helper: "clone",
+      revert: "invalid"
+    });
+    $( "ul, li" ).disableSelection();
+  });
+</script>
+	
+</body>
+</html>

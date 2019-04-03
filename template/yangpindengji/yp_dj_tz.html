@@ -1,0 +1,21 @@
+<style>
+@media print {
+ .no-print{ display:none;}
+}
+</style>
+{$load_spread_file}
+<div class="center" id="spread_form_box" style="margin:0 auto;margin-top:30px;width:240mm;">
+    <div id="spread_form" style="margin: 0 auto;border:1px solid #000;"></div>
+</div>
+<script id="scriptInit" type="text/javascript">
+    /*code_begin*/
+    $(document).ready(function () {
+        $("#spread_form").spreadForm({
+            width:$("#spread_form_box").width(),
+            saveButtonId: "#submit",
+            spreadBoxId: "#spread_form",
+            requestDataUrl: "{$rooturl}/cy/yp_dj_tz.php?cyd_id={$_GET['cyd_id']}&ajax=1"
+        });
+    });
+    /*code_end*/
+</script>

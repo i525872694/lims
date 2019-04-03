@@ -1,0 +1,66 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-16</td>
+    </tr>
+</table>
+<h1>目视比色法测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:7%"></td>
+        <td style="width:7%"></td>
+        <td style="width:11%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="3">{$arow['assay_element']}</td>
+        <td>测定方法</td>
+        <td colspan="4">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td rowspan="2">序号</td>
+        <td rowspan="2" colspan="2">水样名称</td>
+        <td rowspan="2">采样日期</td>
+        <td colspan="2">比色值</td>
+        <td rowspan="2">稀释倍数</td>
+        <td rowspan="2">含量<br />({$arow['unit']})</td>
+        <td rowspan="2">平均值</td>
+        <td rowspan="2">相对偏差/加标回收率（%）</td>
+    </tr>
+    <tr>
+        <td colspan="1">原水样</td>
+        <td colspan="1">稀释水样</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs() {
+    var valxsbs = $.isNumeric(vs['vd2']) ? vs['vd2'] : 1;
+    if ($.isNumeric(vs['vd6']) && $.isNumeric(vs['vd7'])) {
+        if (valxsbs == 1) {
+            var js = vs['vd6'];
+        } else {
+            var js = accMul(vs['vd7'], valxsbs);
+        }
+    } else if ($.isNumeric(vs['vd7'])) {
+        var js = accMul(vs['vd7'], valxsbs);
+    } else if ($.isNumeric(vs['vd6'])) {
+        var js = accMul(vs['vd6'], valxsbs);
+    } else if (vs['vd7']) {
+        var js = vs['vd7'];
+    } else if (vs['vd6']) {
+        var js = vs['vd6'];
+    }
+    vs['vd0'] = js;
+
+}
+
+</script>

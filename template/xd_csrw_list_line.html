@@ -1,0 +1,9 @@
+<tr align="center">
+    <td>$i {$cyd_id}</td>
+    <td>{$row['cy_date']}</td>
+    <td>{$row['cyd_bh']}</td>
+    <td align="left" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" title={$row[group_name]}>{$row['group_name']}</td>
+    <td>{$row['cy_user']}</td>
+    <td><a  href="$rooturl/xd_csrw/return.php?action=return&did=$row[id]" onclick="return confirm('状态一旦后退,上次生成的化验单将全部删除,是否删除')">{$return}</a>{$global['status'][$row['status']]}</td>
+    <td>$operation</td>
+</tr>

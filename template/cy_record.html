@@ -1,0 +1,282 @@
+<style>
+table.single td input{width: 100%}
+.file {
+    position: relative;
+    display: inline-block;
+    background: #428bca;
+    border: 1px solid #428bca;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #428bca;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 15x;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #428bca;
+    border-color: #428bca;
+    color: white;
+    text-decoration: none;
+}
+.file:link {
+    color: white;
+    text-decoration: none;
+}
+#img_name{word-break:break-all; width:200px; overflow:auto;}
+</style>
+<script type="text/javascript" src="$rooturl/js/lims/hyd.js"></script>
+<script type="text/javascript">
+/*无水处理*/
+$(document).ready(function(){
+	$("#yin").dblclick(function(){
+			$("select[name$='[status]']").css({display:"none"});
+	});
+	$(document).ready(function(){ $(".chosen-select").chosen();
+	});
+});
+
+
+function yanzheng(){//保存验证
+	var tt="";
+	var d="";
+	var dd="";
+	if(d!=""){f=d.replace(/,/g,'').length;alert("序号"+d+"为无水站点，共"+f+"个");return $("form").submit();
+	}
+}
+function time(zhi){
+	var zhiCl   = zhi.value.replace(/[^\d\- :]/g,"");//只能输入数字
+	var maoArr  = zhiCl.match(/:/g);//匹配“:”
+	var wei     = zhiCl.substring((zhiCl.length-1));//取出最后一个数字
+	zhi.value   = zhiCl;  
+	if(zhiCl.length>5){
+		zhiCl=zhiCl.substring(0,5);
+		zhi.value=zhiCl;
+	}
+	document.onkeydown = function (e) {
+	　　var theEvent = window.event || e;
+	　　var code = theEvent.keyCode || theEvent.which;
+		if(code!=8){//如果按得是删除键不做任何处理
+
+			if(zhiCl.length=='2'){
+				zhi.value = zhiCl+":";
+			}
+		}
+　　}
+}
+
+function imgname(a){
+	var cid = $(a).attr('cid');
+	var img = $(a).val();
+	$("#img_name"+cid).html(img);
+}
+/*
+function check_date(t){
+	var date=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null&&date!=''){
+		alert("采样日期格式错误！");
+		window.setTimeout(function () { $(t).val(t.value).focus();},0); 
+				return false;
+	}
+}*/
+function check_time(t){
+	var time=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{2}\:{1}\d{2}/)==null&&time!=''){ 
+		alert("采样时间格式错误！正确格式00:00");
+		window.setTimeout(function () { $(t).val("").focus();},0);
+				return false;
+	}
+}
+function tian(ab){
+	var neirong = $(ab).html();
+	var inp = $(ab).parent().parent().prev();
+	inp.val(neirong);
+}
+function tu(aa){
+	var cid =  $(aa).attr('cid');
+	$('body').css("overflow","hidden")
+	$("#cover"+cid).show();
+}
+function guanbi(aa){
+	$('body').css("overflow","auto")
+	var cid =  $(aa).attr('cid');
+	$("#cover"+cid).hide();
+}
+function shan(aa){
+	var cid =  $(aa).attr('cid');
+	var cyd = $("#cyd_id").val();
+	location = "$rooturl/cy/cy_record.php?cyd_id="+cyd+"&recid="+cid+"&shantu=ok";
+}
+</script>
+<div class='body_css'  id="yin">
+<div style="max-width:98%;margin:0 auto;">$tuiHuiTiShi</div>
+<center class="no_print">$dayin</center>
+<form name="cyrec" action="cy_record_save.php" method="post" id="cy_record_form" enctype="multipart/form-data">
+<!--<input type="hidden" name="current_user" value='登陆的人' />变量line_qz中-->
+<input type="hidden" name="cy_user" value="{$cyd['cy_user']}" />
+<input type="hidden" name="ajax" value="1"/>
+<input type="hidden" name="cy_flag" value="{$cyd['cy_flag']}" />
+<input type="hidden" name="status" value="{$cyd['cy_status']}" />
+<input type="hidden" name="cyd_id" id="cyd_id" value="{$_GET['cyd_id']}" />
+<input type="hidden" name="cyd[save_flag]" value="1" />
+
+ <table  style="width:{$table_width};" class="single center" id='cyjl'>
+ 	<caption style="font-size:24px; line-height:48px; ">
+		采样（验收）记录表
+	</caption>
+  <tr align="center">
+    <td rowspan="2">序号</td>
+	<td rowspan="2" >站点名称</td>
+	<td rowspan="2">采样日期</td>
+	<td rowspan="2">采样<br/>时间</td>
+    {$cy_record_bt_str}
+    <td colspan="$xc_jcxm_total">现场测定记录</td>
+	<td rowspan="2">数量</td>
+	<td rowspan="2">验收<br/>结果</td>
+    <td rowspan="2" width="70px" >备注</td>
+    $xcb
+  </tr>
+  <tr>
+    $xc_jcxm
+  </tr>
+	{$cy_record_lines}
+  <tr align="center" height="60px">
+  <td colspan="2">备注：</td>
+    <td colspan={$cols_num}><textarea style="width:99%;height:95%;text-align:left" name="cyd[cy_note]" id='cy_note' >{$cyd['cy_note']}</textarea>
+    </td>
+	
+  </tr>
+</table>
+$line_qz
+
+$huiTuiButton
+<script type="text/javascript">
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+$("#cyjl").enter_sheet_input();
+$("#cy_user_qz").click(function(){
+	//先判断以下class是否存在
+	if($(".time-input").length > 0 ){
+		var no_finist_site	= '';
+		$(".time-input").each(function(){
+			var this_time_value	= $(this).val();
+			if(this_time_value == ''){
+				no_finist_site	+= $(this).attr("site_name") + '、';
+				$(this).css({"border":"red 1px solid"});
+			}else{
+				$(this).css({"border":"#B5B5B5 1px solid"});
+			}
+		});
+		if(no_finist_site != ''){
+			if($('#status')<=5){
+				if(!confirm('由于以下站点没有填写采样时间：\\n'+no_finist_site+'\\n此时签字会将采样单分成2张！确认要签字吗？')){
+					return false;
+				}
+			}else{
+				alert('已经生成化验单，不允许分批！');
+				return false;
+			}
+		}
+	}
+});
+function newcyfs(){
+	var newfs = prompt('请输入新的采样方式','');
+	var cyd_id = $('#cyd_id').val();
+	if(newfs){
+		 url = window.location.pathname+"?cyd_id="+cyd_id+"&newfs=" + newfs;
+		 location = url
+	}
+}
+function show_wus(id){
+	//alert($("input[name$='[cy_beizhuw]']")[id].width());
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "block";
+}
+function hide_wus(id){
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "none";
+	obgtx = document.getElementById ("cttt"+id);
+	var rec_id	= $("#cttt"+id).attr("rec_id");
+	if(objDiv.value=="-1"){ 
+		var objj=obgtx.value;
+		var ob=obgtx.value +="\(无水)";
+		if(($(obgtx).attr('zkfg') == '5')||($(obgtx).attr('zkfg') == '-6')){
+			var sn = $(obgtx).attr('sn');
+			$("textarea[sn='"+sn+"'][zkfg]").val("\(无水)");
+			$("select[sn='"+sn+"']").find("option[value='1']").attr("selected",false);
+			$("select[sn='"+sn+"']").find("option[value='-1']").attr("selected",true);
+		}
+		//记录感官指标、瓶数原有信息
+		var old_ggzb= $("textarea[name='d["+rec_id+"][gg_zb]']").val();
+		var old_rqnum	= 	$("input[name='d["+rec_id+"][rq_num]']").val();
+		$("#cttt"+id).attr({"old_ggzb":old_ggzb,"old_rqnum":old_rqnum});
+		//清空感官指标、瓶数现有信息
+		$("textarea[name='d["+rec_id+"][gg_zb]']").val('');
+		$("input[name='d["+rec_id+"][rq_num]']").val('0');
+	}else{
+		var objj=obgtx.value;
+		f=objj.replace(/\(无水\)/g,'');
+		var ob=obgtx.value=f;
+		if(($(obgtx).attr('zkfg') == '5')||($(obgtx).attr('zkfg') == '-6')){
+			var sn = $(obgtx).attr('sn');
+			$("textarea[sn='"+sn+"'][zkfg]").val(f);
+			$("select[sn='"+sn+"']").find("option[value='-1']").attr("selected",false);
+			$("select[sn='"+sn+"']").find("option[value='1']").attr("selected",true);
+		}
+		//恢复感官指标、瓶数原有信息
+		var old_ggzb	= $("#cttt"+id).attr("old_ggzb");
+		var old_rqnum	= $("#cttt"+id).attr("old_rqnum");
+		if(old_ggzb)$("textarea[name='d["+rec_id+"][gg_zb]']").val(old_ggzb);
+		if(old_rqnum)$("input[name='d["+rec_id+"][rq_num]']").val(old_rqnum);
+	}
+}
+$(function(){
+	//计算废污水流量
+	$("input[name*='[ji_liuliang]'],input[name*='liu_l']").blur(function(){
+		//获取计算基本数据，根据name里面的cid来定位
+		var this_name	= $(this).attr('name');
+		var cid			= this_name.substring((this_name.indexOf('[')+1),this_name.indexOf(']'));
+		var liu_liang		= $("input[name*='["+cid+"][liu_l]']").val();
+		var ji_liuliang		= $("input[name*='["+cid+"][ji_liuliang]']").val();
+		var wushui_liuliang	= $("input[name*='["+cid+"][wushui_liuliang]']").val();
+		//保留位数确认
+		var liu_length	= 0;
+		if(liu_liang.indexOf('.') != -1){
+			var liu_length	= liu_liang.split('.')[1].length;
+		}
+		var jiliu_length= 0;
+		if(ji_liuliang.indexOf('.') != -1){
+			var jiliu_length= ji_liuliang.split('.')[1].length;
+		}
+		if(liu_length < jiliu_length){
+			var baoliu	= jiliu_length;
+		}else{
+			var baoliu	= liu_length;
+		}
+		//计算结果并赋值
+		if(liu_liang && ji_liuliang){
+			var result	= liu_liang-ji_liuliang;
+			result	= result.toFixed(baoliu);
+			$("input[name*='["+cid+"][wushui_liuliang]']").val(result);
+		}else{
+			$("input[name*='["+cid+"][wushui_liuliang]']").val('');
+		}
+	});
+})
+</script>
+</form>
+</div>

@@ -1,0 +1,285 @@
+<!-- 计量仪器设备一览表 -->
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1260px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF;align:center;}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF}
+select{background:#AACCFF}
+ul li{
+	list-style-type:none;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+	$("a[data-action='collapse']").removeAttr("data-action").css({"color":"#777777"});
+	$(".zhedie").css({"cursor":"pointer"});
+	$(".zhedie").click(function(){
+		if($(this).find(".icon-chevron-down").length > 0 ){
+			$(this).find(".icon-chevron-down").addClass("icon-chevron-up").removeClass("icon-chevron-down");
+			$(this).next(".widget-body").slideDown("3");
+		}else{
+			$(this).find(".icon-chevron-up").addClass("icon-chevron-down").removeClass("icon-chevron-up");
+			$(this).next(".widget-body").slideUp("3");
+		}
+	});
+})
+</script>
+<h3 class="header smaller center title" >实验室仪器一览</h3>
+<form name="form2" action="" class="tablev" method="post">
+<div class="widget-box no-border center btn-group" style="width:100%">
+	<div class="widget-box collapsed" style="border:none;">
+			<div class="widget-header header-color-blue zhedie" style="background:  rgb(232, 177, 13) none repeat scroll 0% 0%; border-color: rgb(217, 237, 247); color: white; ! important; cursor: pointer;text-align:left">
+			   <h3  style="font-family:微软雅黑; font-size:25px;">4层&nbsp;&nbsp;仪器室&nbsp;&nbsp;（18台仪器）</h3>
+			    <span  class="widget-toolbar">
+			    	<a href="#" style="color: rgb(119, 119, 119);">
+			    		<i class="1 bigger-125 icon-chevron-down"></i>
+			    	</a>
+			    </span>
+			</div>
+			<div class="widget-body" style="border: medium none; display: none;">
+				<table  class="table table-hover table-bordered  center">
+				<tr style="height: 100%;">
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div  style="height: 100%;">
+							 <div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+							  <h1><b>401室（2台仪器）</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+							<button style="width:45%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(401,'US1501U202',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:250px;"src="./files/气质联用仪GC-MS-MS——安捷伦.jpg" title="气质联用仪GC-MS-MS——安捷伦">
+								<p style="font-size:20px;width:100%;overflow:hidden;border-width:0;padding:0">气质联用仪GC-MS-MS</p>
+							</button>
+							<button style="width:45%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(401,'US1502L425',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:250px;" src="./files/气质联用仪GC-MS——安捷伦.jpg" title="气质联用仪GC-MS——安捷伦">
+								<p style="font-size:20px;width:100%;overflow:hidden;border-width:0;padding:0">气质联用仪GC-MS</p>
+							</button>
+							</div>
+						</div>
+					</td>
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div style="height: 100%;">
+							 <div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								  <h1><b>402室（5台仪器）</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(402,'CN14513091',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890B">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气相色谱7890B(一)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(402,'CN14523011',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890B">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气相色谱7890B(二)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(402,'CN14513090',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890B">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气相色谱7890B(三)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(402,'CN14513095',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890B">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气相色谱7890B(四)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(402,'US1502L425',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气质联用仪GC-MS——安捷伦.jpg" title="气质联用仪GC-MS">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气质联用仪GC-MS</p>
+								</button>
+					  		</div>
+				  		</div>
+					</td>
+					</tr>
+					<tr style="height: 100%;">
+						<td style="text-align:center;width:49%;height: 100%;" >
+						<div style="height: 100%;">
+							 <div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								  <h1><b>403室（5台仪器）</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(403,'US10814004',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890A">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0;">气相色谱7890A(一)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(403,'CN12031079',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/气相色谱7890A.jpg" title="气相色谱7890A">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">气相色谱7890A(二)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(403,'TQU04462',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/液相色谱质谱联用仪——thermo.png" title="液相色谱质谱联用仪——thermo">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">液相色谱质谱联用仪</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(403,'8099790',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/液相色谱仪——thermo 3600.jpg" title="液相色谱仪——thermo 3600">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">液相色谱仪(一)</p>
+								</button>
+								<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(403,'DEBANO1441',$(this));" data-toggle="modal" data-target="#myModal">
+									<img  style="width:100%;height:150px;" src="./files/液相色谱仪——安捷伦Agilent 1290.jpg" title="液相色谱仪——安捷伦Agilent 1290">
+									<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">液相色谱仪(二)</p>
+								</button>
+							</div>
+						</div>
+						</td>
+						<td style="text-align:center;width:49%;height: 100%;" >
+						 <div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+							  <h1><b>404</b></h1>
+						</div>
+						<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;"><!-- <p><b>404</b></p> -->
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(404,'81XN3040102',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/ICP-MS.jpg" title="电感耦合等离子体质谱仪">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">电感耦合等离子体质谱仪</p>
+							</button>
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(404,'161K0817',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/连续光源石墨炉火焰原子吸收光谱一体机.jpg" title="连续光源石墨炉火焰原子吸收光谱一体机">
+								<p style="font-size:10px;width:200px;overflow:hidden;border-width:0;padding:0">连续光源石墨炉火焰原子吸收光谱一体机</p>
+							</button>
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(404,'T8S1502234C',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/电感耦合等离子体发射光谱仪.jpg" title="电感耦合等离子体发射光谱仪">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">电感耦合等离子体发射光谱仪</p>
+							</button>
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(404,'PZAS15031005',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/石墨炉原子吸收光谱仪.jpg" title=" 石墨炉原子吸收光谱仪">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0"> 石墨炉原子吸收光谱仪</p>
+							</button>
+						</div>
+						</td>
+					</tr>
+					<tr style="height: 100%;">
+						<td style="text-align:center;width:49%;height: 100%;"  >
+						 <div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+							  <h1><b>405</b></h1>
+						</div>
+						<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;"><!-- <p><b>405</b></p> -->
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(405,'1207025Z9L',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/原子荧光光谱仪.jpg" title=" 原子荧光分光光度计">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0"> 原子荧光分光光度计</p>
+							</button>
+							<button style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(405,'9330-1411093Z9',$(this));" data-toggle="modal" data-target="#myModal">
+								<img  style="width:100%;height:150px;" src="./files/原子荧光光谱仪.jpg" title="  原子荧光光谱仪">
+								<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  原子荧光光谱仪</p>
+							</button>
+						</div>
+						</td>
+					</tr>
+				</table>
+				</div>
+			</div>
+		</div>
+		<div class="widget-box collapsed" style="border:none;">
+			<div class="widget-header header-color-blue zhedie" style="background: #307ecc none repeat scroll 0 0 border-color: rgb(217, 237, 247); color: white; ! important; cursor: pointer;text-align:left">
+			   <h3 style="font-family:微软雅黑; font-size:25px;"> 5层&nbsp;&nbsp;理化室&nbsp;&nbsp;（5台仪器）</h3>
+			    <span class="widget-toolbar">
+			    	<a href="#" style="color: rgb(119, 119, 119);">
+			    		<i class="1 bigger-125 icon-chevron-down"></i>
+			    	</a>
+			    </span>
+			</div>
+			<div class="widget-body" style="border: medium none; display: none;">
+				<table class="table table-hover table-bordered  center">
+				<tr  style="height: 100%;">
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div  style="height: 100%;">
+							<div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								<h1><b>504室(4台仪器)</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(504,'35061002',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/总有机碳分析仪.jpg" title="  总有机碳分析仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  总有机碳分析仪</p>
+								</button>
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(504,'SH201212-28-IC',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/离子色谱仪——戴安.jpg" title="  离子色谱仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  离子色谱仪(一)</p>
+								</button>
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(504,'0211B81A520',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/流动注射仪.jpg" title="  流动注射分析仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  流动注射分析仪</p>
+								</button>
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(504,'14110554',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/离子色谱仪——戴安.jpg" title="  离子色谱仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  离子色谱仪(二)</p>
+								</button>
+							</div>
+						</div>
+					</td>
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div  style="height: 100%;">
+							<div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								<h1><b>506室(2台仪器)</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(504,'13',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/αβ放射性测量仪.jpg" title=" 放射性测量仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0"> 放射性测量仪</p>
+								</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</div>
+		</div>
+		<div class="widget-box no-border center btn-group" style="border:none;width:100%">
+			<div class="widget-header header-color-blue zhedie" style="background: rgb(130,175,111) none repeat scroll 0% 0%; border-color: rgb(217, 237, 247); color: white; ! important; cursor: pointer;text-align:left">
+			   <h3 style="font-family:微软雅黑; font-size:25px;">6层&nbsp;&nbsp;生物室&nbsp;&nbsp; （2台仪器）</h3>
+			    <span class="widget-toolbar">
+			    	<a href="#" style="color: rgb(119, 119, 119);">
+			    		<i class="1 bigger-125 icon-chevron-down"></i>
+			    	</a>
+			    </span>
+			</div>
+			<div class="widget-body" style="border: medium none; display: none;">
+				<table class="table table-hover table-bordered  center">
+				<tr  style="height: 100%;">
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div  style="height: 100%;">
+							<div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								<h1><b>603室(1台仪器)</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(603,'3915032',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/藻类计数仪.jpg" title="  藻类智能检定计数仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0">  藻类智能检定计数仪</p>
+								</button>
+							</div>
+						</div>
+					</td>
+					<td style="text-align:center;width:49%;height: 100%;" >
+						<div  style="height: 100%;">
+							<div class="page-header" style="background-color: rgb(217, 237, 247) !important;">
+								<h1><b>609室(1台仪器)</b></h1>
+							</div>
+							<div class="well well-lg" style="text-align:left;font-size:20px; padding: 0px; border-width: 0px 0px 0px;">
+								<button  style="width:30%;overflow:hidden;border-width:0;margin-left:20px;margin-bottom:10px;margin-top:10px;padding:0;color:black !important;background-color:white !important;" class="btn btn-primary btn-lg" onclick="show1(609,'IQIR01919',$(this));" data-toggle="modal" data-target="#myModal">
+										<img  style="width:100%;height:150px;" src="./files/全自动微生物计数仪.jpg" title=" 全自动微生物计数仪">
+										<p style="font-size:14px;width:200px;overflow:hidden;border-width:0;padding:0"> 全自动微生物计数仪</p>
+								</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</div>
+		</div>
+</div>
+</form >
+<!-- 弹出层 -->
+	<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content" style="width:800px;">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
+	      </div>
+	      <div class="modal-body clearfix zhezhao">
+	      $lines
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- 弹出层 -->
+<script>
+function show1(room,bh,obj){
+	var name=$.trim($(obj).text());
+	$('.modal-title').text(name+' (出厂编号：'+bh+")");
+	$('.zhezhao').load('$rooturl/app_modal/hn_yiqimanager_admin.php',{"action":'admin',"room":room,"bh":bh,"ajax":"1"});
+}
+</script>

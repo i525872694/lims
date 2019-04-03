@@ -1,0 +1,20 @@
+<div style="width:100%;margin:0 auto;">
+  <h1 class="center" style="text-align:center;">{$_GET['wz_type']}</h1>
+  <div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+            <td style="width:8%">{$_GET['wz_type']}编号</td>
+            <td style="width:20%">{$_GET['wz_type']}名称</td>
+            $wz_type_subdivide_title
+            <td style="width:15%">{$_GET['guobiao']}国标号</td>
+            <td style="width:10%">有效日期</td>
+            <td style="width:10%">数量</td>
+            <td style="width:10%">操作员</td>
+        </thead>
+
+        <tbody>
+             $lines
+        </tbody>
+    </table>
+  </div>
+</div>

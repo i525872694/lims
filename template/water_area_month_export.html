@@ -1,0 +1,23 @@
+
+<body>
+	<h3  style="margin:0 auto;width:730px;text-align:center">{$_GET['year']}年{$_GET['month']}月{$tjcs}监测成果表</h3>
+	<div  style="margin:0 auto;width:730px;text-align:right">监测单位：{$hub_rs['hub_name']}</div>
+	<table  style="margin:0 auto;width:730px;border-collapse:collapse;font-size:12px" border="1px">
+		{$water_area_month_lines}
+		<tr>
+			<td colspan="2">备注</td>
+			{$notes}
+		</tr>
+	</table>
+	<table  style="margin:0 auto;width:730px; font-size:12px" >
+		<tr>
+			<td style="width:25%;text-align:left;padding-left:20px" colspan="2">校核：</td>
+			<td style="width:25%;letter-spacing:20px;text-align:left" colspan="2">月日</td>
+			<td style="width:25%;text-align:right;padding-left:20px" colspan="2">签发：</td>
+			<td style="width:25%;text-align:right;letter-spacing:20px" colspan="2">月日</td>
+		</tr>
+	</table>
+</body>
+
+
+

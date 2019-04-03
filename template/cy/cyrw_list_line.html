@@ -1,0 +1,10 @@
+<tr align="center" class='bg-div' data-val='{$search_data}'>
+    <td  title="点击查看样品明细">{$i} {$cyd_id}</td>
+    <td>{$data[cy_date]}</td>
+    <td {$data[modify_cyd_bh]} title='id:$data[id]'>$cyd_bh</td>
+    <td style="text-overflow: ellipsis;overflow: hidden;" title={$data[group_name]}>{$data[group_name]}<br/><p class="search_str">样品编号:{$rec_infos['bar_codes']} <br/>站点名称:{$rec_infos['site_names']}</p>
+    </td>
+    <td>{$cy_users}</td>
+    <td>{$data[status_text]}</td>
+    <td><a href="dayin_biaoqian.php?cyd_id={$data[id]}">打印标签</a>|<a href="cy_tzd.php?cyd_id={$data[id]}&&cyd_bh={$data[cyd_bh]}">采样通知单</a>{$cy_record_str}{$modi_csrw_tzd_str}{$data[delete]}</td>
+</tr>

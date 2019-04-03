@@ -1,0 +1,61 @@
+<style type="text/css">
+    .node circle {
+        cursor: pointer;
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node text {
+        font-size: 14px;
+    }
+
+    path.link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+
+    .circle_g{
+        stroke:"none";
+        stroke-width:"1" ;
+        fill:"none" ;
+        width:20px;
+        height:20px;
+        /*fill-rule:"evenodd";*/
+    }
+
+</style>
+
+<div id="tree1"></div>
+<div id="tree2"></div>
+
+
+<script type="text/javascript">
+
+
+    //flare_Data变量在flare.js中定义，使用时一般是ajax请求过来的数据
+    var tree1 = treeSvg({$zNodes},900,300,100,"tree1",1);
+    
+    var tree2 = treeSvg({$zNodes},900,300,200,"tree2");
+
+    //点击节点后回调函数，全局变量select_node存储当前被选中的节点
+    function clickNodetrigger()
+    {
+        console.log('tree1被选中的节点：',tree1.select_node)
+        console.log('tree1点击的节点是否有上级被点中：',tree1.now_node_father_is_check)
+        console.log('tree1点击的节点是否有子级被点中：',tree1.now_node_child_is_check)
+
+console.log('-------------------------------------------');
+        console.log('tree2被选中的节点：',tree2.select_node)
+        console.log('tree2点击的节点是否有上级被点中：',tree2.now_node_father_is_check)
+        console.log('tree2点击的节点是否有子级被点中：',tree2.now_node_child_is_check)
+
+        console.log('-------------------------------------------');
+
+
+    }
+
+
+</script>
+</html>

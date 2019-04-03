@@ -1,0 +1,202 @@
+<!-- 个人简历显示页面 -->
+<script>
+  function date_check(obj) {
+    var content = $(obj).val();
+    if (content.length >= 8 || content.indexOf('.') < 0) {
+      alert('请输入格式为：xxxx.xx 的年月');
+      $(obj).val('');
+    }
+  }
+</script>
+<link href='{$rooturl}/css/sweetalert2.css' rel="stylesheet" type="text/css">
+<script src='{$rooturl}/js/sweetalert2.js'></script>
+<link href='{$rooturl}/css/fileinput.css' rel="stylesheet" type="text/css">
+<script src='{$rooturl}/js/fileinput.js'></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".date_input").date_input(); //日期输入框
+  });
+</script>
+<style>
+  .inputc {
+    width: 90%;
+  }
+</style>
+<h1 align="center">修改个人信息</h1>
+<form name="myform" action="hn_usermanager_mod.php" method="post" enctype="multipart/form-data">
+  <input name='uid' type='hidden' value="{$val['uid']}">
+  <table class='table table-striped table-bordered table-hover center' style="width:900px">
+    <tr align=center>
+      <td>姓名</td>
+      <td><input type="text" class=inputc name="xingming" size="6" value="{$val['userid']}" />
+        <input type="hidden" name='s_name' value="{$val['userid']}">
+      </td>
+      <td>
+        性别
+        <select name="sex">
+				<option value="男" {$nan}>男</option>
+				<option value="女" {$nv}>女</option>
+			</select><input type='hidden' name='s_sex' value='{$val[sex]}'>
+      </td>
+      <td>身份证号</td>
+      <td>
+        <input type="text" name="idcard" value="{$val[idcard]}">
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td>职务</td>
+      <td colspan='2'><input type="text" class=inputc name="zhiwu" size="14" value="{$val['zhiwu']}" /></td>
+      <td>职称</td>
+      <td>
+        <select name="zc" style="width:200px;">
+        <option value="{$val['zc']}">{$val['zc']}</option>
+        <option value="研究员级高级工程师">教授级高级工程师</option>
+				<option value="研究员级高级工程师">研究员级高级工程师</option>
+				<option value="高级工程师">高级工程师</option>
+				<option value="工程师">工程师</option>
+				<option value="助理工程师">助理工程师</option>
+				<option value="高级技师">高级技师</option>
+				<option value="技师">技师</option>
+				<option value="高级工">高级工程师</option>
+				<option value="中级工">中级工程师</option>
+        <option value="初级工">初级工程师</option>
+        <option value="见习">见习</option>
+			</select>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>专业</td>
+      <td><input type="text" class=inputc name="zy" size="14" value="{$val['zy']}" /></td>
+      <td>学历</td>
+      <td colspan='2'>
+        <select name='whcd' style="width:90%;">
+				<option checked value="{$val['whcd']}">{$val['whcd']}</option>
+				<option value='高中'>高中</option>
+				<option value='中专'>中专</option>
+				<option value='大专'>大专</option>
+				<option value='大学'>大学</option>
+				<option value='硕士研究生'>硕士研究生</option>
+				<option value='博士'>博士</option>
+				<option value='其他'>其他</option>
+			</select>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>从事本技术领域年限</td>
+      <td><input type="text" class="inputc" value="{$val['jsnx']}" name="jsnx" /></td>
+      <td>现在部门岗位</td>
+      <td colspan='2'><input type="text" class="inputc" value="{$val['gw']}" name="gw" /></td>
+    </tr>
+    <tr align="center">
+      <td>是否具备独立熟练操作大型仪器能力</td>
+      <td>
+        <select class="" name="dxyqcz">
+      {$dxyqcz_select}
+      </select>
+      </td>
+      <td>检验岗位证书编号</td>
+      <td colspan='2'>
+        <input type="text" name="jygwzsbh" value="{$val[jygwzsbh]}">
+      </td>
+    </tr>
+    <tr align="center">
+      <td>管理岗位证书编号</td>
+      <td><input type="text" class=inputc name="glgwzsbh" size="6" value="{$val['glgwzsbh']}" /></td>
+      <td>评价岗位证书编号</td>
+      <td colspan='2'>
+        <input type="text" class=inputc name="pjgwzsbh" style="width:80%;" size="6" value="{$val['pjgwzsbh']}" />
+      </td>
+    </tr>
+    <tr align="center">
+      <td>采样挂牌编号</td>
+      <td>
+        <input type="text" class=inputc name="cygpbh" size="6" value="{$val['cygpbh']}" />
+      </td>
+      <td>采样岗位证书编号</td>
+      <td colspan='2'><input type="text" class=inputc name="cygwzsbh" size="14" value="{$val['cygwzsbh']}" /></td>
+    </tr>
+    <tr align="center">
+      <td>挂牌日期</td>
+      <td>
+        <input type="date" class=inputc name="gprq" size="6" value="{$val['gprq']}" />
+      </td>
+      <td>离岗日期</td>
+      <td colspan='2'><input type="date" class=inputc name="lgrq" size="14" value="{$val['lgrq']}" /></td>
+    </tr>
+    <tr align=center>
+      <td>职工性质</td>
+      <td>
+        <input type="text" class=inputc name="zgxz" size="6" value="{$val['zgxz']}" />
+      </td>
+      <td>备注</td>
+      <td colspan="2"><textarea cols="30" name="bz" value="">{$val['bz']}</textarea></td>
+    </tr>
+    <tr>
+			<th>文件</th>
+			<td colspan="4">{$files}</td>
+		</tr>
+		<tr>
+			<th>添加文件</th>
+			<td colspan="4"><input id="files" type="file" name="file[]" multiple></td>
+		</tr>
+    <tr>
+      <td colspan="5">
+        <center><input class='btn btn-xs btn-primary' type="submit" name='sub' value="保存"> <input class='btn btn-xs btn-primary' type="button" onclick="window.location.href='user_list.php'" value="取消"></center>
+      </td>
+    </tr>
+  </table>
+  <from>
+      <script>
+          //上传控件初始化
+        $("#files").fileinput({  
+           language: 'zh',
+           uploadUrl:'.',
+           uploadAsync: false, //设置上传同步异步 此为同步  
+           maxFileSize: 100000,//上传大小
+           showUpload: false, 
+           maxFileCount: 10, //表示允许同时上传的最大文件个数
+           enctype: 'multipart/form-data',
+           //隐藏上传按钮
+           layoutTemplates:{
+               actionUpload:'',
+           }
+        });
+        //删除文件
+        function del_file(id,file_id){
+            swal(
+              {
+                title: "您确定要删除这个文件吗?",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的，我要删除！",
+                cancelButtonText: "让我再考虑一下…",
+                closeOnConfirm: false,
+                closeOnCancel: false
+              }).then(
+              function (isConfirm) {
+                if (isConfirm === true) {
+                    $.get('hn_usermanager_mod.php?ajax=del_file',{id:id,file_id:file_id},function(data){
+                        if(data=='ok'){
+                            swal({
+                                title: "成功",
+                                text: "删除成功。",
+                                type: "success"
+                            });
+                            location.reload()
+                        }
+                    });
+                }
+                else {
+                  swal({
+                    title: "已取消",
+                    text: "您取消了删除操作！",
+                    type: "info"
+                  })
+                }
+              }
+            )
+        }
+        </script>

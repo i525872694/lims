@@ -1,0 +1,314 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<link rel="stylesheet" href="{$rooturl}/css/bootstrap-editable.css" />
+<link rel="stylesheet" href="{$rooturl}/css/lims/hyd.css" />
+<script src="{$rooturl}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-cookie.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/x-editable/ace-editable.min.js"></script>
+<div class="outerBox">
+	<div class="widget-box transparent" style="margin:0;">
+		<div class="widget-header center">
+			<h3 class="header smaller title" style="color:#000;">测试任务下达</h3>
+		</div>
+	</div>
+</div>
+<table id="bootstrapTable" class="table center"></table>
+<script type="text/javascript">
+// 定义本页面的cookieName
+var cookieName = "pay_list";
+// 如果是项目分包的化验单列表，则禁用批次检索
+if($("input[name=is_xmfb]").val() == "1"){
+	$("select[name=cyd_id]").val("全部").prop("disabled",true);
+}
+// 根据cookie初始化本页的检索数据
+$("#toolbar").find("select[name]").not("[type=hidden]").each(function (i) {
+	var value = getCookie( cookieName + ".bs.table." + $(this).attr("name") );
+	if( value && $(this).is("select") && $(this).find("[value='"+value+"']").length ){
+		$(this).val(value);
+	}
+});
+// 除年和月外的下拉表使用select2插件
+$("select").not("[name=year],[name=month]").select2();
+
+// 检索条件更改后进行数据更新
+$("#toolbar").find("input[name],select[name]").on("change",function () {
+	theTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+});
+//获取最新的URL地址
+var get_url = function(){
+	params = ["cyd_id=" + "{$_GET['cyd_id']}"];
+	$("#toolbar").find("input[name],select[name]").each(function (i) {
+		params[i] = $(this).attr("name") + "=" + $(this).val();
+		setCookie(cookieName + ".bs.table." + $(this).attr("name"), $(this).val());
+	});
+	return "ahlims.php?ajax=1&app=jcrw_list&act=csrwxd_list&" + params.join("&");
+}
+//.editable的click事件绑定
+var editClickEvents = {
+	"click .editable":function(e, value, row, index){
+		//如果已注册editable方法事件则不再重复注册
+		if( $(this).parents("td").find("span.editable-click").length ){
+			return false;
+		}
+		var index = $(this).parents("tr").attr("data-index");	//数据id
+		var n = $(this).parents("tr").find("td").index($(this).parents("td"));		//当前列所在位置
+		var editableTitle = $("#bootstrapTable thead tr th:eq("+n+")").text();		//当前列数据名称
+		var field = $("#bootstrapTable thead tr th:eq("+n+")").attr("data-field");	//当前数据参数名称
+		//通过参数匹配关联数据id
+		var field_value = {userid: "uid", userid2: "uid2"}
+		//注册editable即点即改功能
+		$(this).editable({
+			type: "select2",
+			title: "修改"+editableTitle,
+			showbuttons: true,
+			select2: {
+				// allowClear: true,
+				placeholder: "--请选择--"
+			},
+			value : row[field_value[field]],
+			source: function(){
+				var options = [];
+				$("select[name=uid] option").each(function(){
+					if( $.isNumeric($(this).attr("value")) ){
+						options.push({id: $(this).attr("value"), text: $(this).html()});
+					}
+				});
+				return options;
+			},url: function(params){
+				var d = new $.Deferred;//回调延迟的对象
+				eval('var prop = {"tid[]": row.id, "+field_value[field]+":params.value};');
+				$.ajax({
+					type: "post",
+					data: prop,
+					dataType: "json",
+					url: "ahlims.php?app=pay_list&act=modi_pay_user&ajax=1",
+					success: function(data){
+						if(data.error=="0"){
+							d.resolve();
+						}else{
+							return d.reject(data.content);
+						}
+					},error: function(data){
+						return d.reject(data.responseText);
+					}
+				});
+				return d.promise();
+			}
+		});
+		$(this).trigger("click");
+	}
+}
+//使用js激活bootstrapTable样式
+var theTable = $("#bootstrapTable").bootstrapTable({
+	cookie: "true",
+	cookieIdTable: cookieName,
+	cache: false,
+	url: get_url(),
+	height: get_height(),
+	uniqueId: "id",
+	toolbar: "#toolbar2",
+	toolbarAlign: "left",
+	toolbarClass: "header-color-blue4",
+	showColumns: false,
+	showRefresh: true,
+	minimumCountColumns: 3,
+	clickToSelect:true,
+	// pagination: true,
+	// sidePagination: "client",//"server",
+	pageSize:25,
+	pageList: [25, 50, 100, "全选"],
+	search: true,
+	formatSearch: function () {
+		return "请输入要搜索的信息";
+	},
+	columns: [
+		{
+			width: "50px",
+			field: "checkbox",
+			checkbox: true
+		},
+		{
+			width: "6%",
+			field: "xuhao",
+			title: "序号"
+		},
+		{
+			width: "7%",
+			field: "id",
+			title: "化验项目"
+		},
+		{
+			width: "16%",
+			field: "assay_element",
+			title: "检测方法",
+			sortable: true
+		},
+		{
+			width: "7%",
+			field: "cy_date",
+			title: "检出限",
+			sortable: true
+		},
+		{
+			width: "7%",
+			field: "jcwc_date",
+			title: "检测单位",
+			sortable: true
+		},
+		{
+			width: "7%",
+			field: "userid",
+			title: "使用仪器",
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				( !value ) && ( value = "无" );
+				( "" != row.sign_01 ) && ( value = row.sign_01 );
+				return !row.canDel ? value : '<span class="editable tooltip-info blue" data-rel="tooltip" title="修改主测化验员">'+value+'</span>';
+			}
+		},
+		{
+			width: "7%",
+			field: "userid",
+			title: "主测",
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				( !value ) && ( value = "无" );
+				( "" != row.sign_01 ) && ( value = row.sign_01 );
+				return !row.canDel ? value : '<span class="editable tooltip-info blue" data-rel="tooltip" title="修改主测化验员">'+value+'</span>';
+			}
+		},
+		{
+			width: "7%",
+			field: "userid2",
+			title: "辅测",
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				( !value ) && ( value = "无" );
+				if( "" != row.sign_01 ){
+					if( "" != row.sign_012 ){
+						value = row.sign_012;
+					}else{
+						value = (row.userid == row.sign_01) ? row.userid2 : row.userid;
+						( !value ) && ( value = "无" );
+						value = '<span style="color:#a0a0a0 !important" data-rel="tooltip" title="未签字">'+value+'</span>';
+					}
+				}
+				return !row.canDel ? value : '<span class="editable tooltip-info blue" data-rel="tooltip" title="修改辅测化验员">'+value+'</span>';
+			}
+		},
+		{
+			width: "7%",
+			field: "sign_02",
+			title: "校核",
+			sortable: true,
+			events: false,
+			formatter: function(value, row, index){
+				return value ? value : "-";
+			}
+		},
+		{
+			width: "7%",
+			field: "over",
+			title: "化验状态",
+			sortable: true,
+			formatter: function(value, row, index){
+				//化验单是否是被退回的 如果是 突出显示
+				var pay_status = "";
+				var column_json = ( "" == row.json ) ? {} : $.parseJSON(row.json);
+				if( null != column_json && typeof column_json['退回'] != "undefined" && column_json['退回'].length ){
+					//被退回的单子如果已经复核就不需要再红色显示了
+					pay_status = '&nbsp;<strong class="'+( '' == row.sign_02 ? 'red' : '' )+'">(被退回)</strong>';
+				}
+				return row.over + pay_status;
+			}
+		},
+		{
+			width: "12%",
+			field: "option",
+			title: "操作",
+			cellStyle: function cellStyle(value, row, index) {
+				return {
+					css: {},
+					classes: "visible-md visible-lg hidden-sm hidden-xs action-buttons"
+				};
+			},
+			formatter: function(value, row, index){
+				// #0分隔符#1style样式#2绑定事件class#3颜色class#4title内容#5图标
+				if(row.printed=="1"){
+					var pr_color="red";
+					var pr_title ="化验单已打印"
+				}else{
+					var pr_color="blue";
+					var pr_title ="打印化验单"
+				}
+				var but_tpl = '#0<a #1 class="#2_'+row.id+' tooltip-info #3" data-rel="tooltip" title="#4" href="javascript:void('+row.id+')"><i class="icon-#5 bigger-130"></i></a>';
+				return '<div style="white-space:nowrap;text-align:left;padding-left:3rem;">'
+					+ but_tpl.replace("#0",'').replace("#1",'').replace("#2",'print_').replace("#3",pr_color).replace("#4",pr_title).replace("#5",'print')
+					+ ( ( true == row.canDel ) ?
+						but_tpl.replace("#0",' | ').replace("#1",'').replace("#2",'del_').replace("#3",'red').replace("#4",'删除化验单').replace("#5",'remove')
+						: but_tpl.replace("#0",' | ').replace("#1",'style="cursor: not-allowed;color:#ccc"').replace("#2",'not-allowed').replace("#3",'tooltip-error').replace("#4",'已经签字！').replace("#5",'remove')
+					) + '</div>';
+			},
+			events: {
+				'click a[class^=print]': function (e, value, row, index) {
+					window.open('ahlims.php?app=print&act=print_hyd&ajax=1&tid='+row.id);
+				},
+				'click a[class^=del_]': function (e, value, row, index) {
+					$.confirm({
+						content: '你确定要删除化验单【<strong class="red">'+row.id+'</strong>】【<strong class="red">'+row.assay_element+'</strong>】吗？',
+						confirm: function(){
+							$.ajax({
+								type: 'post',
+								dataType: 'json',
+								data: {'tid[]': row.id},
+								url: 'ahlims.php?app=pay_list&act=del_pay_by_id&ajax=1',
+								success: function(data){
+									if( '0' == data.error ){
+										// theTable.bootstrapTable('removeByUniqueId', row.id);
+										theTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+									}else{
+										alert_error(data.content,'danger');
+									}
+								},error: function(data){
+									alert_error(data.responseText);
+								}
+							});
+						}
+					});
+				}
+			} // events End
+		}
+	],
+	onLoadSuccess: function(data){
+		// tooltip
+		$("[data-rel='tooltip']").tooltip();
+		$("[data-rel=popover]").popover({html:true});
+		// 有时候表格高度渲染失败
+		setTimeout(function () {
+            theTable.bootstrapTable("resetView");
+        }, 200);
+		//设置滚动条快速滑动。
+		$(window.parent.document.body).find("#full-top").click(function () {
+			theTable.bootstrapTable("scrollTo", 0);
+		});
+		$(window.parent.document.body).find("#full-btm").click(function () {
+			theTable.bootstrapTable("scrollTo", "bottom");
+		});
+	}
+});
+// 重置表格高度
+$(window).resize(function () {
+	theTable.bootstrapTable("resetView", { height: get_height() });
+});
+function get_height(){
+	var height = $(window).height() - $(".csrwxd-header").outerHeight(true) - $(".outerBox").height();
+	return height < 300 ? 300 : height;
+}
+</script>

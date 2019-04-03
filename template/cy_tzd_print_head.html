@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>采样通知单</title>
+<link href="$rooturl/css/ace.min.css" rel="stylesheet" />
+<link href="$rooturl/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="$rooturl/js/jquery-2.1.0.js"></script>
+<style media="print" type="text/css">
+	.Noprint{display:none;}
+	.body_css{width:100%}
+</style>
+$print
+<style type="text/css">
+	body{width:95%;margin:0 auto;}
+	.table.table-bordered.center td textarea{background-color:#FFFFFF;}
+</style>
+<script language="javascript">
+	function change_page_size(page_size){//根据设置的打印页数进行分页
+		if(!isNaN(page_size)&&page_size!=''){
+			var urlPage = String(self.location);
+			location.replace(urlPage+"&page_size="+page_size);
+		}
+	}
+	
+</script>
+</head>
+<body>
+<div class='Noprint' style="text-align:center; margin-top:20px">
+	<input type='text' placeholder={$input_note} style='border:red 1px solid;width:200px;' oninput='this.value=this.value.replace(/\D/gi,"");' onblur="change_page_size(this.value);" value=''/>
+	<input class="btn btn-xs btn-primary" type='button' value='设置'>
+</div>
+<script language="javascript">
+$(function(){
+	//$("table").width("27cm");
+	$('td').each(function(){
+		//#######将td里的内容去掉html标签后再展示
+		//var up_text	= '';
+		var td_width= $(this).width();
+		var td_height= $(this).width();
+		$(this).css({"min-width":td_width});
+		$(this).children(":visible").each(function(){
+			if($(this).is("input[type='text']") || $(this).is('textarea')){
+				//up_text += $(this).val();
+				//计算文本宽度和高度
+				var sensor	= $('<pre>'+ $(this).val() +'</pre>').css({display: 'none'}); 
+		        $('body').append(sensor); 
+		        var width	= sensor.width();
+		        var height	= sensor.height();
+		        sensor.remove();//删除刚添加的文本信息
+		        $(this).css({"width":"100%"});
+		        if(td_width < width){
+		        	var beishu	=  Math.ceil( width/td_width);
+		        	var big_height	= height *beishu + 16;
+		        	console.log(td_height+"==>"+big_height);
+		        	if(td_height < big_height){
+		        		console.log(height+"==>"+big_height);
+		        		$(this).css({"height":big_height});
+		        	}
+		        }
+			}/*else if($(this).is('textarea')){
+				up_text += $(this).text();
+			}else if($(this).is('select')){
+				up_text += $(this).val();
+			}else if($(this).is("input[type='button'],input[type='submit'],button")){
+			}else if($(this).is('img')){
+				up_text += $(this).prop("outerHTML");
+			}else{//span等其他html标签
+				up_text += $(this).text();
+			}*/
+		});
+		/*if(up_text !=''){
+			//由于text也会将select的内容获取出来，因此去掉select后再获取纯净的text内容
+			$(this).children().remove();
+			//将td框内原本的内容赋到上面
+			up_text	= $(this).text()+up_text;
+			$(this).html(up_text).css({"width":td_width});
+		}*/
+	});
+})
+</script>
+</body>
+</html>

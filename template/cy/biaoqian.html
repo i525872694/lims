@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/bootstrap.min.js"></script>
+
+<div class="widget-body">
+    <table id="bzwz_table" class="table table-striped table-bordered table-hover center"
+    data-toggle="table"	
+    data-sort-name="bar_code"
+    data-sort-order="asc"
+    data-pagination="true"
+    data-page-size="10"
+    data-search="true"
+    data-page-list="[10,25,50,100,全选]"
+    
+    >
+        <thead>
+            <th style="width:10%" data-field="xh" data-sortable="true">序号</th>
+            <th style="width:10%" data-field="site" data-sortable="true">站点</th>
+            <th style="width:10%" data-field="bar_code" data-sortable="true">样品编号</th>
+            <th style="width:10%" data-field="site_code" data-sortable="true">站点编码</th>
+        </thead>
+
+        <tbody>
+             $lines
+        </tbody>
+    </table>

@@ -1,0 +1,164 @@
+<style>
+.date_selector *{box-sizing:content-box;}
+.widget-toolbar:before{border-style:none;}
+.hand{cursor:pointer;color:blue;}
+.site_label,.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;overflow: hidden;}
+.group_sites{float:none;background-color:#C9F2D1}
+</style>
+<script type="text/javascript">
+function xiupinci(aa){
+	var pinci = prompt('请输入监测频次','');
+	var tjid = $(aa).attr("tjid");
+	if(tjid&&pinci){
+        $.post('./fs_ajax.php?ajax=1',{pinci:pinci,act:'xiupinci',tjid:tjid},function(data){
+            if(data=='ok'){
+               $(aa).html(pinci);
+            }else{
+               alert('发生错误，请刷新后重试');
+            }
+        },'html');
+    }
+}
+function xiunote(aa){
+	var note = prompt('请输入备注信息','');
+	var tjid = $(aa).attr("tjid");
+	if(tjid&&note){
+        $.post('./fs_ajax.php?ajax=1',{note:note,act:'xiunote',tjid:tjid},function(data){
+            if(data=='ok'){
+               $(aa).html(note);
+            }else{
+               alert('发生错误，请刷新后重试');
+            }
+        },'html');
+    }
+}
+function xiumubiao(aa){
+	var mubiao = prompt('请输入目标水质信息','');
+	if(mubiao=='Ⅰ'||mubiao=='Ⅰ类'){
+		mubiao = 1;
+		mubiao1= 'Ⅰ类';
+	}
+	if(mubiao=='Ⅱ'||mubiao=='Ⅱ类'){
+		mubiao = 2;
+		mubiao1= 'Ⅱ类';
+	}
+	if(mubiao=='Ⅲ'||mubiao=='Ⅲ类'){
+		mubiao = 3;
+		mubiao1= 'Ⅲ类';
+	}
+	if(mubiao=='Ⅳ'||mubiao=='Ⅳ类'){
+		mubiao = 4;
+		mubiao1= 'Ⅳ类';
+	}
+	if(mubiao=='Ⅴ'||mubiao=='Ⅴ类'){
+		mubiao = 5;
+		mubiao1= 'Ⅴ类';
+	}
+	var tjid = $(aa).attr("tjid");
+	if(tjid&&mubiao){
+        $.post('./fs_ajax.php?ajax=1',{mubiao:mubiao,act:'xiumubiao',tjid:tjid},function(data){
+            if(data=='ok'){
+               $(aa).html(mubiao1);
+            }else{
+               alert('发生错误，请刷新后重试');
+            }
+        },'html');
+    }
+}
+function gt(aa){
+	var tjid = $(aa).attr("tjid");
+	$('.modal-content').load('$rooturl/fzx_manage/xm.php',{"tjid":tjid,ajax:"1"});
+	$('body').css("overflow","hidden");
+	$("#cover").show();
+}
+function xiuzhan(aa){
+	var tjid = $(aa).attr("tjid");
+	var fp_id = $(aa).attr("fzx_id");
+	var sstr = '';
+	var sarr = $("a[fp_id="+fp_id+"][tjid="+tjid+"]");
+	$.each(sarr,function(){
+		sstr += ','+$(this).attr('sid');
+	});
+	var xms = $("td[flag='xm'][tjid='"+tjid+"']").attr('xms');
+	$('.modal-content').load('$rooturl/fzx_manage/fzx_site_add.php',{"fp_id":fp_id,"tjid":tjid,"sstr":sstr,"ajax":"1",xms:xms});
+	$('body').css("overflow","hidden");
+	$("#cover").show();
+}
+function guanbi2(){
+	$('body').css("overflow","auto");
+	$('.modal-content').html('');
+	$("#cover").hide();
+}
+function guanbi(){
+	$('body').css("overflow","auto");
+	$('.modal-content').html('');
+	$("#cover").hide();
+}
+function shaixuan(){
+	var url = window.location.href;
+	var xuanfzx = $("#fzx_id").val();
+	var area = $("#area").val();
+	var water_type = $("#water_type").val();
+	var tjcs = $("#tjcs").val();
+	var urlarr = url.split('?');
+	var newurl = urlarr[0]+"?aa=canshu";
+	if(xuanfzx&&xuanfzx!='全部'){
+		newurl += "&xuanfzx="+xuanfzx;
+	}
+	if(area&&area!='全部'){
+		newurl += "&area="+area;
+	}
+	if(water_type&&water_type!='全部'){
+		newurl += "&wtype="+water_type;
+	}
+	if(tjcs&&tjcs!='全部'){
+		newurl += "&tjcs="+tjcs;
+	}
+	var year = $("#year").val();
+	if(year){
+		newurl += "&year="+year;
+	}
+	location = newurl;
+}
+
+</script>
+<form id="xdrw" action="$rooturl/xd_cyrw/xd_cyrw_save.php" method="post" onkeydown="if(event.keyCode==13)return false;">
+<h3 class="header smaller center title"><select name='year' id='year' onchange='shaixuan()'>$yearstr</select>年度计划表</h3>
+<div  class="widget-header header-color-blue4 center">
+<p class="center liebiao">
+	<input type="hidden" name="site_type" id="site_type" value="{$_GET['site_type']}" />
+	分中心列表:
+	<select name="fzx_id"   id="fzx_id"  {$disabled2} class="chosen" onchange="shaixuan()" style="max-width:150px;" $dis>
+		$fp_fzx_options
+	</select>
+	流域:
+	<select name="area" id="area" style="max-width:150px;" onchange="shaixuan()">
+		$site_area_options
+	</select>
+	水样类型:
+	<select name="water_type" id="water_type"  style="max-width:150px;text-align:left;" onchange="shaixuan()">
+		<option value="全部">全部</option>
+		$water_type_options
+	</select>
+	统计参数:
+	<select name="tjcs" id="tjcs" class="chosen" style="max-width:150px;" onchange="shaixuan()">
+		<option value="全部">全部</option>
+		$tjcs_options
+	</select>
+</p>
+</div>
+<br/>
+	<table class="table table-bordered table-hover center" id='table_site_old' style='width:97%;'>
+	<tr>
+		<th width='5%'>主类别</th><th width='10%'>子类别</th><th width='4%'>数量</th><th width='8%'>所属分中心</th><th width='25%'>站点信息</th><th width='8%'>监测频次</th><th width='8%'>目标水质</th><th width='15%'>监测项目</th><th width='8%'>备注</th>
+	</tr>
+	$tj_line
+	</table>
+</form> 
+<!-- 弹出层 -->
+		<div id="cover" class="modal" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:965px;'>
+				<div id="con" class='modal-content' style='width:965px;'></div>
+			</div>
+		</div>
+

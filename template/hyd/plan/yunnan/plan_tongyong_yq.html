@@ -1,0 +1,187 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-00</td>
+    </tr>
+</table><h1>{$arow['assay_element']}测定原始记录表</h1>
+$hjtj_bt
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:11%"></td>
+        <td style="width:18%"></td>
+        <td style="width:12%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:13%"></td>
+        <td style="width:13%"></td>
+    </tr>
+    <tr>
+        <td>检测项目</td>
+        <td>{$arow['assay_element']}</td>
+        <td>测定方法</td>
+        <td colspan="2">{$arow['td2']}<input type="hidden" name="td2" value="{$arow['td2']}"></td>
+        <td colspan="2">检出限({$arow['unit']})</td>
+        <td>{$arow['td3']}<input type="hidden" name="td3" value="{$arow['td3']}"></td>
+    </tr>
+    <tr>
+        <td>仪器名称</td>
+        <td>{$arow['td4']}</td>
+        <td>仪器型号</td>
+        <td colspan="2">{$arow['td5']}</td>
+        <td>仪器编号</td>
+        <td colspan="2">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td colspan="1">定容体积(mL)</td>
+        <td colspan="2"><input type="text" name="td6" class="inputl" value="{$arow['td6']}"></td>
+        <td colspan="1">截距检验</td>
+        <td colspan="2" id="CT" class="CT">{$arow['CT']}</td>
+        <td colspan="1">相关系数</td>
+        <td colspan="1" id="CR" class="CR">{$arow['CR']}</td>
+    </tr>
+    <tr>
+        <td colspan="1" class="change_qx blue_a" title="点击选择曲线">曲线方程</td>
+        <td colspan="5" id="qx" class="qx">
+        <td colspan="1" class="view_qx blue_a" title="查看曲线">绘制日期</td>
+        <td colspan="1">{$arow['sc_ldrq']}</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td>$zhanming</td>
+        <td>采样日期</td>
+        <td>仪器读数</td>
+        <td>稀释倍数</td>
+        <td>含量({$arow['unit']})</td>
+        <td>平均值/理论浓度({$arow['unit']})</td>
+        <td>相对偏差/加标回收率(%)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白1</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[103]" value="{$arow['btdata'][103]}"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白2</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[203]" value="{$arow['btdata'][203]}"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>平均</td>
+        <td></td>
+        <td>/</td>
+        <td>/</td>
+        <td><input type="text" class="noinputc" name="btdata[301]" value="{$arow['btdata'][301]}"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<!-- <script type="text/javascript" src="$rooturl/js/lims/lib.js"></script> -->
+<script type="text/template" class="extrajs_{$arow['id']}">
+if ("{$arow['quxian']}" && "{$arow['sc_ldrq']}") {
+    if ($('.CT').html() != '' && $('.CT').html() != '不合格') {
+        $('.CT').html('合格');
+    }
+    var qxstr = "{$arow['quxian']} &nbsp;&nbsp;&nbsp; 截距a={$arow['CA']} &nbsp;&nbsp;&nbsp; 斜率b={$arow['CB']}";
+    $('.qx').html(qxstr);
+} else {
+    $('.qx').html('');
+    $('.CT').html('');
+    $('.CR').html('');
+}
+</script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+if (!$("[name='btdata[102]']").val()) {
+    $("[name='btdata[102]']").val('1');
+}
+if (!$("[name='btdata[202]']").val()) {
+    $("[name='btdata[202]']").val('1');
+}
+if (!$("[name^='vd2[']").val()) {
+    $("[name^='vd2[']").val('1');
+}
+
+function func() {
+    if ($.isNumeric($("[name='btdata[101]']").val()) && $.isNumeric($("[name='btdata[102]']").val())) {
+        if ($("[name='btdata[101]']").val().indexOf('.') != -1) {
+            var len1 = $("[name='btdata[101]']").val().split('.')[1].length;
+        } else {
+            var len1 = 2;
+        }
+        $("[name='btdata[103]']").val(roundjs(accMul($("[name='btdata[101]']").val(), $("[name='btdata[102]']").val()), len1));
+    } else {
+        $("[name='btdata[103]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[201]']").val()) && $.isNumeric($("[name='btdata[202]']").val())) {
+        if ($("[name='btdata[201]']").val().indexOf('.') != -1) {
+            var len2 = $("[name='btdata[201]']").val().split('.')[1].length;
+        } else {
+            var len2 = 2;
+        }
+        $("[name='btdata[203]']").val(roundjs(accMul($("[name='btdata[201]']").val(), $("[name='btdata[202]']").val()), len2));
+    } else {
+        $("[name='btdata[203]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[103]']").val()) && $.isNumeric($("[name='btdata[203]']").val())) {
+        $("[name='btdata[301]']").val(roundjs(accDiv(accAdd($("[name='btdata[103]']").val(), $("[name='btdata[203]']").val()), 2), len1));
+    } else {
+        $("[name='btdata[301]']").val('');
+    }
+}
+
+function jsgs() {
+    func();
+
+    //vd27中的数据,按所有vd27中 小数位数最大的进行修约
+    var a = $("[name^='vd27[']");
+    var len = a.length;
+    var arr = new Array();
+
+    for (var i = 0; i < len; i++) {
+        var aivl = a[i].value;
+        if (aivl.indexOf('.') != -1) {
+            var aivllen = aivl.split('.')[1].length;
+            arr[i] = aivllen;
+        } else {
+            arr[i] = 0;
+        }
+    }
+    var maxlen = arr.sort().reverse()[0];
+    if ($.isNumeric(vs['vd27'])) {
+        vs['vd27'] = roundjs(vs['vd27'], maxlen);
+    }
+    if (vs['vd27'].toString().indexOf("e") != -1) {
+        vs['vd27'] = toNonExponential(vs['vd27']);
+    }
+    //至此 修约部分完成
+
+    if (!$.isNumeric(vs['vd2'])) {
+        vs['vd2'] = 1;
+    }
+    var valxsbs = $.isNumeric(vs['vd2']) ? vs['vd2'] : 1;
+    if ($.isNumeric(vs['vd27'])) {
+        var s = accMul(vs['vd27'], valxsbs);
+        if (s.toString().indexOf("e") != -1) {
+            var s = toNonExponential(s);
+        }
+        vs['vd0'] = s;
+    } else {
+        vs['vd0'] = '';
+    }
+
+}
+
+</script>

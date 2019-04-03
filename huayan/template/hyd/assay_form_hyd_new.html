@@ -1,0 +1,149 @@
+<!-- 化验单开始 -->
+<div class="assay_form" id="assay_form_{$tid}" data="{$tid}" style="width:{$zongheng};">
+	<div class="accordion-style1 panel-group" id="accordion_{$tid}">
+		{$accordion}
+	</div>
+	<form name="as_form_{$tid}">
+		<!-- 数据提交后跳转的路径 -->
+		<input type="hidden" name="goto_url" value="" />
+		<!-- 修改理由 -->
+		<input type="hidden" name="yuanYin" value="" />
+		<!-- 提交标识 -->
+		<input type="hidden" name="submit_flag" value="normal" />
+		<!-- 提交令牌 -->
+		<input type="hidden" name="token_key" value="{$_SESSION['token_key']['hyd'][$tid]}" />
+		<!-- 化验单显示区 -->
+		<div id="my_{$tid}"></div>
+		<!-- 加载提示... -->
+		<div class="jexcel_form_loading"></div>
+		<!-- 表单提交按钮 -->
+		<div style="padding:5px">{$assay_modi_submit}</div>
+	</form>
+	<!-- 化验单签字表单 -->
+	{$assay_sign_form}
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	window.clientVars = {
+		arowData: {$arowData},
+		linesData: {$linesData},
+		initText: '{$initialAttributedText}'
+	};
+	$('.jexcel_form_loading').show();
+	try{
+		window.arowData = clientVars.arowData;
+		window.linesData = clientVars.linesData;
+		clientVars.data = $.parseJSON(clientVars.initText);
+		window.immTableSheet = $('#my_{$tid}').jExcel_init(clientVars);
+		// 隐藏加载提示
+		$('.jexcel_form_loading').hide();
+		// 打开化验单模板编辑平台
+		$('#open_editer').click(function(){
+			window.open('ahlims.php?ajax=1&app=jexcel&fileName='+arowData.table_name, 'myOpen')
+		}).show();
+		// 显示隐藏标题
+		$('#toggle_header').on('click', function(){
+			if(immTableSheet.showRowHeader){
+				immTableSheet.showRowHeader = false;
+				immTableSheet.showColumnHeader = false;
+				$(immTableSheet.div).jexcel("hideHeader");
+				$(this).html('显示标题');
+			}else{
+				immTableSheet.showRowHeader = true;
+				immTableSheet.showColumnHeader = true;
+				$(immTableSheet.div).jexcel("showHeader");
+				$(this).html('隐藏标题');
+			}	
+		}).show();
+		// <!-- {if 1 && $arow['canModi'] } -->
+		// 当化验单允许修改时
+		// 化验单保存时需要提交保存的数据格式
+		window.get_post_data = function(){
+			// 当仪器载入时，vd0的结果会在加载的时候自动进行修约，所以需要引入，下面不再使用linesData里面查询旧数据覆盖。
+			var post_data = $.extend(window.post_data, {
+					isJexcel: 1,
+					tid: arowData.id,
+					vid: arowData.vid,
+					cyd_id: arowData.cyd_id
+				}
+			);
+			for (var i = 0; i < immTableSheet.cellDataArray.length; i++) {
+				for (var j = 0; j < immTableSheet.cellDataArray[i].length; j++) {
+					var currData = immTableSheet.cellDataArray[i][j];
+					// 除带有计算公式的外,无数据绑定或不允许修改的不允许提交
+					if(immTableSheet.data[i][j].indexOf('=') != 0){
+						if(!currData.link || currData.readOnly){
+							continue;
+						}
+					}
+					var bindKey = currData.link[0].split('.');
+					// 化验单数据行对应index
+					var l = Math.floor((i-immTableSheet.config.lineNum)/immTableSheet.config.lineCount);
+					if(bindKey[0].indexOf('arowsData') > -1){
+						post_data[bindKey[1]] = linesData[l][bindKey[1]];
+					}else if(bindKey[0].indexOf('linesData') > -1 && linesData[l]){
+						linesData[l].xuhao = l + 1;
+						!post_data['mission'] && (post_data['mission'] = []);
+						post_data['mission'][l] = linesData[l].id;
+						!post_data['_vd0'] && (post_data['_vd0'] = []);
+						!post_data[bindKey[1]] && (post_data[bindKey[1]] = []);
+						// vd0可能要已经被计算修约赋值了，不需要再重新赋值
+						!post_data[bindKey[1]][l] && (post_data[bindKey[1]][l] = linesData[l][bindKey[1]]);
+					}
+				}
+			}
+			return post_data;
+		}
+		// 初始化允许提交的数据
+		window.post_data = get_post_data();
+		console.log(post_data)
+		// 执行一遍计算公式,更新数据
+		immTableSheet.div.jexcel('updateAllCellsWithFormulas');
+		// 切换单元格时触发事件
+		// immTableSheet.onselection = function(e, o, d, origin){
+		//     //显示当前单元格信息
+		//     var ids = $(o).prop('id').split('-');
+		//     var cellName = $(this).jexcel('getLetter', ids[0], ids[1]);
+		//     var formula = $(e).jexcel('getValue', cellName);
+		//     $("#inputboxwithpc .cell-head").text(cellName);
+		//     $("#inputboxwithpc .cell-input").text(formula);
+		// }
+		// 单元格内容更改时触发事件,更细post_data数据
+		immTableSheet.onchange = function(obj, cell, newVal, oldVal){
+			updatePostDataWithFormulas(obj, cell);
+		}
+		var updatePostDataWithFormulas = function(obj, cell){
+			var id = $(obj).prop('id');
+			var options = $.fn.jexcel.defaults[id];
+			var ids = $(cell).prop('id').split('-');
+			var newVal = $(cell).text();
+			var currData = options['cellDataArray'][ids[1]][ids[0]];
+			// 化验单数据行对应index
+			var l = Math.floor((ids[1]-options.config.lineNum)/options.config.lineCount);
+			if(currData.link){
+				if(linesData[l]){
+					var lineKey = currData.link[0].split('.')[1];
+					post_data[lineKey][l] = newVal;
+				}else{
+					var payKey = currData.link[0].split('.')[1];
+					post_data[payKey] = newVal;
+				}
+				if($.fn.jexcel.defaults[id].formula[$(cell).prop('id')]){
+					$.each($.fn.jexcel.defaults[id].formula[$(cell).prop('id')], function(k, v){
+						updatePostDataWithFormulas(obj, $(obj).find('#'+v));
+					})
+				}
+			}
+		}
+		// <!-- {/if} -->
+		if( typeof($.fn.assay_form2) == "function" ){
+			$("#assay_form_{$tid}").assay_form2(arowData);
+		}
+	}catch(e){
+		console.error(e);
+		$('.assay_sign_form, .hyd_sub_{$tid}').hide();
+		$('.jexcel_form_loading').html('化验单数据加载错误,请重试.').show();
+	}
+});
+</script>
+<!-- 化验单结束 -->

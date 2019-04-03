@@ -1,0 +1,13 @@
+  <tr height="50px" >
+    <td>{$i}</td>
+	<td>{$row['site_name']}</td>
+	<td style="width:90px;" ><input type='text' class="date-picker" name='d[{$row[id]}][cy_date]'  value='{$row[cy_date]}' ></td>
+	<td style="width:50px;" ><input type='text' class="time-input" site_name="{$row['site_name']}" name='d[{$row[id]}][cy_time]' oninput="time(this);" value='{$row[cy_time]}' onblur="return check_time(this)"></td>
+    {$cy_record_line}
+    $xc_xm_td
+	</td>
+	<td><input type="text" name="d[$row[id]][rq_num]" style="width:20px" value={$row[rq_num]}></td>
+	<td><input type="text" name="d[$row[id]][ys_result]" style="width:47px" value={$row[ys_result]}></td>
+    <td><textarea name="d[$row[id]][cy_note]" style="width:60px;height:55px;overflow:hidden;font-size:12px" onFocus="show_wus($i)" id="cttt$i" sn="{$row['site_name']}" zkfg="{$row['zk_flag']}" rec_id='{$row[id]}'>{$row['cy_note']}</textarea>$act</td>
+    $xctu
+  </tr>

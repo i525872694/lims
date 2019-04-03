@@ -1,0 +1,43 @@
+<script>
+  function re_fzx(aa){
+    var fzx_id = $(aa).val();
+    location = '?fzx='+fzx_id;
+  }
+  function quan(aa){
+     $("input[flag='users']").each(function(){
+        $(this).prop("checked",(aa=='1'));
+     });
+    
+  }
+</script>
+<form method="post" action="$rooturl/user_manage/neirong_save.php" >
+<h1 align="center" >$biaotou</h1>
+
+<table width="750" border="1" cellspacing="0" cellpadding="0" class='table table-striped table-bordered table-hover center'>
+  <tr align="center" height='40px'>
+    <td width='25%'>选择分中心：</td>
+    <td width='25%'><select name='fzx' onchange='re_fzx(this)'>$fp_fzx_options</select></td>
+    <td width='25%'>公告功能</td>
+    $gonggao
+  </tr>
+  <tr align="center" height='40px'>
+    <td>发送日期</td>
+    <td align="center"><input type="text" name="dd" value='$dd'/></td>
+    <td>发送时间</td>
+    <td><input type="text" name="ss" value='$ss'/></td>
+  </tr>
+  <tr align="center" height='40px'>
+    <td>发送目标</td>
+    <td colspan='3'><button type='button' onclick='quan(1)'>全选</button><button type='button' onclick='quan(0)'>反选</button>$renstr</td>
+  </tr>
+  <tr align="center" height='40px'>
+    <td>内容</td>
+    <td colspan='3'><textarea cols='140' rows='4' name='xinxi'>{$r[xinxi]}</textarea></td>
+  </tr>
+  
+  <tr height='40px'>
+  	<td  colspan="4" align="center">
+      <input type="submit" name="tijiao" value="提交" /></td>
+   </tr>
+</table>
+</from>

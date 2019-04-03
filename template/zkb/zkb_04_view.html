@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>{$year}年实验室常规检测质控情况</title>
+<link href="{$rooturl}/css/ace.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/bootstrap.min.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/print.css" rel="stylesheet" />
+<link href="{$rooturl}/css/lims/buttons.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	*{text-align: center;}
+	table{margin: 0 auto; min-width: 28cm;text-align: center;}
+	table.single td{ min-height:40px; min-width: 20px;}
+	table.single td input[type='text']{ width: 100%;}
+	table.single textarea{width: 100%; height: 100%;}
+	.padding_0 td{ padding:0;margin:0;line-height:15px;height:30px;}
+	table.single tr.line:hover{ background-color:#ccc;}
+	table.single td.nohover{ background-color:#FFF;}
+</style>
+</head>
+<body>
+	<div style="margin: 15px;">
+		<h3>实验室常规检测质控情况</h3>
+		<table class="single">
+			<tr>
+				<td>序号</td>
+				<td>年度</td>
+				<td>单位名称</td>
+				<td>样品总数（个/月）</td>
+				<td>现场平行样采样率（%/月）</td>
+				<td>全程序空白采样率（%/月）</td>
+			</tr>
+			{loop $data $i $row}
+			<tr>
+				<td>{echo $i+1}</td>
+				<td>{$row['year']}</td>
+				<td>{$row['hub_name']}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			{/loop}
+		</table>
+	</div>
+</body>
+</html>

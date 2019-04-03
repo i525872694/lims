@@ -1,0 +1,230 @@
+<h1>标准曲线原始记录表（2）</h1>
+<table> 
+	<tr>
+		<td style="text-align:left;text-indent:2em;">
+			环境条件：温度：<input class="inputl" type="text" name="td32" value="{$arow['td32']}" size="4" />℃；
+			相对湿度％RH：<input class="inputl" type="text" name="td33" value='{$arow['td33']}' size="8" />
+		</td>
+		<td style="text-align:right;padding-right:2em;"></td>
+	</tr>
+</table>
+<table class="single">
+	<tr class="noborder">
+		<td style="width:1.8cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td>
+		<td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.4cm"></td>
+		<td style="width:0.3cm"></td><td style="width:1.1cm"></td><td style="width:1.8cm"></td><td style="width:1.8cm"></td>
+		<td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="4">
+			分析项目：<span class="blue_a change_xm">{$arow['assay_element']}</span>
+		</td>
+		<td class="left" colspan="4">仪器名称及型号：</td>
+		<td colspan="8"><input type="text" name="td0" class="inputl" value="{$arow['td0']}"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">比色皿规格：<input type="text" size="3" name="td1" class="inputr" value="{$arow['td1']}" />cm</td>
+		<td class="left" colspan="4">波长：<input type="text" size="8" name="td2" class="inputr" value="{$arow['td2']}" />nm</td>
+		<td class="left" colspan="4">定容体积：<input type="text" size="5" name="td3" class="inputr" value="{$arow['td3']}" />mL</td>
+		<td class="left" colspan="5">调零方法：<input type="text" size="18" name="td4" class="inputl" value="{$arow['td4']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">曲线编号：<input type="text" size="13" name="td5" class="inputl" value="{$arow['td5']}" /></td>
+		<td class="left" colspan="12">标准曲线率定日期：<input type="text" size="12" name="td31" class="inputl date_Ymd" value="{$arow['td31']}" /></td> 
+	</tr>
+	<tr class="auto">
+		<td colspan="16">
+			<span class="blue_a change_by">{$arow['td7']}</span>&nbsp;&nbsp;标准使用液的配制
+			<input type="hidden" name="td7" value="{$arow['td7']}" />
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="9">
+			<span class="blue_a change_by">储备液浓度</span>：
+			<input type="text" name="td8" class="inputl b" value="{$arow['td8']}" />mg/L
+		</td>
+		<td class="left" colspan="7">
+			配制日期：<input type="text" size="12" name="td9" class="inputl date_Ymd" value="{$arow['td9']}" />
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">中间液（1）稀释：</td>
+		<td class="left" colspan="6">取储备液： <input type="text" size="8" name="td10" class="inputl b" value="{$arow['td10']}" />mL</td>
+		<td class="left" colspan="3">稀释至： 	<input type="text" size="8" name="td11" class="inputl b" value="{$arow['td11']}" />mL</td>
+		<td class="left" colspan="4">			<input type="text" size="8" name="td12" class="noinputc" value="{$arow['td12']}" />mg/L</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">中间液（2）稀释：</td>
+		<td class="left" colspan="6">取中间液（1）：	<input type="text" size="6" name="td13" class="inputl b" value="{$arow['td13']}" />mL</td>
+		<td class="left" colspan="3">稀释至：		<input type="text" size="8" name="td14" class="inputl b" value="{$arow['td14']}" />mL</td>
+		<td class="left" colspan="4">				<input type="text" size="8" name="td15" class="noinputc" value="{$arow['td15']}" />mg/L</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">使用液稀释：</td>
+		<td class="left" colspan="6">取中间液（2）：	<input type="text" size="6" name="td16" class="inputl b" value="{$arow['td16']}" />mL</td>
+		<td class="left" colspan="3">稀释至：		<input type="text" size="8" name="td17" class="inputl b" value="{$arow['td17']}" />mL</td>
+		<td class="left" colspan="4">				<input type="text" size="8" name="td18" class="noinputc" value="{$arow['td18']}" />mg/L</td>
+	</tr>
+	<tr>
+		<td colspan="3" rowspan="2">标准液</td>
+		<td colspan="11">吸光度(E)</td>
+		<td colspan="2" rowspan="2">A<sub>220</sub>-2A<sub>275-<br>空白</sub></td>
+	</tr>
+	<tr>
+		<td colspan="7" >A<sub>220nm</sub> </td>
+		<td colspan="4" >A<sub>275nm</sub> </td>
+	</tr>
+	<tr>
+		<td colspan="1">mL</td>
+		<td colspan="2">{$arow['opp']}</td>
+		<td colspan="2">I</td>
+		<td colspan="2">II</td>
+		<td colspan="3">平均</td>
+		<td colspan="1">I</td>
+		<td colspan="1">II</td>
+		<td colspan="2">平均</td>
+		<td colspan="2"></td>
+	</tr>
+	<tr class="kb_data">
+		<td colspan="3">空白(I)</td>
+		<td colspan="2"><input type="text" name="json[kb][0]" class="hyd inputc" value="{$arow['json']['kb'][0]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][1]" class="hyd inputc" value="{$arow['json']['kb'][1]}"></td>
+		<td colspan="3"><input type="text" name="json[kb][2]" class="noinputc" value="{$arow['json']['kb'][2]}"></td>
+		<td colspan="1"><input type="text" name="json[kb][3]" class="hyd inputc" value="{$arow['json']['kb'][3]}"></td>
+		<td colspan="1"><input type="text" name="json[kb][4]" class="hyd inputc" value="{$arow['json']['kb'][4]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][5]" class="noinputc" value="{$arow['json']['kb'][5]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][6]" class="noinputc" value="{$arow['json']['kb'][6]}"></td>
+	</tr>
+	<tr class="kb_data">
+		<td colspan="3">空白(II)</td>
+		<td colspan="2"><input type="text" name="json[kb][7]" class="hyd inputc" value="{$arow['json']['kb'][7]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][8]" class="hyd inputc" value="{$arow['json']['kb'][8]}"></td>
+		<td colspan="3"><input type="text" name="json[kb][9]" class="noinputc" value="{$arow['json']['kb'][9]}"></td>
+		<td colspan="1"><input type="text" name="json[kb][10]" class="hyd inputc" value="{$arow['json']['kb'][10]}"></td>
+		<td colspan="1"><input type="text" name="json[kb][11]" class="hyd inputc" value="{$arow['json']['kb'][11]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][12]" class="noinputc" value="{$arow['json']['kb'][12]}"></td>
+		<td colspan="2"><input type="text" name="json[kb][13]" class="noinputc" value="{$arow['json']['kb'][13]}"></td>
+	</tr>
+	{php $row = $arow['sc_line'][0];}
+	<tr>
+		<td colspan="14" style="text-align: left;text-indent: 2em;">
+			<!-- 保留0点数据，即空白数据 -->
+			<input type="hidden" name="vd0[0]" value="0" />
+			<input type="hidden" name="sc_d_id[0]" value="{$arow['sc_line'][0]['id']}" />
+			空白平均值:<input type="text" class="noinputc" style="width: 80px;" name="td29" value="{$arow['td29']}" />
+		</td>
+		<td colspan="2"><input type="text" name="vd6[0]" class="noinputc" value="{$row['vd6']}" /></td>
+	</tr>
+	{php unset($arow['sc_line'][0]);}
+	{loop $arow['sc_line'] $i $row}
+	<tr>
+		<td>
+			<input type="hidden" name="sc_d_id[{$i}]" value="{$row['id']}" />
+			<input type="text" name="vd0[{$i}]" class="inputc hyd" value="{$row['vd0']}" />
+		</td>
+		<td colspan="2"><input type="text" name="vd1[{$i}]" class="noinputc" value="{$row['vd1']}" /></td>
+		<td colspan="2"><input type="text" name="vd2[{$i}]" class="inputc hyd" value="{$row['vd2']}" /></td>
+		<td colspan="2"><input type="text" name="vd3[{$i}]" class="inputc hyd" value="{$row['vd3']}" /></td>
+		<td colspan="3"><input type="text" name="vd4[{$i}]" class="noinputc" value="{$row['vd4']}" /></td>
+		<td colspan="1"><input type="text" name="vd7[{$i}]" class="inputc hyd" value="{$row['vd7']}" /></td>
+		<td colspan="1"><input type="text" name="vd8[{$i}]" class="inputc hyd" value="{$row['vd8']}" /></td>
+		<td colspan="2"><input type="text" name="vd9[{$i}]" class="noinputc" value="{$row['vd9']}" /></td>
+		<td colspan="2"><input type="text" name="vd6[{$i}]" class="noinputc" value="{$row['vd6']}" /></td>
+	</tr>
+	{/loop}
+	<tr>
+		<td class="left noleft noright" colspan="5">回归方程：&nbsp;{$arow['quxian']}</td>
+		<td class="left noleft noright" colspan="5">斜率（b）：{$arow['CB']}</td>
+		<td class="left noleft noright" colspan="6">截距（a）：{$arow['CA']}</td>
+	</tr>
+	<tr>
+		<td class="left noleft noright" colspan="5">相关关系：&nbsp;A-{$arow['unit']}</td>
+		<td class="left noleft noright" colspan="11">相关系数（r）：{$arow['CR']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="1">备注：</td>
+		<td colspan="15"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+	// 曲线
+	var scF = trade_global.quxian_form['{$arow['id']}'];
+	$(".kb_data .hyd").unbind("blur").on("blur", function(){
+		// 
+		var v = [];
+		// 将空白的数据赋值到数组v中
+		$(".kb_data [name^='json[kb]'").each(function(n){
+			v[n] = $(this);
+		});
+		var avg_1 = avg_2 = '';
+		// 空白（I）
+		// A220
+		if($.isNumeric(v[0].val())&&$.isNumeric(v[1].val())){
+			var avg_1 = auto_round(accDiv(accAdd(v[0].val(),v[1].val()),2), scF.config.round_y);
+			v[2].val(avg_1);
+		}else{
+			v[2].val('');
+		}
+		// A275
+		if($.isNumeric(v[3].val())&&$.isNumeric(v[4].val())){
+			var avg_2 = auto_round(accDiv(accAdd(v[3].val(),v[4].val()),2), scF.config.round_y);
+			v[5].val(avg_2);
+		}else{
+			v[5].val('');
+		}
+		// A220-2A275
+		if($.isNumeric(avg_1)&&$.isNumeric(avg_2)){
+			var avg_3 = auto_round(accsub(avg_1,accMul(2,avg_2)), scF.config.round_y);
+			v[6].val(avg_3);
+		}else{
+			v[6].val('');
+		}
+		// 空白（II）
+		// A220
+		if($.isNumeric(v[7].val())&&$.isNumeric(v[8].val())){
+			var avg_1 = auto_round(accDiv(accAdd(v[7].val(),v[8].val()),2), scF.config.round_y);
+			v[9].val(avg_1);
+		}else{
+			v[9].val('');
+		}
+		// A275
+		if($.isNumeric(v[10].val())&&$.isNumeric(v[11].val())){
+			var avg_2 = auto_round(accDiv(accAdd(v[10].val(),v[11].val()),2), scF.config.round_y);
+			v[12].val(avg_2);
+		}else{
+			v[12].val('');
+		}
+		// A220-2A275
+		if($.isNumeric(avg_1)&&$.isNumeric(avg_2)){
+			var avg_3 = auto_round(accsub(avg_1,accMul(2,avg_2)), scF.config.round_y);
+			v[13].val(avg_3);
+		}else{
+			v[13].val('');
+		}
+		// 设置空白数据
+		set_kb(v[6].val(), v[13].val());
+	});
+	function set_kb(avg1, avg2){
+		// 查找0点
+		var kb = $("[name='vd0[0]']");
+		if(parseFloat(kb.val())==0){
+			if($.isNumeric(avg1) && $.isNumeric(avg2)){
+				$("[name='vd2[0]']").val(avg1);
+				$("[name='vd3[0]']").val(avg2);
+				var kb_avg = auto_round(accAdd(avg1, avg2)/2, scF.config.round_y);
+				// 空白均值td29
+				$("[name='td29']").val(kb_avg);
+			}else{
+				$("[name='vd2[0]']").val('');
+				$("[name='vd3[0]']").val('');
+				$("[name='td29']").val(auto_round(0, scF.config.round_y));
+			}
+			// vd6是空白减空白的值，即0点
+			$("[name='vd6[0]']").val(auto_round(0, scF.config.round_y));
+			// 触发曲线计算，重新扣除最新计算出来的空白
+			$("[name^='vd0']").trigger("blur");
+		}
+	}
+});
+</script>

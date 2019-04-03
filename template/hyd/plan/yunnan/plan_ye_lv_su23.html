@@ -1,0 +1,55 @@
+<!--重量分析法原始记录表-->
+<div style='width:100%;padding-right:100px' align='right'>监—00</div>
+<h1>{$arow['assay_element']}测定（分光光度法）原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" id="L" value="$arow[td6]">
+<table class="single center">
+	<tr class="noborder">
+		<td style="width:4%"></td><td style="width:3%"></td><td style="width:7%"></td><td style="width5%"></td>
+		<td style="width:6%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+		<td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+		<td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+		<td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+	</tr>
+	<tr>
+		<td colspan="2">测定方法</td>
+		<td colspan="2">{$arow['td2']} </td>
+		<td colspan="1">仪器名称</td>
+		<td colspan="3">$arow[td4]</td>
+		<td colspan="2">仪器编号</td>
+		<td colspan="3"><input type="text" name='yq_bh' value='$arow[yq_bh]'></td>
+		<td colspan="2">比色皿规格(cm)</td>
+		<td colspan="1"><input type="text" name="td17" value="$arow[td17]" /></td>
+		<td colspan="2">提取液定容体积(mL)</td>
+		<td colspan="1"><input type="text" name="td19" value="$arow[td19]" /></td>
+	</tr>
+	<tr align="center" >
+		<td rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">水样名称</td>
+		<td rowspan="2">采样日期</td>
+		<td rowspan="2">过滤水样体积mL</td>
+		<td colspan="3">750nm光密度</td>
+		<td colspan="4">664nm光密度</td>
+		<td colspan="4">630nm光密度</td>
+		<td colspan="1" rowspan='2'> 含量</td>
+		<td rowspan="2">平均值</td>
+		<td rowspan="2">相对偏差/加标<br/>回收率(%)</td>
+	</tr>
+	<tr align="center" >
+		<td>I</td>
+		<td>II</td>
+		<td>平均</td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均</td>
+		<td>校正</td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均</td>
+		<td>校正</td>
+	</tr>
+
+	$aline
+
+	<tr class="noborder"></tr>
+</table>

@@ -1,0 +1,61 @@
+<style>
+    .jumpLink {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+</style>
+<div class="widget-box transparent" style="margin:0;">
+    <div class="widget-header center">
+        <h3 class="header smaller title" style="color:#000;">用户信息列表</h3>
+    </div>
+</div>
+
+<div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+        <!--蓝色工具栏-->
+        {$select}
+        <input placeholder="搜索......" type="text" oninput="onFilterChanged(this.value)">
+        <a href='../user_manage/user_manage_user_new.php' class='btn btn-xs btn-primary no-print'>添加用户</a>
+    </div>
+</div>
+<div class="container-fluid">
+    {$ui_ag_grid}
+</div>
+<script>
+    $(function () {
+        $("#myGrid").height($(window).height() - 140);
+        get_ag_grid_data();
+    })
+    //获取数据
+    function get_ag_grid_data() {
+        var url = '{__ROOTURL__}/app_modal/user_list.php?ajax=1&fzx='+$('#fzx').val();
+        $.get(url, function (resp) {
+            handle_ag_grid(resp);
+        }, 'json')
+    }
+    function ag_grid_cellClick(obj) {
+        if (obj.colDef.field == 'xiugai') {
+          if(obj.data.fzx_id=={$u[fzx_id]}){
+            location.href = '{__ROOTURL__}/app_modal/hn_usermanager_mod.php?uid=' + obj.data.uid;
+          }
+        }
+        if (obj.colDef.field == 'del') {
+            if(obj.data.fzx_id=={$u[fzx_id]}){
+              var msg = "您真的确定要删除吗？\n\n请确认！";
+              if (confirm(msg) == true) {
+                  location.href = '{__ROOTURL__}/app_modal/user_list.php?del=1&uid=' + obj.data.uid;
+              } else {
+                  return false;
+              }
+            }
+        }
+    }
+    function onFilterChanged(newFilter) {
+        Q_gridOptions.api.setQuickFilter(newFilter);
+    }
+    function fzx_list(){
+        location.href = '{__ROOTURL__}/app_modal/user_list.php?fzx='+$('#fzx').val();
+    }
+
+</script>

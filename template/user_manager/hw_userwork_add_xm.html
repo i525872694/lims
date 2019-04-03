@@ -1,0 +1,51 @@
+<h1 align="center">增加人员测试项目</h1>
+<form action="hw_userwork_add_xm.php?handle=add" method="post">
+	<table class='table table-striped table-bordered table-hover center' style="width:22cm;">
+		<input type='hidden' name='name'/>
+		<tr align="center">
+			<td>姓名</td>
+			<td id='user_list'>
+				<select name='userid[]' onchange="add_name(this);">
+					<option>请选择</option>
+					$user_select
+				</select>
+			</td>
+			<td>项目</td>
+			<td id='xmfa'>
+				<select name="xmfa[]">
+					$xm_select
+				</select>
+			</td>
+		</tr>
+		<tr align="center">
+			<td>上岗证过期时间</td>
+			<td><input type="text" class="inputc date_input" name='limit_date[]' value="{$limit_date}" /></td>
+			<td colspan="2"></td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<button class='btn btn-xs btn-primary' style='margin:0 20px;' type='button' onclick='add_xm(this);'>继续添加项目</button>
+				<input type="submit"  class='btn btn-xs btn-primary' value='提交'>
+				<input type="button"  class='btn btn-xs btn-primary' value='返回' onclick="go_back();" style='margin:0 20px;'>
+			</td>
+		</tr>
+	</table>
+</form>
+<link href='$rooturl/js/date_input.css' rel="stylesheet" type="text/css">
+<script language="javascript" src="$rooturl/js/jquery.date_input.js"></script>
+<script type="text/javascript">
+	function add_name(obj){
+		$("input[name='name']").val($(obj).find("option:selected").text());
+	}
+	$($.date_input .initialize);
+	function add_xm(obj){
+		var name = $("#name").val();
+		var xmfa_content = $("#xmfa").html();
+		var users = $("#user_list").children('select').find("option:selected").text();
+		$(obj).parent('td').parent('tr').prev().after('<tr align="center"><td>姓名</td><td>'+users+'</td><td>项目</td><td>'+xmfa_content+'</td></tr><tr align="center"><td>上岗证过期时间</td><td><input type="text" class="inputc date_input" name="limit_date[]"/></td><td colspan="2"></td></tr>');
+			$($.date_input .initialize);
+	}
+	function go_back(){
+		history.go(-1);
+	}
+</script>

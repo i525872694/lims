@@ -1,0 +1,54 @@
+<div class="row" style="padding:10px 50px ">
+    <div class="col-md-12">
+        <h1 class="text-center">样品接收</h1>
+
+    </div>
+    <div class="col-md-12" style="margin:20px 0px;">
+        <input type="text" class="form-control" placeholder="请鼠标点击此处，使用扫描样品" onkeydown="addData(event)" id="add">
+    </div>
+
+    <div class="col-md-12" >
+        <from>
+
+     
+        <table class="table table-bordered table-hover" id="sample">
+            <tr>
+                <td>序号</td>
+                <td>样品编号</td>
+                <td>站点名称</td>
+                <td>采样单号</td>
+                <td>批次名称</td>
+                <td>状态</td>
+                <td>验收结果</td>
+            </tr>
+  
+            
+        </table>
+
+               
+        </from>
+    </div>
+</div>
+
+<script>
+    $("#add").css({"font-size":"18px","height":"40px"})
+    $("#add").focus(function(){
+        $(this).css("border","1px solid #87b9bf");
+    })
+    $("#add").blur(function(){
+        $(this).css("border","1px solid #d5d5d5");
+    })
+// alert("sdf");
+    function addData(e){
+        if(e.keyCode == 13){
+            var value = $("#add").val();
+            // console.log(data[index].sernum);
+             $.get('$rooturl/cy/bar_js.php',{bar:value}, function(data) {
+                 console.log(data);
+                $("#sample tbody").append(data);
+                $("#add").val("");
+            });
+        }
+    }
+
+    </script>

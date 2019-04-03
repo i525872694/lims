@@ -1,0 +1,33 @@
+<!-- 化验单开始 -->
+<div class="assay_form center" id="assay_form_{$tid}" data="{$tid}" style="width: {$zongheng}">
+    <div class="accordion-style1 panel-group" id="accordion_{$tid}">
+		{$accordion}
+	</div>
+	<div class="spread_form"><!-- spread form表单 --></div>
+    <div style="padding:5px">{$assay_modi_submit}</div>
+    <!-- 化验单签字表单 -->
+    {$assay_sign_form}
+</div>
+<script id="scriptInit" type="text/javascript">
+    /*code_begin*/
+    $(document).ready(function () {
+        if( typeof($.fn.assay_form) == "function" ){
+            $("#assay_form_{$tid}").assay_form({$arow_json});
+        }
+        $("#assay_form_{$tid} .spread_form").spreadForm({
+            width: $("#assay_form_{$tid}").width(),
+            saveButtonId: ".hyd_sub_{$tid}",
+            spreadBoxId: "#assay_form_{$tid} .spread_form",
+            requestSaveUrl: "{$rooturl}/huayan/ahlims.php?app=assay&act=hydSave&ajax=1",
+            requestDataUrl: "{$rooturl}/huayan/ahlims.php?app=assay&act=request_data&tid={$tid}&ajax=1",
+            error: function(obj){
+                $(".assay_sign_form, .hyd_sub_{$tid}").hide();
+            },
+            success:function(spF){
+                // $(this).zhikong(asF.id,asF.zhikong);
+                spF.zhikong();
+            }
+        });
+    });
+    /*code_end*/
+</script>

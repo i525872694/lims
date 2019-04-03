@@ -1,0 +1,55 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-19</td>
+    </tr>
+</table>
+<h1>叶绿素荧光法测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:6%"></td>
+        <td style="width:16%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+        <td style="width:11%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="2">{$arow['assay_element']}</td>
+        <td colspan="2">测定方法</td>
+        <td colspan="3">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器名称</td>
+        <td colspan="2">{$arow['td4']}</td>
+        <td colspan="2">仪器编号</td>
+        <td colspan="3">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td colspan="">水样名称</td>
+        <td colspan="1">采样日期</td>
+        <td>水样体积（mL）</td>
+        <td>仪器读数</td>
+        <td>稀释倍数</td>
+        <td>含量<br />({$arow['unit']})</td>
+        <td>平均值</td>
+        <td>相对偏差/<br />加标回收率<br />（%）</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs() {
+    if ($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])) {
+        vs['vd0'] = accMul(vs['vd27'], vs['vd2']);
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

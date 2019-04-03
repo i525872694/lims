@@ -1,0 +1,57 @@
+<h1>底质及土壤测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+	<tr class="noborder">
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+		<td style="width:7%"></td>
+	</tr>
+	<tr>
+		<td colspan="2">检测项目	</td>
+		<td colspan="5">{$arow['assay_element']}</td>
+		<td colspan="2">检测方法</td>
+		<td colspan="5">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td rowspan="2">采样日期</td>
+		<td>测含水量<br>样品编号</td>
+		<td>空瓶重<br>(g)</td>
+		<td>空瓶+湿样<br>(g)</td>
+		<td>湿样重<br>(g)</td>
+		<td>空瓶+干样<br>(g)</td>
+		<td>干样重<br>(g)</td>
+		<td>含水量<br>(%)</td>
+		<td rowspan="2">消化样定容体积<br>(mL)</td>
+		<td rowspan="2">消化样含量<br>(mg/L)</td>
+		<td rowspan="2">全样含量<br>(mg)</td>
+		<td rowspan="2">干样含量{$arow['unit']}</td>
+	</tr>
+	<tr>
+		<td>消化样品<br>编号</td>
+		<td>空瓶重<br>(g)</td>
+		<td>空瓶+湿样<br>(g)</td>
+		<td>湿样重<br>(g)</td>
+		<td>含干样量<br>(g)</td>
+		<td colspan="2">分析干样量<br>(g)</td>
+	</tr>
+
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="13"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+  	<tr class="noborder"></tr>
+</table>

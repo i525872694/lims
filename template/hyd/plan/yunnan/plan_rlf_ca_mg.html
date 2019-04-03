@@ -1,0 +1,139 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-11</td>
+    </tr>
+</table>
+<h1>容量法检测钙、镁原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:10%"></td>
+        <td style="width:10%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+    </tr>
+    <tr>
+        <td>测定项目</td>
+        <td colspan="2">钙、镁</td>
+        <td>测定方法</td>
+        <td colspan="3">{$arow['td2']}</td>
+        <td colspan="2">滴定管规格(mL)</td>
+        <td colspan="3"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+    </tr>
+    <tr class="bt_hidden">
+        <td>分子量修改</td>
+        <td colspan="11"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+    </tr>
+    <tr>
+        <td>标准液名称</td>
+        <td colspan="2"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+        <td colspan="1">浓度C(mol/L)</td>
+        <td colspan="2"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" id="c_v" /></td>
+        <td>标定日期</td>
+        <td colspan="2"><input type="text" name="td16" class="inputl date_Ymd" value="{$arow['td16']}" /></td>
+        <td>空白</td>
+        <td colspan="2"><input type="text" name="td17" class="inputl" value="{$arow['td17']}" /></td>
+    </tr>
+    <tr>
+        <td>计算公式</td>
+        <td colspan="11" class="">
+            钙含量 = V<sub>1</sub>×C×40.08×1000/V<sub>0</sub>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            镁含量 = (V-V<sub>1</sub>)×C×24.30×1000/V<sub>0</sub>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2">序号</td>
+        <td rowspan="2" colspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">水样体积<br />V<sub>0</sub>（mL）</td>
+        <td rowspan="2">总硬度<br />V（mL）</td>
+        <td colspan="4">标准液用量V<sub>1</sub>（mL）</td>
+        <td rowspan="2">钙含量（{$arow['unit']}）</td>
+        <td rowspan="2">镁含量（{$arow['unit']}）</td>
+    </tr>
+    <tr>
+        <td>终点</td>
+        <td>始读</td>
+        <td>用量</td>
+        <td>平均用量</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+    <input type="hidden" name="round_columns[]" value="vd9" />
+    <input type="hidden" name="round_columns[]" value="vd11" />
+</table>
+<script type="text/javascript">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+var vid = "{$arow['vid']}";
+var jsgs_html = ''; //计算公式
+var dl_fzl = $("input[name=td13]").val();; //当量，分子量
+var dl_emp = ('' == dl_fzl || !$.isNumeric(dl_fzl)) ? true : false;
+if ('103' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 100.09; //总硬度
+    jsgs_html = 'ρ = V<sub>1</sub>×C×100.09×1000/V<sub>0</sub>';
+} else if ('173' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 40.08; //钙
+    jsgs_html = 'ρ = V<sub>1</sub>×C×40.08×1000/V<sub>0</sub>';
+} else if ('174' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 24.30; //镁
+    jsgs_html = 'ρ = (V-V<sub>1</sub>)×C×24.30×1000/V<sub>0</sub>';
+} else {
+    var dl_fzl = !$.isNumeric(dl_fzl) ? 1 : dl_fzl;
+}
+jsgs_html = ('' != jsgs_html) ? jsgs_html : 'ρ = (V<sub>1</sub>-V<sub>2</sub>)×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+
+$("#jsgs_").html(jsgs_html);
+
+function jsgs() {
+    var C = parseFloat($("#c_v").val());
+    var vd3_split = String(vs['vd3']).split('.');
+    if (vd3_split.length == 2) {
+        var diding_ws = vd3_split[1].length;
+    } else {
+        var diding_ws = 3;
+    }
+    if ($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])) {
+        vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']), parseFloat(vs['vd3'])), diding_ws);
+    } else {
+        vs['vd5'] = '';
+    }
+    if ($.isNumeric(vs['vd13']) && $.isNumeric(vs['vd14'])) {
+        vs['vd15'] = roundjs(accsub(parseFloat(vs['vd14']), parseFloat(vs['vd13'])), diding_ws);
+    } else {
+        vs['vd15'] = '';
+    }
+    if ($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd15'])) {
+        vs['vd6'] = roundjs(accDiv(accAdd(parseFloat(vs['vd15']), parseFloat(vs['vd5'])), 2), diding_ws);
+        // var v = roundjs(parseFloat(vs['vd6']-vs['vd7']),diding_ws);
+    } else if ($.isNumeric(vs['vd5'])) {
+        vs['vd6'] = vs['vd5'];
+    } else {
+        vs['vd6'] = '';
+    }
+    var kb = ($("input[name=td17]").val() != '') ? $("input[name=td17]").val() : 0;
+    if ($.isNumeric(vs['vd6']) && $.isNumeric(C) && $.isNumeric(dl_fzl) && $.isNumeric(vs['vd1'])) {
+        // vs['vd7'] = roundjs(parseFloat(vs['vd6']-kb),diding_ws);
+        var cajg = accMul(accMul(accMul(parseFloat(vs['vd6']), parseFloat(C)), 40.08), accDiv(1000, parseFloat(vs['vd1'])));
+        vs['vd11'] = vs['vd10'] = jsws(cajg);
+        if($.isNumeric(vs['vd20'])){
+            var mgjg = accMul(accMul(accMul(accsub(vs['vd20'],vs['vd6']), parseFloat(C)), 24.3), accDiv(1000, parseFloat(vs['vd1'])));
+            vs['vd9'] = vs['vd8'] = jsws(mgjg);
+        }else{
+            vs['vd9'] = vs['vd8'] = '';
+        }
+    } else {
+        vs['vd11'] = vs['vd10'] = vs['vd9'] = vs['vd8'] = '';
+    }
+}
+
+</script>

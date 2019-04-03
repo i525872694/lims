@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>云南省水文水资源局实验室信息管理系统</title>
+    <script src="{$rooturl}/js/jquery.js"></script>
+    <script src="{$rooturl}/js/bootstrap.min.js"></script>
+    <link href="{$rooturl}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$rooturl}/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="{$rooturl}/img/index_icon/style.css" rel="stylesheet">
+    <link href="{$rooturl}/css/lims/default_pwd_modi.css" rel="stylesheet">
+    <link rel="stylesheet" href="{$rooturl}/css/sweetalert2.css">
+    <style type="text/css">
+      html{ height:100%; overflow:hidden;}
+      body{ background: #fafbfc; height:100%;}
+      .module:hover{
+          background-color:#F5F5F5;
+          cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+  <div class="feature clearfix"  >
+    <div class="container">
+      <div class="sectionTitle text-center">
+        <h1>云南省水文水资源局实验室信息管理系统</h1>
+      </div>
+      <div style="height: 100px;"></div>
+      <div class="row text-center">
+        <div class="col-sm-3 col-xs-6 lianJie" id='jigou' default_page="{$rooturl}/app_modal/jigou_list.php">
+          <div class="feature-box text-center">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.1.png" alt="Image">
+            </span>
+            <p>组织机构管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6 lianJie" id='users' default_page="{$rooturl}/app_modal/user_list.php">
+          <div class="feature-box text-center">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.2.png" alt="Image">
+            </span>
+            <p>人员管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+          <div class="feature-box text-center lianJie" id='huanjing' default_page="{$rooturl}/app_modal/shiwen.php">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.3.png" alt="Image">
+            </span>
+            <p>检测场所与环境管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+          <div class="feature-box text-center lianJie" id='yiqi' default_page="{$rooturl}/app_modal/hn_yiqimanager_admin.php">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.4.png" alt="Image">
+            </span>
+            <p>仪器设备与设施管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6 lianJie" id='jiance_liucheng' default_page="{$rooturl}/main.php">
+          <div class="feature-box text-center">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.5.png" alt="Image">
+            </span>
+            <p>检测流程管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6 lianJie" id='wenjian' default_page="{$rooturl}/fileadmin/fileadmin.php">
+          <div class="feature-box text-center">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.6.png" alt="Image">
+            </span>
+            <p>文件管理</p>
+          </div>
+        </div>
+
+        <div class="col-sm-3 col-xs-6 lianJie" id='xitong_guanli' default_page="{$rooturl}/user_manage/user_manage_list.php">
+          <div class="feature-box text-center">
+            <span class="module">
+              <img src="{$rooturl}/img/index_icon/icon-3.7.png" alt="Image">
+            </span>
+            <p>系统管理模块</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 修改原始密码的遮罩层 -->
+  <input type="hidden" id="rooturl" value="{$rooturl}">
+  <input type="hidden" id="is_modi" value="{$modi_pwd}">
+  <div class="overlay" id="overlay"></div>
+  <div class="modi_pwd" id="modiDiv">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-5" style="margin-top:20px">
+                <h3>密码修改</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-2">
+                <span style="color:red">（您使用的是初始密码，为了安全起见，请进行修改！）<span>
+            </div>
+        </div>
+        <br>
+        <div>
+            <label class="col-xs-3 col-xs-offset-2 ">新 密 码:</label>
+            <input type="password" class="inp" id="new_pwd" name="new_pwd">
+        </div>
+        <br>
+        <div>
+            <label class="col-xs-3 col-xs-offset-2">确认密码:</label>
+            <input type="password" class="inp" id="check_pwd" name="check_pwd">
+        </div>
+
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-4 tips">
+                <span class="warns" id="warns"></span>
+            </div>
+            <div class="col-xs-2 col-xs-offset-5">
+                <button class="btn btn-info" onclick="sub()">确认修改</button>
+            </div>
+        </div>
+    </div>  
+  </div> 
+  <script type="text/javascript">
+  $(function(){
+    $(".lianJie").click(function(){
+        var type_name       = $(this).attr('id');
+        var default_page    = $(this).attr('default_page');
+        if(type_name){
+            location.href  = "{$rooturl}/index_jiance.php?type="+type_name+"&default_page="+default_page;
+        }else{
+            alert('请在html中添加type标识');
+        }
+    });
+  })
+  </script>
+  </body>
+  <script src="{$rooturl}/js/sweetalert2.js"></script>
+<script src="{$rooturl}/js/lims/default_pwd_modi.js"></script>
+<script src='{$rooturl}/js/socket.io.js'></script>
+<script>
+
+  //判断浏览器对通知API的支持状态
+  if (window.Notification) {
+      // 支持
+      console.log("支持"+"Web Notifications API");
+  } else {
+      // 不支持
+      console.log("不支持"+"Web Notifications API");
+  }
+    // 连接服务端
+    var socket = io('http://'+document.domain+':2120');
+    // 连接后登录
+	  var uid="{$u['nickname']}";
+    socket.on('connect', function(){
+    	socket.emit('login', uid);
+    });
+    
+    // 后端推送来消息时
+    socket.on('new_msg', function(msg){
+         if(window.Notification && Notification.permission !== "denied") {
+            Notification.requestPermission(function(status) {
+                if (status === "granted") {
+                    var n = new Notification('收到信息', {
+                        body: msg,
+                        icon:"{$rooturl}/img/lims.jpg"
+                    });
+                } else{
+                    var n = new Notification(msg);
+                }
+
+            });
+        }
+    });
+    //退出事件
+    socket.on('logout', function (msg) {
+        swal({
+          title: '警告',
+          text: "您的账号已在其他设备强制登录，是否重新登录。",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '重新登录',
+          cancelButtonText: '退出系统',
+          confirmButtonClass: 'btn btn-success',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+          allowOutsideClick:false
+        }).then(function (isConfirm) {
+          if (isConfirm == true) {
+            $.post('{$rooturl}/exit.php', { uname: '{$u[nickname]}' }, function (data) {
+              swal({
+                type: 'success',
+                title: '提示',
+                html: '您已重新登录。'
+              });
+            });
+          } else {
+            window.location.href = '{$rooturl}/exit.php';
+          }
+        })
+      });
+</script>
+</html>

@@ -1,0 +1,167 @@
+<h1>容量法检测总碱度、碳酸盐、重碳酸盐原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+	<tr class="noborder">
+		<td style="width:5.25%"></td>
+		<td style="width:8.25%"></td>
+		<td style="width:7.25%"></td>
+
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+		<td style="width:6%"></td>
+
+		<td style="width:6.25%"></td>
+		<td style="width:6.25%"></td>
+		<td style="width:6.25%"></td>
+		<td style="width:6.25%"></td>
+		<td style="width:6.25%"></td>
+	</tr>
+	<tr>
+		<td colspan="2">检测项目</td>
+		<td colspan="4">总碱度、碳酸盐、重碳酸盐</td>
+		<td colspan="2">测定方法</td>
+		<td colspan="3">{$arow['td2']}</td>
+		<td colspan="2">滴定管规格(mL)</td>
+		<td colspan="3"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液名称</td>
+		<td colspan="4"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+		<td colspan="2">浓度 C(mol/L)</td>
+		<td colspan="3"><input type="text" name="td12" id="by_c_{$tid}" value="{$arow['td12']}" /></td>
+		<td colspan="2">标定日期</td>
+		<td colspan="3"><input type="text" name="td10" value="{$arow['td10']}" class="date_Ymd"></td>
+	</tr>
+    <tr>
+		<!-- <td colspan="16">
+			<table><tr class="noborder">
+			<td nowrap="">计算公式：</td>
+				<td nowrap="" class="right">当P&gt;M C<sub>1</sub>=&nbsp;</td>
+				<td nowrap="">2C×M×30.01<hr />V</td>
+				<td nowrap="" class="right">当P≤M C<sub>1</sub>=&nbsp;</td>
+				<td nowrap="">2C×P×30.01<hr />V</td>
+				<td nowrap="" class="right">当P&lt;M或P=0 C<sub>2</sub>=&nbsp;</td>
+				<td nowrap="">C×(M-P)×61.02<hr />V</td>
+				<td nowrap="" class="right">A<sub>3</sub>=</td>
+				<td nowrap="" class="noleft">C×(M-P)×50.05<hr />V</td>
+				<td nowrap="" class="right">A=&nbsp;</td>
+				<td nowrap="">C×(P+M)×50.05<hr />V</td>
+			</tr></table>
+		</td> -->
+	</tr>
+	<tr class="hyd_tr_{$tid}">
+		<td rowspan="3">序号</td>
+		<td rowspan="3" nowrap="">{$zhanming}</td>
+		<td rowspan="3" nowrap="">水样体积<br>（mL）</td>
+		<td colspan="8">标准溶液用量( mL )</td>
+		<td colspan="3" rowspan="2">含量({$arow['unit']})</td>
+		<td colspan="1" rowspan="3">平均值/理论浓度({$arow['unit']})</td>
+		<td colspan="1" rowspan="3">相对偏差/加标回收率(%)</td>
+	</tr>
+	<tr>
+		<td colspan="4">P</td>
+		<td colspan="4">M</td>
+	</tr>
+	<tr>
+		<td>始点</td>
+		<td>终点</td>
+		<td>用量</td>
+		<td nowrap>平均用量</td>
+		<td>始点</td>
+		<td>终点</td>
+		<td>用量</td>
+		<td nowrap>平均用量</td>
+		<td>碳酸盐</td>
+		<td nowrap>重碳酸盐</td>
+		<td>总碱度</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center" colspan="2" >备注</td>
+		<td colspan="14"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+	<tr class="noborder"></tr>
+</table>
+
+<input type="hidden" name="round_columns[]" value="vd17" />
+<input type="hidden" name="round_columns[]" value="vd18" />
+<input type="hidden" name="round_columns[]" value="vd21" />
+
+<script type="text/javascript">
+
+	function jsgs(){
+		if(vs['vd4'].indexOf('.') != -1){
+	      var len1 = vs['vd4'].split('.')[1].length;
+	    }else{
+	      var len1 = 2;
+	    }
+		if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+			vs['vd5'] = roundjs(accsub(vs['vd4'],vs['vd3']),len1);
+		}else{
+			vs['vd5'] = '';
+		}
+		if(vs['vd8'].indexOf('.') != -1){
+	      var len2 = vs['vd8'].split('.')[1].length;
+	    }else{
+	      var len2 = 2;
+	    }
+		if($.isNumeric(vs['vd7']) && $.isNumeric(vs['vd8'])){
+			vs['vd9'] = roundjs(accsub(vs['vd8'],vs['vd7']),len2);
+		}else{
+			vs['vd9'] = '';
+		}
+		if($.isNumeric(vs['vd11']) && $.isNumeric(vs['vd12'])){
+			vs['vd13'] = roundjs(accsub(vs['vd12'],vs['vd11']),len1);
+		}else{
+			vs['vd13'] = '';
+		}
+		if($.isNumeric(vs['vd14']) && $.isNumeric(vs['vd15'])){
+			vs['vd16'] = roundjs(accsub(vs['vd15'],vs['vd14']),len2);
+		}else{
+			vs['vd16'] = '';
+		}
+		if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd13'])){
+			vs['vd6'] = roundjs(accDiv(accAdd(vs['vd5'],vs['vd13']),2),len1);
+		}else if($.isNumeric(vs['vd5'])){
+			vs['vd6'] = vs['vd5'];
+		}else{
+			vs['vd6'] = '';
+		}
+		if($.isNumeric(vs['vd9']) && $.isNumeric(vs['vd16'])){
+			vs['vd10'] = roundjs(accDiv(accAdd(vs['vd9'],vs['vd16']),2),len2);
+		}else if($.isNumeric(vs['vd9'])){
+			vs['vd10'] = vs['vd9'];
+		}else{
+			vs['vd10'] = '';
+		}
+
+		var C = parseFloat($("#by_c_{$tid}").val());
+		var P = vs['vd6'];
+		var M = vs['vd10'];
+
+		var vd1 = vs['vd1'];
+		if($.isNumeric(vd1) && $.isNumeric(P) && $.isNumeric(M) && $.isNumeric(C)){
+			var f  = accDiv(50.05,vd1);
+			var PM = parseFloat(P)>parseFloat(M)?parseFloat(M):parseFloat(P);
+
+			// vs['vd21'] = vs['vd22'] = C*(P+M)*f*1000;
+			vs['vd21'] = vs['vd22'] = accMul(accMul(accMul(C,accAdd(P,M)),f),1000);
+
+			// vs['vd17'] = vs['vd19'] = 2*C*(PM)*30.01*1000/vd1;
+			vs['vd17'] = vs['vd19'] = accDiv(accMul(accMul(accMul(accMul(2,C),PM),30.01),1000),vd1);
+
+			// vs['vd18'] = vs['vd20'] = C*(M-P)*61.02*1000/vd1;
+			vs['vd18'] = vs['vd20'] = accDiv(accMul(accMul(accMul(C,accsub(M,P)),61.02),1000),vd1);
+
+		}else{
+			vs['vd17'] = vs['vd18'] = vs['vd19'] = vs['vd20'] = vs['vd21'] = vs['vd22'] = '';
+		}
+	}
+
+</script>

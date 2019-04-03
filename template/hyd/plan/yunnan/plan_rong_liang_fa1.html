@@ -1,0 +1,223 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-11</td>
+    </tr>
+</table>
+<h1>容量法检测$arow[assay_element]原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:8%"></td>
+        <td style="width:12%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+        <td style="width:8%"></td>
+    </tr>
+    <tr>
+        <td>测定项目</td>
+        <td colspan="2">$arow[assay_element]</td>
+        <td colspan="2">测定方法</td>
+        <td colspan="3">{$arow['td2']}</td>
+        <td colspan="2">滴定管规格(mL)</td>
+        <td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+    </tr>
+    <tr class="bt_hidden">
+        <td>分子量修改</td>
+        <td colspan="11"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+    </tr>
+    <tr>
+        <td>标准液名称</td>
+        <td colspan="2"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+        <td colspan="2">浓度C(mol/L)</td>
+        <td colspan="3"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" id="c_v" /></td>
+        <td colspan="2">标定日期</td>
+        <td colspan="2"><input type="text" name="td16" class="inputl date_Ymd" value="{$arow['td16']}" /></td>
+    </tr>
+    <tr>
+        <td>计算公式</td>
+        <td colspan="11" class="gs"></td>
+    </tr>
+    <tr>
+        <td rowspan="2">序号</td>
+        <td rowspan="2">{$zhanming}</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">水样体积<br />V<sub>0</sub>（mL）</td>
+        <td colspan="5">标准液用量V<sub>1</sub>（mL）</td>
+        <td rowspan="2">含量<br />（{$arow['unit']}）</td>
+        <td rowspan="2">平均值/<br />理论浓度（{$arow['unit']}）</td>
+        <td rowspan="2">相对偏差/加标回收率（%）</td>
+    </tr>
+    <tr>
+        <td>终点</td>
+        <td>始读</td>
+        <td>用量</td>
+        <td>平均用量</td>
+        <td>减空白</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白1</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}"></td>
+        <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[104]" value="{$arow['btdata'][104]}"></td>
+        <td rowspan="2"><input type="text" class="noinputc" name="btdata[301]" value="{$arow['btdata'][301]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>空白2</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}"></td>
+        <td><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[203]" value="{$arow['btdata'][203]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[204]" value="{$arow['btdata'][204]}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+var vid = "{$arow['vid']}";
+var jsgs_html = ''; //计算公式
+var dl_fzl = $("input[name=td13]").val();; //当量，分子量
+var dl_emp = ('' == dl_fzl || !$.isNumeric(dl_fzl)) ? true : false;
+if ('103' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 100.09; //总硬度
+    jsgs_html = 'ρ = V<sub>1</sub>×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+} else if ('114' == vid) {
+    var xkp_v = parseFloat($("input[name=td12]").val());
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 8; //溶解氧
+    var jsgs_html = 'ρ = M<sub>r</sub>×C×8×(1000/V<sub>1</sub>)';
+    // var jsgs_html = 'ρ = M<sub>r</sub>×V<sub>1</sub></sub>×C×250×1000/400×(250-3)';
+    // var dl_fzl = dl_fzl * 250 / (250 - 3);
+} else if ('118' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 8; //化学需氧量COD
+    var jsgs_html = 'ρ = (V<sub>2</sub>-V<sub>1</sub>)×C×' + dl_fzl + '×1000/V<sub>0</sub>';;
+} else if ('126' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 22; //二氧化碳
+} else if ('127' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 22; //游离二氧化碳
+    jsgs_html = 'ρ = V<sub>1</sub>×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+} else if ('128' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 22; //侵蚀性二氧化碳钙
+} else if ('173' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 40.08; //钙
+    jsgs_html = 'ρ = V<sub>1</sub>×C×40.08×1000/V<sub>0</sub>';
+} else if ('174' == vid) {
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 24.32; //镁
+    jsgs_html = 'ρ = V<sub>1</sub>×C×24.32×1000/V<sub>0</sub>';
+} else if ('125' == vid) { //
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 50.04; //总碱度
+    jsgs_html = 'ρ = V<sub>1</sub>×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+} else if ('189' == vid) { //碳酸盐硬度
+    var dl_fzl = (false == dl_emp) ? 60.010 : 60.010; //30.005*2
+    jsgs_html = 'ρ = 2×V<sub>1</sub>×C×30.005×1000/V<sub>0</sub>';
+} else if ('595' == vid) { //碳酸盐硬度
+    var dl_fzl = (false == dl_emp) ? dl_fzl : 50.04; //
+    jsgs_html = 'ρ = V<sub>1</sub>×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+} else {
+    var dl_fzl = !$.isNumeric(dl_fzl) ? 1 : dl_fzl;
+}
+jsgs_html = ('' != jsgs_html) ? jsgs_html : 'ρ = (V<sub>1</sub>-V<sub>2</sub>)×C×' + dl_fzl + '×1000/V<sub>0</sub>';
+$(".gs").html(jsgs_html);
+</script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+function func() {
+    if ($.isNumeric($("[name='btdata[102]']").val()) && $.isNumeric($("[name='btdata[103]']").val())) {
+        if ($("[name='btdata[102]']").val().indexOf('.') != -1) {
+            var len1 = $("[name='btdata[102]']").val().split('.')[1].length;
+        } else {
+            var len1 = 2;
+        }
+        $("[name='btdata[104]']").val(roundjs(accsub($("[name='btdata[102]']").val(), $("[name='btdata[103]']").val()), len1));
+    } else {
+        $("[name='btdata[104]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[202]']").val()) && $.isNumeric($("[name='btdata[203]']").val())) {
+        if ($("[name='btdata[202]']").val().indexOf('.') != -1) {
+            var len2 = $("[name='btdata[202]']").val().split('.')[1].length;
+        } else {
+            var len2 = 2;
+        }
+        $("[name='btdata[204]']").val(roundjs(accsub($("[name='btdata[202]']").val(), $("[name='btdata[203]']").val()), len2));
+    } else {
+        $("[name='btdata[204]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[104]']").val()) && $.isNumeric($("[name='btdata[204]']").val())) {
+        $("[name='btdata[301]']").val(roundjs(accDiv(accAdd($("[name='btdata[104]']").val(), $("[name='btdata[204]']").val()), 2), len1));
+    } else if ($.isNumeric($("[name='btdata[104]']").val())){
+        $("[name='btdata[301]']").val($("[name='btdata[104]']").val());
+    } else {
+        $("[name='btdata[301]']").val('');
+    }
+}
+
+function jsgs() {
+    func();
+    var C = parseFloat($("#c_v").val());
+    var vd3_split = String(vs['vd3']).split('.');
+    var kb = $("[name='btdata[301]']").val();
+    $.isNumeric(kb) ? '' : kb = 0;
+    if (vd3_split.length == 2) {
+        var diding_ws = vd3_split[1].length;
+    } else {
+        var diding_ws = 3;
+    }
+    if ($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])) {
+        vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']), parseFloat(vs['vd3'])), diding_ws);
+    } else {
+        vs['vd5'] = '';
+    }
+    if ($.isNumeric(vs['vd13']) && $.isNumeric(vs['vd14'])) {
+        vs['vd15'] = roundjs(accsub(parseFloat(vs['vd14']), parseFloat(vs['vd13'])), diding_ws);
+    } else {
+        vs['vd15'] = '';
+    }
+    if ($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd15'])) {
+        vs['vd6'] = roundjs(accDiv(accAdd(parseFloat(vs['vd15']), parseFloat(vs['vd5'])), 2), diding_ws);
+        // var v = roundjs(parseFloat(vs['vd6']-vs['vd7']),diding_ws);
+    } else if ($.isNumeric(vs['vd5'])) {
+        vs['vd6'] = vs['vd5'];
+    } else {
+        vs['vd6'] = '';
+    }
+    if ($.isNumeric(vs['vd6']) && $.isNumeric(kb)) {
+        vs['vd16'] = accsub(vs['vd6'], kb);
+    } else {
+        vs['vd16'] = '';
+    }
+    if ($.isNumeric(vs['vd16'])) {
+        var vd16 = vs['vd16'];
+    } else if ($.isNumeric(vs['vd6'])) {
+        var vd16 = vs['vd6'];
+    }
+    if ($.isNumeric(vd16) && $.isNumeric(C) && $.isNumeric(dl_fzl) && $.isNumeric(vs['vd1'])) {
+        // vs['vd7'] = roundjs(parseFloat(vs['vd6']-kb),diding_ws);
+        // console.log(kb);
+        var jg = accMul(accMul(accMul(vd16, parseFloat(C)), parseFloat(dl_fzl)), accDiv(1000, parseFloat(vs['vd1'])));
+        vs['vd0'] = jsws(jg);
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

@@ -1,0 +1,101 @@
+<h3 class="header smaller center title">{$_GET['wz_type']}登记表</h3>
+<form name="bzwz" action="bzwz.php">
+	<input name="wz_id" type="hidden" value='$r[id]'>
+	<input name="wz_type" type="hidden" value='$_GET[wz_type]'>
+	<table class="single" style="width:20cm">
+	  <tbody>
+		<tr class="auto">
+			<td nowrap="nowrap" >编号:<input type="text" name="编号" class="inputl" size="15" value="{$r['wz_bh']}"></td>
+			<td nowrap="nowrap" colspan="2">名称:<input type="text" name="名称" size="25" class="inputl" value="{$r['wz_name']}"></td>
+			<td nowrap="nowrap">有效期(年-月-日):<input type="text" name="有效期" class="inputl date_input" size=10 value="{$r['time_limit']}"></td>
+			<td nowrap="nowrap">${_op}数量:<input type="text" name="数量" class="inputr" size="1"  value="{$r['amount']}">$_unit</td>
+		</tr>
+		<tr class="auto">
+			<td nowrap="nowrap" align="left">生产单位:
+				<input type="text" name="生产单位" size="50" class="inputl" value="{$r['manufacturer']}" />
+			</td>
+			<td  colspan="2" style="width:100%;">
+			<div style="position:relative;">      
+		      <span style="margin-left:100px;width:18px;overflow:hidden;position: absolute;left:75px;top:-14px;">     
+		        <select style="width:118px;margin-left:-100px;display:black" onchange="sele();" id='wz_type_subdivide'  name='wz_type_subdivide'>     
+		          $type_subdivide_select
+		        </select>
+		      </span>
+		      <span style="width:60%;;height: 29px;position:absolute;left:0px;top:-6px;">类型:</span>
+		      <input name="wz_type_subdivide" style="width:60%;;height: 29px;position:absolute;left:42px;top:-13px" value="{$r['wz_type_subdivide']}" placeholder="选择类型或直接输入" onclick="show_type(this);" required/>  
+		     </div>
+	    </td>
+
+				<td nowrap="nowrap" align="left">国标号:
+				<input type="text" name="guobiao" class="inputl" size="32" value="{$r['guobiao']}" /></td>
+				<td>提醒数量:<input type="text" name="limit_num" value="{$r['limit_num']}" size="4"/></td>
+		</tr>
+		<tr  >
+			<td colspan="5" height="50" align="left" >稀释方法:$_dilution_method</td>
+		</tr>
+
+		<tr>
+			<td colspan="5" align="center">保 证 值</td>
+		</tr>
+		<tr class="center">
+			<td>化验项目</td>
+			<td>标准值</td>
+			<td>不确定度</td>
+			<td>浓度范围</td>
+			<td>备注</td>
+		</tr>
+		$lines
+		<tr class="auto center">
+			<td colspan="5">&nbsp;$_action</td>
+		</tr>
+	  </tbody>
+	</table>
+</form>
+<script type="text/javascript">
+$(function(){
+	$("select[name='vid[]']").chosen();//可搜索下拉菜单
+})
+	$("input[name='limit_num']").change(function(){
+		var num=$(this).val();
+		var ex = /^\d+$/;;
+		if(!ex.test(num)){
+			alert("请填写整数！");
+			$(this).val('');
+		}
+	});
+	$($.date_input .initialize);
+	$("input[name=action]").click(function(){
+		var action_name = $(this).val();
+		if(''==bzwz.编号.value){bzwz.编号.focus();return false;}
+		if(''==bzwz.名称.value){bzwz.名称.focus();return false;}
+		if(''==bzwz.有效期.value){bzwz.有效期.focus();return false;}
+		if(!parseInt(bzwz.数量.value)){bzwz.数量.value='';bzwz.数量.focus();return false;}
+	});
+	function jsfw(ab,num){
+		var wzid = $(ab).attr('wzid');
+		var nongdu = $("#nongdu_"+num+"[wzid="+wzid+"]").val();
+		var buqueding = $("#buqueding_"+num+"[wzid="+wzid+"]").val();
+		if(nongdu&&buqueding){
+			$.post("bw_ajax.php?ajax=1",{nongdu:nongdu,buqueding:buqueding,action:'fwjs'},function(data){
+				if(data == 'wrong'){
+
+				}else{
+					$(ab).val(data);
+				}
+			},'html');
+		}
+	}
+//下拉框同步到input
+function sele(){
+  var content=$("#wz_type_subdivide option:selected").text();
+  $("input[name='wz_type_subdivide']").val(content);
+}
+//点击输入框显示类型
+function show_type(){
+  $("#wz_type_subdivide").click();
+}
+</script>
+
+
+
+

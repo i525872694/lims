@@ -1,0 +1,68 @@
+<style>
+#content h2,#content>form{text-align:center;padding:30px 0;MARGIN-RIGHT: auto; MARGIN-LEFT: auto;width:80%;}
+#content table{text-align:center;margin:0 auto;width:100%;border-collapse:collapse;border-spacing:0;}
+#content table td{border:black solid 1px;padding-left:30px;}
+.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:move !important;}
+.group_sites{float:none;background-color:#C9F2D1;}
+#close{
+    background-color: #638EB3 !important;
+    border-color:#638EB3;
+}
+</style>
+<link rel="stylesheet" href="{$rooturl}/css/lims/jquery.dad.css">
+<h2> {$title}</h2>
+<form name='sites_paixu' method="POST" action="sites_paixu.php" onsubmit="return submitTest();">
+<input type="hidden" name="site_type" value="{$site_type}" />
+<input type="hidden" name="action" value="sites_paixu_save" />
+    <table>
+        <tr>
+            <td align=right>批次名称:</td>
+            <td align=left>
+                <input type="text" size="60" name="group_name" value="{$this_group_name}" readonly="readonly" style="border:none;background-color: #fff !important;color: #393939;" />
+                <input type="hidden" name="group_name" value="{$this_group_name}" />
+            </td>
+        </tr>
+        <tr>
+            <td align=right>批内站点:</td>
+            <td align=left id="group_sites">{$site_label}<br /><span style="color:#7A7070">通过鼠标拖动站点来调整顺序</span></td>
+        </tr>
+    </table>
+    <br /><input type="submit" name="submit" class="btn btn-primary btn-sm" value="$button_str" />
+    <input type="button" name="close_button" class="btn btn-primary btn-sm" value='{$close_button}' id='close' />
+</form>
+<script type="text/javascript" src="{$rooturl}/js/lims/jquery.dad.min.js"></script>
+<script  type="text/javascript">
+function submitTest(){
+    var options = {
+            //type:'post',
+            dataType: "json",
+            success:function(result){
+                    if(result.jieGuo=='yes'){
+                        //刷新页面
+                        $("#content").html('重新排序中......');
+                        location.reload();
+                    }else{
+                            alert('修改失败，请重试');
+                    }
+            },
+            timeout:10000
+    };
+    $("form[name='sites_paixu']").ajaxSubmit(options);//ajax提交
+    return false;
+}
+$(function(){
+    //#######拖动开始
+    $('#group_sites').dad();
+    //#########拖动结束
+    $("#close").click(function(){
+        //隐藏父级元素的覆盖层（下达采样任务页面）
+        $("#mask,#qckb_value_modify").css("display","none");
+        $("#content").html('加载中......');
+        $("body").css({"overflow":"auto"});
+    }).mouseover(function(){
+            $(this).css({"opacity":"1"});
+    }).mouseout(function(){
+            $(this).css({"opacity":"0.8"});
+    });
+});
+</script>

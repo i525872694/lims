@@ -1,0 +1,83 @@
+{include file="header.html"}
+<script language="javascript">
+{literal}
+$(function(){
+    $("img[backup_name]").click(function(){
+        if($(this).attr('expanded')=="true"){
+            $(this).attr('src', 'templates/default/style/images/treetable/tv-expandable.gif');
+            $("tr[parent='"+$(this).attr('backup_name')+"']").hide();
+            $(this).attr('expanded', "false");
+        }
+        else{
+            $(this).attr('src', 'templates/default/style/images/treetable/tv-collapsable.gif');
+            $("tr[parent='"+$(this).attr('backup_name')+"']").show();
+            $(this).attr('expanded', "true");
+        }
+    });
+});
+{/literal}
+</script>
+<div id="rightTop" >
+    <p>数据库</p>
+    <ul class="subnav">
+        <li><a class="btn1" href="index.php?app=db&amp;act=backup">备份</a></li>
+        <li><span>下载</span></li>
+    </ul>
+</div>
+<div class="tdare info">
+    <table cellspacing="0" class="dataTable">
+        <!--{if $backups}-->
+        <tr class="tatr1">
+            <td width="20" class="firstCell"><input type="checkbox" class="checkall" /></td>
+            <td align="left" width="350">备份名</td>
+            <td width="150">备份时间</td>
+            <td width="100">备份大小</td>
+            <td width="100">操作</td>
+        </tr>
+        <!--{/if}-->
+        <!--{foreach from=$backups item=backup}-->
+        <!-- <tr class="tatr2">
+            <td class="firstCell"><input value="{$backup.name}" class='checkitem' type="checkbox" /></td>
+            <td align="left" width="350"><img style="cursor:pointer" backup_name="{$backup.name}" src="templates/default/style/images/treetable/tv-expandable.gif" /> {$backup.name|escape}</td>
+            <td>{$backup.date}</td>
+            <td></td>
+            <td>
+            <span>
+            <a name="drop" href="javascript:drop_confirm('确定要删除备份吗？', 'index.php?app=db&amp;act=drop&amp;backup_name={$backup.name}');">
+            删除</a></span>
+            </td>
+        </tr> -->
+            <!--{foreach from=$backup.vols item=vol}-->
+            <tr class="tatr2" parent="{$backup.name}">
+                <td class="firstCell"><input value="{$backup.name}" class='checkitem' type="checkbox" /></td>
+                <td align="left" width="350"><img style="margin-left:20px" src="templates/default/style/images/treetable/tv-item.gif" /> {$vol.file|escape}</td>
+                <td>{$backup.date}</td>
+                <td>{$vol.size}</td>
+                <td>
+                <span>
+                <a name="drop" href="javascript:drop_confirm('确定要删除备份吗？', 'index.php?app=db&amp;act=drop&amp;backup_name={$backup.name}');">
+                删除</a>
+                </span>
+                |
+                <span>
+                <a name="drop" href="index.php?app=db&amp;act=download&amp;backup_name={$backup.name}&amp;file={$vol.file}">下载</a>
+                </span>
+                </td>
+            </tr>
+            <!--{/foreach}-->
+        <!--{foreachelse}-->
+        <tr class="no_data">
+            <td colspan="6">没有可恢复的备份</td>
+        </tr>
+        <!--{/foreach}-->
+    </table>
+    <!--{if $backups}-->
+    <div id="dataFuncs">
+        <div id="batchAction" class="left paddingT15">&nbsp;&nbsp;
+            <input class="formbtn batchButton" type="button" value="删除" name="backup_name" uri="index.php?app=db&act=drop" presubmit="confirm('你确定要删除它吗？');" />
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--{/if}-->
+</div>
+{include file="footer.html"}

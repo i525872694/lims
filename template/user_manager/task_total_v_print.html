@@ -1,0 +1,81 @@
+<!-- 这个是 任务总揽  用的   -->
+<script type="text/javascript" src="$rooturl/js/jquery.PrintArea.js"></script>
+<script>
+function redirect(){
+	location="?year=" + v("year") + "&rw_type=" + v("rw_type") + "&site_type=" + v("site_type");
+}
+function find_type(){
+	var fzx_id = $("#rw_type option:selected").attr("data");
+	var name = $("#rw_type option:selected").text();
+	location = "?fzx_id = "+ fzx_id +"&year=" + v("year") + "&rw_type=" + name + "&site_type=" + v("site_type");
+}
+$(function(){
+		$(".chosen-select").chosen();
+	});
+//打印列表
+function print_list(){
+		$(".no_print").hide();
+	  $(".print").printArea();
+	  $(".no_print").show();  
+}
+//下载列表
+function downLoad_list(){
+	var fzx_id = $("#rw_type option:selected").attr("data");
+	var name = $("#rw_type option:selected").text();
+	window.location.href = "task_total_download.php?fzx_id = "+ fzx_id +"&year=" + v("year") + "&rw_type=" + name + "&site_type=" + v("site_type");
+}
+</script>
+<style>
+@media print {
+ .no_print{ display:none;}
+}
+</style>
+<span class="print">
+<h1 align="center">{$title_site_type}工作量总览</h1>
+<p class="center">
+任务性质:$sl
+年份选择:$yl
+任务类型:$lx
+</p>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:22cm">
+<tr align="center">
+<td rowspan="2">月份</td>
+<td colspan="7">采样站点数</td>
+<td colspan="7">化验任务数</td>
+</tr>
+<tr align="center">
+<td>第一周</td>
+<td>第二周</td>
+<td>第三周</td>
+<td>第四周</td>
+<td>第五周</td>
+<td>第六周</td>
+<td>总计</td>
+<td>第一周</td>
+<td>第二周</td>
+<td>第三周</td>
+<td>第四周</td>
+<td>第五周</td>
+<td>第六周</td>
+<td>总计</td>
+</tr>
+$line
+<tr align="center">
+<td>总计</td>
+<td>$sc[0]</td>
+<td>$sc[1]</td>
+<td>$sc[2]</td>
+<td>$sc[3]</td>
+<td>$sc[4]</td>
+<td>$sc[5]</td>
+<td>$sumc</td>
+<td>$sh[0]</td>
+<td>$sh[1]</td>
+<td>$sh[2]</td>
+<td>$sh[3]</td>
+<td>$sh[4]</td>
+<td>$sh[5]</td>
+<td>$sumh</td>
+</tr>
+</table>
+</span>

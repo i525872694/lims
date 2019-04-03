@@ -1,0 +1,50 @@
+<script> 
+  function in_array(stringToSearch, arrayToSearch) {
+
+	        for (s = 0; s <arrayToSearch.length; s++) {
+			      thisEntry = arrayToSearch[s].toString();
+			            if (thisEntry == stringToSearch) {
+					          return true;
+						        }
+			            }
+		      return false;
+		      }
+
+function quan(th){
+	with(th.form){ 
+		var im=mbxm.value;
+		var   tt=im.split(',');
+		v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			 if(in_array(v[i].value,tt))
+				 v[i].checked=true;
+			 else
+				 v[i].checked=false;
+		}
+		     
+			 }
+}
+</script>
+<style type="text/css">
+span{display:block;padding-left:20px;text-align:left;background-color:none}
+</style>
+<form action='sn_zk_item_save.php' method="post">
+<h3 class="header smaller center title">{$bt}设定</h3>
+<div class="widget-box no-border" style="width:80%;margin:0 auto;">
+  <div class="widget-body">
+<div width="100%">目前关联的化验项目:</div>
+<table class="table table-striped table-bordered table-hover center">
+{$current_line}
+</table>
+
+<div width="100%">尚未关联的化验项目:</div>
+<table class="table table-striped table-bordered table-hover center">
+{$no_select_line}
+</table>
+<input type="hidden" name="rec_id" id="rec_id" value={$_GET['rec_id']}>
+<input type="hidden" name="action" id="action" value={$_GET['action']}>
+{$save_button}
+</div>
+</div>
+</form>

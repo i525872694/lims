@@ -1,0 +1,35 @@
+.overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 10001;
+    display:none;
+    filter:alpha(opacity=60);
+    background-color: #777;
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+}
+.modi_pwd {
+    position:absolute;
+    width: 520px;
+    height: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5); 
+    z-index: 10003;
+    border-radius: 6px;
+    display:none;
+    opacity: 1;
+    background-color:white; 
+}
+.inp{
+    width:200px;
+    height:30px;
+    border-radius: 5px;
+}
+.tips{
+    height: 25px;
+    margin-top:5px;
+}
+.warns{
+    color:red;
+}

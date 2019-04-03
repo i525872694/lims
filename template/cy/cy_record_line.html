@@ -1,0 +1,17 @@
+  <tr height="35px" >
+    <td>{$xuhao}</td>
+	<td>{$rec_list['site_name']}</td>
+	<td>{$rec_list['bar_code']}</td>
+	<td style="width:85px;" ><input type='text' class="date-picker" name='d[{$rec_list[id]}][cy_date]'  value='{$rec_list[cy_date]}' ></td>
+	<td style="width:60px;" ><input type='text' name='d[{$rec_list[id]}][cy_time]' oninput="time(this);" value='{$rec_list[cy_time]}' onblur="return check_time(this)"></td>
+    {$cy_record_line}
+	</td>
+	<td>
+	   $shuiti_zhuangtai
+	</td>
+	<td>
+	   $shuiti_yanse
+	</td>
+		<td style="padding:0;"><textarea name="d[$rec_list[id]][cy_note]" style="width:67px;height:100%;margin:0;overflow:hidden;font-size:12px;" onFocus="show_wus($xuhao)" id="cttt{$xuhao}">{$rec_list['cy_note']}</textarea>$act</td>
+		<td>$img_button</td>
+  </tr>

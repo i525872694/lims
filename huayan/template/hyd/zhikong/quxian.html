@@ -1,0 +1,584 @@
+<div id="zhikong_sc_div">
+    <div class="widget-box transparent" style="margin:0;">
+		<div class="widget-header center">
+			<h3 style="color:#000;">曲线计算相关设置</h3>
+			<div class="widget-toolbar no-border">
+				<!-- {if $u['admin']} -->
+				<a data-action="sc_muban_settings" href="#">
+					<i class="icon-cog"></i>
+				</a>
+				<!-- {/if} -->
+			</div>
+		</div>
+    </div>
+    <div class="quxian-toolbar">
+        <button class="btn btn-xs btn-primary add-rule"><span class="glyphicon glyphicon-plus"></span><span>添加条件</span></button>
+        <button class="btn btn-xs btn-primary del-rule" disabled><i class="glyphicon glyphicon-remove"></i>刪除</button>
+    </div>
+    <!-- 检测项目 -->
+    <div class="hide" id="sc_value_C">{echo PublicApp::get_select('vid',$_SESSION['assayvalueC'],true,false);}</div>
+    <!-- {loop $quxian_info $key $value} -->
+    <!-- {if is_array($value)} -->
+    <div class="hide" id="sc_{$key}">{echo PublicApp::get_select($key,$value,true,false);}</div>
+    <!-- {/if} -->
+    <!-- {/loop} -->
+    <!-- bootstrapTable数据表格 -->
+    <table id="bootstrapTable_sc" class="table center"></table>
+    <!-- {if $u['admin']} -->
+    <script id="sc_muban_settings_temp" type="text/template">
+        <div id="sc_muban_settings" class="modal fade" data-backdrop="static">
+            <div class="modal-content" style="width:800px;margin:0 auto;overflow:auto;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="关闭窗口">&times;</button>
+                    <h3 class="center">曲线表格模板列表设置</h3>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align:right;margin-bottom:10px;">
+                        <button type="button" class="btn btn-xs btn-primary add_muban">新增模板</button>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover center">
+                        <tbody>
+                        <tr>
+                            <th style="width:30%">模板文件名</th>
+                            <th style="width:70%">模板名称</th>
+                        </tr>
+                        </tbody>
+                        <tbody class="muban_list">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" aria-hidden="true">确定</button> -->
+                    <button type="button" class="btn btn-sm" data-dismiss="modal" aria-hidden="true" title="关闭窗口">关闭</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+    if(!$('#sc_muban_settings').length){
+        $('body').append($('#sc_muban_settings_temp').html());
+    }
+    </script>
+    <script id="muban_temp" type="text/template">
+        <tr data-id="add">
+            <td style="text-align:center;" class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                <span data-name="name">{plan_name}</span>
+                <!-- <a href="javascript:void(0)" class="muban_del red" data-rel="tooltip" title="删除模板"><i class="icon-remove bigger-130"></i></a> -->
+            </td>
+            <td style="text-align:left;"><span data-name="note">{plan_note}</span></td>
+        </tr>
+    </script>
+    <!-- {/if} -->
+    <script type="text/javascript">
+    var sc_info = {$sc_info};
+    var sc_conf = {$sc_conf};
+    var zhikong_sc_div = "#zhikong_sc_div";
+    $("#sc_value_C select").prepend('<option value="0">默认设置</option>');
+    //这是绑定操作按钮事件
+    window.scEditEvents = {
+        'click button': function (e, value, row, index) {
+            $.confirm({
+                content: '你确定要删除吗？',
+                confirm: function(){
+                    $.ajax({
+                        type: 'get',
+                        dataType: 'json',
+                        data: {id: row.id},
+                        url: 'ahlims.php?app=zk_quxian&act=zhikong_del&ajax=1',
+                        success: function(data){
+                            if( '0' == data.error ){
+                                save_status_msg(data.content,'success');
+                                scTable.bootstrapTable('removeByUniqueId', row.id);
+                            }else{
+                                save_status_msg(data.content,'danger');
+                            }
+                        },error: function(data){
+                            alert_error(data.responseText);
+                        }
+                    });
+                }
+            });
+        }
+    }
+    function get_quxian_url(){
+        // 根据人员，水样类型，显示数据类型进行筛选数据进行展示
+        return 'ahlims.php?ajax=1&app=zk_quxian&act=quxian_list&water_type=0';
+    }
+
+    // 注册editable即点即改功能
+    var register_sc_editable = function(index, that, value, row, title, field){
+        // 检测项目使用select2
+        var source = [];
+        var sel_type = 'select';
+        var val_data = row[field];
+        if(field == 'value_C'){
+            var sel_type = 'select2';
+            var val_data = row.value_C;
+            // 注意这里键值是id
+            $("#sc_"+field+" option").each(function(){
+                source.push({id: $(this).attr("value"), text: $(this).html()});
+            });
+        }else{
+            // 注意这里键值是value
+            $("#sc_"+field+" option").each(function(){
+                source.push({value: $(this).attr("value"), text: $(this).html()});
+            });
+        }
+        $(that).editable({
+            title: title,
+            type: sel_type,
+            showbuttons: false,
+            select2: {
+                allowClear: true,
+                placeholder: '--请选择--'
+            },
+            source: function(){
+                return source;
+            },
+            value : val_data,
+            display: function(value) {
+                value = $("#sc_"+field+" option[value='"+value+"']").html();
+                $(that).html(value);
+            },
+            url: function(params){
+                var d = new $.Deferred;//回调延迟的对象
+                row['data']['water_type'] = 0;
+                row[field] = row['data'][field] = params.value;
+                if(field == 'value_C'){
+                    row['data']['vid'] = params.value;
+                    row.value_C = $("#sc_value_C option[value='"+params.value+"']").html();
+                }
+                var prop = {id: row.id, data: row.data};
+                $.ajax({
+                    type: 'get',
+                    data: prop,
+                    dataType: 'json',
+                    url: 'ahlims.php?app=zk_quxian&act=quxian_save&ajax=1',
+                    success: function(data){
+                        if(data.error=='0'){
+                            row.id=data.id;
+                            save_status_msg(data.content,'success');
+                            scTable.bootstrapTable('updateRow', {index: index, row: row});
+                            d.resolve();
+                        }else{
+                            return d.reject(data.content);
+                        }
+                    },error: function(data){
+                        return d.reject(data.responseText);
+                    }
+                });
+                return d.promise();
+            }
+        });
+        $(that).trigger("click");
+    }
+    //.editable的click事件绑定
+    var sc_editClickEvents = {
+        'click .editable':function(e, value, row, index){
+            //如果已注册editable方法事件则不再重复注册
+            if( $(this).is(".editable-click") ){
+                return false;
+            }
+            var that = this;
+            //当前列所在位置
+            var n = $(that).parents("tr").find("td").index($(that).parents("td"));
+            //当前列数据名称
+            var editableTitle = $("#bootstrapTable_sc thead tr th:eq("+n+")").text();
+            // 当前列参数名称
+            var field = $("#bootstrapTable_sc thead tr th:eq("+n+")").attr("data-field");
+            // 注册编辑功能
+            register_sc_editable(index, that, value, row, editableTitle, field);
+        }
+    }
+    window.sc_set_round_rule = {
+        'click .editable':function(e, value, row, index){
+            //如果已注册editable方法事件则不再重复注册
+            if( $(this).is(".editable-click") ){
+                return false;
+            }
+            placement =index < 4 ? 'bottom' : 'top';
+            //当前列所在位置
+            var n = $(this).parents("tr").find("td").index($(this).parents("td"));
+            //当前列数据名称
+            var editableTitle = $("#bootstrapTable_sc thead tr th:eq("+n+")").text();
+            // 当前列参数名称
+            var field = $("#bootstrapTable_sc thead tr th:eq("+n+")").attr("data-field");
+            // 默认值
+            var round_rule_default = '{echo json_encode($this->round_rule_config())}';
+            var value = $.extend({}, value, round_rule_default);
+            // 各个字段使用修改插件类型,默认使用round_rule
+            var type_list = {round_r: 'sccr_round'};
+            var editable_type = type_list[field] || 'round_rule';
+            $(this).editable({
+                value: value,
+                title: '修约规则设定',
+                type: editable_type,
+                placement: placement,
+                url: function(params) {
+                    var d = new $.Deferred;//回调延迟的对象
+                    row['data']['water_type'] = 0;
+                    row[field] = row['data'][field] = params.value;
+                    var prop = {id: row.id,  data: row.data};
+                    $.ajax({
+                        type: 'get',
+                        data: prop,
+                        dataType: 'json',
+                        url: 'ahlims.php?app=zk_quxian&act=quxian_save&ajax=1',
+                        success: function(data){
+                            if(data.error=='0'){
+                                row.id=data.id;
+                                save_status_msg(data.content,'success');
+                                scTable.bootstrapTable('updateRow', {index: index, row: row});
+                                d.resolve();
+                            }else{
+                                return d.reject(data.content);
+                            }
+                        },error: function(data){
+                            return d.reject(data.responseText);
+                        }
+                    });
+                    return d.promise();
+                }
+            });
+            $(this).trigger("click");
+        }
+    }
+    var scTable = $('#bootstrapTable_sc').bootstrapTable({
+        cache: false,
+        url: get_quxian_url(),
+        height: get_quxian_height(),
+        uniqueId: 'id',
+        toolbar: zhikong_sc_div+" .quxian-toolbar",
+        toolbarAlign: "left",
+        toolbarClass: "header-color-blue4",
+        showColumns: true,
+        showRefresh: true,
+        minimumCountColumns: 3,
+        clickToSelect:true,
+        search: true,
+        searchText: '',
+        formatSearch: function () {
+            return '请输入要搜索的信息';
+        },
+        columns: [
+            {
+                field: 'checkbox',
+                checkbox: true
+            },
+            {
+                field: 'xuhao',
+                title: '序号',
+                events: false,
+                formatter: function(value, row, index){
+                    return index+1;
+                }
+            },
+            {
+                field: 'value_C',
+                title: '检测项目',
+                events: sc_editClickEvents,
+                formatter: function(value, row, index){
+                    if(row.vid == 0 && index == 0){
+                        return '默认设置';
+                    }
+                    return '<span class="editable">'+value+'</span>';
+                }
+            },
+            {
+                field: 'round_c',
+                title: '使用液浓度',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_c';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_v',
+                title: '取样体积',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_v';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_x',
+                title: '标液含量',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_x';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_y',
+                title: '吸光度',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_y';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_a',
+                title: '截距（CA）',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_a';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_b',
+                title: '斜率（CB）',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_b';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'round_r',
+                title: '相关系数（CR）',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_r';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'check_t',
+                title: '是否截距检验',
+                events: sc_editClickEvents,
+                formatter: function(value, row, index, field){
+                    field = 'check_t';
+                    return '<span class="editable">'+sc_info[field][value]+'</span>';
+                }
+            },
+            {
+                field: 'round_t',
+                title: '截距检验（CT）',
+                events: sc_set_round_rule,
+                formatter: function(value, row, index, field){
+                    field = 'round_t';
+                    return '<span class="editable">'+sc_round2html(value, field)+'</span>';
+                }
+            },
+            {
+                field: 'use_xy',
+                title: '因变量x取值',
+                events: sc_editClickEvents,
+                formatter: function(value, row, index, field){
+                    field = 'use_xy';
+                    return '<span class="editable">'+sc_info[field][value]+'</span>';
+                }
+            },
+            {
+                field: 'sc_muban',
+                title: '选择表格',
+                events: sc_editClickEvents,
+                formatter: function(value, row, index, field){
+                    field = 'sc_muban';
+                    return '<span class="editable">'+sc_info[field][value]+'</span>';
+                }
+            },
+            {
+                field: 'option',
+                title: '操作',
+                events: scEditEvents,
+                formatter: function(value, row, index){
+                    if(index == 0 && row.water_type == 0){
+                        return '-';
+                    }
+                    return '<button title="删除" class="btn btn-danger btn-sm remove-rule"><span class="glyphicon glyphicon-trash"></span></button>';
+                }
+            }
+        ],
+        onLoadSuccess: function(data){
+            // 添加字段说明，自定义方法在hyd.js
+            scTable.bootstrapTable('columnsAddTooltipInfo');
+        }
+    });
+    function sc_round2html(value, field){
+        var html = $.fn.editabletypes.round_rule.prototype.value2html(value);
+        return html;
+    }
+    // 添加
+    $(".add-rule").click(function(){
+        var new_row = Object.assign({}, scTable.bootstrapTable('getData')[0]);
+        !new_row.id && (new_row=Object.assign({}, sc_conf));
+        new_row.id=0;
+        new_row.vid='-1';
+        new_row.value_C='无';
+        new_row.value_C = '<span class="red">点击选择项目</span>';
+        scTable.bootstrapTable('insertRow', {index: 1, row: new_row});
+    });
+    function get_quxian_height(){
+        var height = $(window).height()
+        - $(zhikong_sc_div+".header").outerHeight(true)
+        - $(zhikong_sc_div+".quxian-toolbar").outerHeight(true)
+        - $(".fixed.nav-fixed").height() - 20;
+        return height < 300 ? 300 : height;
+    }
+    // 自适应高度
+    $(window).resize(function () {
+        scTable.bootstrapTable('resetView', {
+            height: get_quxian_height()
+        });
+    });
+    // 当化验单被选中时批量操作按钮才可操作
+    scTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+        $(".del-rule").prop('disabled', !scTable.bootstrapTable('getSelections').length);
+        var selections = getIdSelections();
+    });
+    // 获取选中的数据
+    function getIdSelections() {
+        return $.map(scTable.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+    // 批量删除
+    $(".del-rule").unbind("click").click(function () {
+        var ids = getIdSelections();
+        $.confirm({
+            content: '你确定要删除吗,删除后不可恢复？',
+            confirm: function(){
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {ids: ids},
+                    url: 'ahlims.php?app=zk_quxian&act=zhikong_del&ajax=1',
+                    success: function(data){
+                        if( '0' == data.error ){
+                            scTable.bootstrapTable('remove', {
+                                field: 'id',
+                                values: ids
+                            });
+                            $('.del-rule').prop('disabled', true);
+                            save_status_msg(data.content,'success');
+                            setTimeout(function () {
+                                scTable.bootstrapTable('resetView');
+                            }, 200);
+                        }else{
+                            save_status_msg(data.content,'danger');
+                        }
+                    },error: function(data){
+                        alert_error(data.responseText);
+                    }
+                });
+            }
+        });
+    });
+    // <!-- {if $u['admin']} -->
+    // 曲线表格模板列表设置
+    $("[data-action=sc_muban_settings]").unbind("click").on("click",function(){
+        var set_modal	= $("#sc_muban_settings"),
+            uids_obj	= {};
+        var group_editable_init = function(){
+            // set_modal.find(".muban_list .muban_del").unbind("click").on("click",function(){
+            //     var group = $(this).parents("tr");
+            //     var set_id = group.data("id");
+            //     var plan_name = group.find("[data-name=name]").data("value");
+            //     $.confirm({
+            //         content: '你确定要删除【<strong class="red">'+group_name+'</strong>】吗？',
+            //         confirm: function(){
+            //             $(this).parents("tr").remove();
+            //             muban_set_save();
+            //         }
+            //     });
+            // });
+            set_modal.find(".muban_list [data-name]").not(".editable").each(function(){
+                var that = this;
+                var params = { type: 'text', source: false, select2: false }
+                $(this).unbind("click").editable({
+                    showbuttons: true,
+                    type: params.type,
+                    source: params.source,
+                    select2: params.select2,
+                    value : $(this).data("value"),
+                    validate: function(value) {
+                        var name = $(this).data("name");
+                        if( '#模板文件名#' == value ){
+                            return '请修模板文件名！';
+                        }else if( '#模板名称#' == value ){
+                            return '请修模板名称！';
+                        }
+                        $(this).text(value)
+                    },
+                    url: function(params){
+                        var name = $(this).data("name");
+                        var d = new $.Deferred;//回调延迟的对象
+                        var muban_list = {};
+                        set_modal.find(".muban_list tr").each(function(){
+                            var plan_name = $(this).find("[data-name=name]").text();
+                            var plan_note = $(this).find("[data-name=note]").text();
+                            muban_list[plan_name] = plan_note;
+                        });
+                        var params_data = {
+                            data: muban_list,
+                            name: $(this).data("name"),
+                            value: params.value
+                        };
+                        // 
+                        $.ajax({
+                            type: 'get',
+                            dataType: 'json',
+                            data: params_data,
+                            url: 'ahlims.php?app=zk_quxian&act=muban_set_save&ajax=1',
+                            success: function(data){
+                                if(data.error=='0'){
+                                    $(that).parents("tr").attr("data-id", '');
+                                    d.resolve();
+                                }else{
+                                    return d.reject(data.content);
+                                }
+                            },error: function(data){
+                                return d.reject(data.responseText);
+                            }
+                        });
+                        return d.promise();
+                    }
+                });
+            });
+        }
+        set_modal.find(".add_muban").unbind("click").on("click",function(){
+            var plan_name = '#模板文件名#',
+                plan_note = '#模板名称#';
+            if( set_modal.find("tr[data-id=add]").length ){
+                return false;
+            }
+            var html_str = '';
+            var temp = $("#muban_temp").html();
+            html_str += temp
+                .replace(/{plan_name}/g, plan_name)
+                .replace(/{plan_note}/g, plan_note);
+            set_modal.find(".modal-body table tbody.muban_list").append(html_str);
+            group_editable_init();
+        });
+        $.ajax({
+            type: 'post',
+            data: {ajax: 1},
+            dataType: 'json',
+            url: 'ahlims.php?app=zk_quxian&act=get_sc_muban&ajax=1',
+            success: function(data){
+                var html_str = '';
+                var temp = $("#muban_temp").html();
+                // 循环遍历分组信息
+                for (plan_name in data) {
+                    plan_note = data[plan_name];
+                    html_str += temp
+                            .replace(/{plan_name}/g, plan_name)
+                            .replace(/{plan_note}/g, plan_note);
+                };
+                set_modal.find(".modal-body table tbody.muban_list").html(html_str).find("[data-id]").attr("data-id", '');
+                group_editable_init();
+                set_modal.modal("show");
+            },error: function(data){
+                alert_error(data.responseText);
+            }
+        });
+    });
+    // <!-- {/if} -->
+    </script>
+</div>

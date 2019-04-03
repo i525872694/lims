@@ -1,0 +1,38 @@
+<head>
+<style>
+
+</style>
+<script language='javascript'>
+function yanzheng(e){
+	var ti = e.pifile.value;
+	var tileixing = e.leixing.value;
+	if(ti==''){
+		alert("请先选择要上传的文件");
+		return false;
+	}
+	if(tileixing==''){
+		alert("请先选择物质类型");
+		return false;
+	}
+}
+</script>
+</head>
+<div class='center'>
+	<form method="post" action="#" enctype="multipart/form-data" style='margin-top:30px;' onsubmit="return yanzheng(this);">
+		<table width='320px'>
+		  <tr>
+		    <td align='center' colspan='2'><h2>标准物质上传</h2><br/></td>
+		  </tr>
+		  <tr>
+		  	<td align='center'>选择文件:<p/></td><td align='center'><input type="file" name="pifile" title="请上传excel文件"/><p/></td>
+		  </tr>
+		  <tr>
+		    <td align='center' colspan='2'><p/><p/><input type = 'submit' name="fsub" value="上传" class='btn btn-xs btn-primary'/><p/></td>
+		  </tr>
+		  <tr>
+			<td colspan='2' align='center'>规定excel格式&nbsp;&nbsp;&nbsp;<a href="./upfile/biaowu.xls" >下载分批站点上传excel模版</a><br/></td>
+		  </tr>
+		</table>
+		<center><img src="$rooturl/img/biaowu.png" width="600px" height='300px'/></center>
+	</form>
+</div>

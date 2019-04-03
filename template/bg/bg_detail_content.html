@@ -1,0 +1,46 @@
+<div style="background-color: #FFFFFF; width:20cm;margin:0 auto;{$table_height}" >
+
+<table style="border-color:#000;background-color: #FFFFFF;border-collapse:collapse; width:19cm;" cellpadding="6" align="center">
+	<tbody>
+		<tr style="font-family:宋体;font-size:15pt;" align="center" ><td colspan="8">水环境监测中心检测报告</td></tr>
+		<tr class="firstRow">
+			<td colspan="4" style="word-break: break-all;" width="68%">(监测)字 {$e_name}{$nian} 第 [{$bh}] 号</td>
+			<td colspan="4" align="right" style="letter-spacing:5px">第 {$page} 页 共 {$z_page} 页</td>
+		</tr>
+	</tbody>
+</table>
+<table style="border-color:#000;border-collapse:collapse; width:19cm;" cellpadding="6" border="1" align="center" >
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4" width="50%">样品名称：{$ypmc}</td>
+			<td colspan="4">样品编号：{$ypbh}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4">样品类型：{$szlx}</td>
+			<td colspan="4">样品数量：{$ypsl}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4">委托单位：{$wtdw}</td>
+			<td colspan="4">通讯地址：{$detail_rs['address']}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4">联系人：{$detail_rs['lx_user']}</td>
+			<td colspan="4">联系电话：{$detail_rs['tel']}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4">采样时间：{$cysj}</td>
+			<td colspan="4">检测日期：{$jcrq}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="4">送样时间：{$jssj}</td>
+			<td colspan="4">检测环境：{$jcwd} {$jcsd}</td>
+		</tr>
+		<tr class="firstRow" style="font-family:宋体;font-size:10.5pt;">
+			<td colspan="8">检测地点：{$hub_name}</td>
+		</tr>
+		{$yq_head}<!--仪器设备表头-->
+		{$yq_detail}<!--仪器设备内容-->
+		{$method_head}<!--标准方法表头-->
+		{$method_detail}<!--标准方法内容-->
+
+</table>
+</div>

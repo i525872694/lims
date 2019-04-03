@@ -1,0 +1,198 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-10-1</td>
+    </tr>
+</table>
+<h1>紫外分光光度法测定原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" id="L" value="$arow[td6]">
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:6%"></td>
+        <td style="width:10%"></td>
+        <td style="width:6%"></td>
+        <td style="width:7%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:10%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:8%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="3">{$arow['assay_element']}</td>
+        <td colspan="1">测定方法</td>
+        <td colspan="2">{$arow['td2']} </td>
+        <td colspan="2">选用波长(nm)</td>
+        <td colspan="2"><input type="text" name='td16' value='$arow[td16]' /></td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器名称</td>
+        <td colspan="3">$arow[td4]</td>
+        <td colspan="1">仪器编号</td>
+        <td colspan="2">{$arow['yq_bh']}</td>
+        <td colspan="2">定容体积(mL)</td>
+        <td colspan="2"><input type="text" name="td6" value="$arow[td6]" id='td6' /></td>
+    </tr>
+    <tr>
+        <td colspan="2">标液浓度(mg/L)</td>
+        <td colspan="3"><input type="text" name="td18" value="$arow[td18]" /></td>
+        <td colspan="3">比色皿规格(mm)</td>
+        <td colspan="4"><input type="text" name="td17" value="$arow[td17]" /></td>
+    </tr>
+    <tr>
+        <td class="change_qx blue_a" title="点击选择曲线" colspan="2">标准曲线方程</td>
+        <td colspan="3">
+            {$arow['quxian']}
+            <input type="hidden" name="CA" id="qa" value="$arow[CA]" />
+            <input type="hidden" name="CB" id="qb" value="$arow[CB]" />
+        </td>
+        <td colspan="1" class="view_qx blue_a">绘制日期</td>
+        <td colspan="2">{$arow['sc_ldrq']}</td>
+        <td colspan="1">截距检验</td>
+        <td colspan="1" id="CT">{$arow['CT']}</td>
+        <td colspan="1">相关系数</td>
+        <td colspan="1">{$arow['CR']}</td>
+    </tr>
+    <tr align="center">
+        <td rowspan="2">序号 </td>
+        <td rowspan="2" colspan="2">水样名称</td>
+        <td rowspan="2">采样日期</td>
+        <td rowspan="2">水样体积(mL)</td>
+        <td colspan="4">光密度</td>
+        <td colspan="1" rowspan='2'>含量({$arow['unit']})</td>
+        <td rowspan="2">平均值/<br />理论浓度({$arow['unit']})</td>
+        <td rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+    <tr align="center">
+        <td>A<sub>220</sub></td>
+        <td>A<sub>275</sub></td>
+        <td>A<sub>220</sub>-2A<sub>275</sub></td>
+        <td>减空白</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白1</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[104]" value="{$arow['btdata'][104]}" onblur="func()"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">空白2</td>
+        <td></td>
+        <td><input type="text" class="inputc" name="btdata[201]" value="{$arow['btdata'][201]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[202]" value="{$arow['btdata'][202]}" onblur="func()"></td>
+        <td><input type="text" class="inputc" name="btdata[203]" value="{$arow['btdata'][203]}" onblur="func()"></td>
+        <td><input type="text" class="noinputc" name="btdata[204]" value="{$arow['btdata'][204]}" onblur="func()"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">平均</td>
+        <td></td>
+        <td>/</td>
+        <td>/</td>
+        <td>/</td>
+        <td><input type="text" class="noinputc" name="btdata[301]" value="{$arow['btdata'][301]}" id='kbz'></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    $aline
+    <tr class="noborder"></tr>
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+    if($('#CT').html()!='' && $('#CT').html()!='不合格'){
+		$('#CT').html('合格');
+	}
+</script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+var sc_unit = "{$arow['sc_unit']}";
+
+function func() {
+    if ($("[name='btdata[102]']").val().indexOf('.') != -1) {
+        var len1 = $("[name='btdata[102]']").val().split('.')[1].length;
+    } else {
+        var len1 = 2;
+    }
+    if ($("[name='btdata[202]']").val().indexOf('.') != -1) {
+        var len2 = $("[name='btdata[202]']").val().split('.')[1].length;
+    } else {
+        var len2 = 2;
+    }
+    if ($.isNumeric($("[name='btdata[102]']").val()) && $.isNumeric($("[name='btdata[103]']").val())) {
+        $("[name='btdata[104]']").val(roundjs(accsub($("[name='btdata[102]']").val(), accMul($("[name='btdata[103]']").val(), 2)), len1));
+    } else {
+        $("[name='btdata[104]']").val('');
+    }
+    if ($.isNumeric($("[name='btdata[202]']").val()) && $.isNumeric($("[name='btdata[203]']").val())) {
+        $("[name='btdata[204]']").val(roundjs(accsub($("[name='btdata[202]']").val(), accMul($("[name='btdata[203]']").val(), 2)), len2));
+    } else {
+        $("[name='btdata[204]']").val('');
+    }
+
+    if ($.isNumeric($("[name='btdata[104]']").val()) && $.isNumeric($("[name='btdata[204]']").val())) {
+        $("[name='btdata[301]']").val(roundjs(accDiv(accAdd($("[name='btdata[104]']").val(), $("[name='btdata[204]']").val()), 2), len1));
+    } else if ($.isNumeric($("[name='btdata[104]']").val())) {
+        $("[name='btdata[301]']").val($("[name='btdata[104]']").val());
+    } else {
+        $("[name='btdata[301]']").val('');
+    }
+}
+
+function jsgs() {
+    //运算函数在lib.js
+    //加 accAdd 减 accsub 乘 accMul 除 accDiv
+    var vid = $arow[vid];
+    var CA = parseFloat(document.getElementById('qa').value);
+    var CB = parseFloat(document.getElementById('qb').value);
+
+    if (vs['vd6'].indexOf('.') != -1) {
+        var vd6len = vs['vd6'].split('.')[1].length;
+    } else {
+        var vd6len = 3;
+    }
+    if ($.isNumeric(vs['vd6']) && $.isNumeric(vs['vd7'])) {
+        var As = vs['vd8'] = roundjs(parseFloat(accsub(vs['vd6'], accMul(2, vs['vd7']))), vd6len);
+    } else {
+        var As = vs['vd8'] = '';
+    }
+
+    var Ab = document.getElementById('kbz').value;
+    if ($.isNumeric(As) && $.isNumeric(Ab)) {
+        var Ar = vs['vd9'] = roundjs((accsub(As, Ab)), vd6len);
+    } else {
+        var Ar = vs['vd9'] = '';
+    }
+
+    if (!$.isNumeric($("#td6").val())) { //定容体积
+        $("#td6").focus();
+    }
+
+    if ($.isNumeric(vs['vd1']) && $.isNumeric($("input[name=td6]").val()) && $.isNumeric(Ar) && $.isNumeric(CA) && $.isNumeric(CB)) {
+        var qy_v = parseFloat(vs['vd1']); //取样体
+        var f = parseFloat($("input[name=td6]").val() / vs['vd1']); //稀释倍数
+        var han1 = parseFloat(accMul(accsub(Ar, CA), f));
+        var jie_g = parseFloat(accDiv(han1, CB));
+        vs['vd0'] = jsws(jie_g);
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

@@ -1,0 +1,42 @@
+<h3 class="header smaller center title">质控月报表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		任务类型:
+		<select name="site_type">
+			$site_op
+		</select>
+		年份选择:
+		<select name="year">
+			$year_list
+		</select>
+	</div>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center">
+		<thead class="center">
+			<tr>
+				<th rowspan="2">月份</th>
+				<th colspan="2">现场质控</th>
+				<th colspan="4">室内质控</th>
+			</tr>
+			<tr>
+				<th>现场平行/全程序空白/样品采集数</th>
+				<th>操作</th>
+				<th>室内平行/样品组数</th>
+				<th>操作</th>
+				<th>盲样质控</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			$lines
+		</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+	$('.widget-toolbar select').change(function(){
+		location='zkyb_list.php?site_type='+$("select[name='site_type']").val()+'&year='+$("select[name='year']").val();
+	});
+</script>

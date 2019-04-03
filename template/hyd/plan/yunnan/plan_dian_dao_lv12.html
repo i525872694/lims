@@ -1,0 +1,59 @@
+<table class="noborder">
+    <tr align="right">
+        <td colspan="15">监-11</td>
+    </tr>
+</table>
+<h1>仪器法测定电导率原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+    <tr class="noborder">
+        <td style="width:7%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:12%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+        <td style="width:9%"></td>
+    </tr>
+    <tr>
+        <td colspan="2">测定项目</td>
+        <td colspan="4">{$arow['assay_element']}</td>
+        <td>测定方法</td>
+        <td colspan="4">{$arow['td2']}</td>
+    </tr>
+    <tr>
+        <td colspan="2">仪器名称</td>
+        <td colspan="4">{$arow['td4']} {$arow['td5']}</td>
+        <td>仪器编号</td>
+        <td colspan="4">{$arow['yq_bh']}</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td colspan="2">{$zhanming}</td>
+        <td colspan="1">采样日期</td>
+        <td>水温℃</td>
+        <td>电极常数</td>
+        <td>倍率</td>
+        <td>读数</td>
+        <td>结果({$arow['unit']})</td>
+        <td>平均值</td>
+        <td>相对偏差/加标回收率（%）</td>
+    </tr>
+    {$aline}
+    <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs() {
+    if ($.isNumeric(vs['vd9'])) {
+        var xsbs = $.isNumeric(vs['vd8']) ? vs['vd8'] : 1;
+        vs['vd0'] = jsws(accMul(vs['vd9'], xsbs));
+    } else {
+        vs['vd0'] = '';
+    }
+}
+
+</script>

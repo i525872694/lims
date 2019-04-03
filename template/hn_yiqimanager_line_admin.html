@@ -1,0 +1,62 @@
+<!-- 计量仪器设备一览表行数据 -->
+<script>
+function px(obj,s_px){
+    var html = '',lock = $(obj).html();
+    if(lock.indexOf('type') == -1){
+        var old = $(obj).text();
+        html = '<input type="text" size=2 class="inputc" value="'+ old +'">';
+        $(obj).html(html);
+        $(obj).children('input').focus().select();
+        $(obj).children('input').blur(function(){
+        var id = $(obj).prev().val();
+        var px_id = $(this).val();
+    if(px_id ==s_px){
+         $(obj).html(px_id);
+        return;
+    }
+    $.post('./sdpx.php',{'id':id,'px_id':px_id,'s_px':s_px},function(data){
+            if(data == 'ok')
+                    location.reload();
+            else
+                    $(obj).html(px_id);
+    });
+    });
+    }
+}
+$(".room").text()
+</script>
+
+<style type="text/css">
+.aa {
+	font-weight: normal;
+}
+.clearfix:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}
+</style>
+<input name=r id=r type=hidden value='$r'>
+        <input type='hidden' name='id' value=$r[id]>
+        <div style="float:left;">
+             <a href="$rooturl/app_modal/yiqi_update.php?&id=$r[id]&return=pic"><img style="width:400px;height:250px;margin-top:50px;" src="$r[yq_image]" title="点击查看详细信息"/></a>
+            {$shiwen}
+        </div>
+        <div style="float:left;line-height: 2.5em;">
+            <ul>
+                <li>仪器名称：$r[yq_mingcheng]</li>
+                <li>仪器型号：$r[yq_xinghao]</li>
+                <li>出厂编号：$r[yq_chucangbh]</li>
+                <li>内部编号：$r[yq_neibubh]</li>
+                <li>制造厂商：$r[yq_zzcangjia]</li>
+                <li>购置价格：$jiage</li>
+                <li>管理员：$r[yq_baoguanren]</li>
+                <li>生产日期：$r[yq_scriqi]</li>
+                <li>购置日期：$r[yq_gouzhirq]</li>
+                <li>报废日期：$r[yq_baofei]</li>
+                <li>最近检定日期：$r[yq_jiandingriqi]</li>
+                <li> <a href="$rooturl/app_modal/yiqi_update.php?&id=$r[id]&return=pic">更多详细信息</a></li>
+            </ul>
+        </div>

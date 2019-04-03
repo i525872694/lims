@@ -1,0 +1,105 @@
+
+<script type="text/javascript" language="javascript">
+<!--
+$(document).ready(function(){
+	$("#bianhao").focus();//文件加载是让输入框获得焦点
+	$("span.dayin,h1.dayin").click(function(){//点击"打印"或者标题(扫描结果列表)时,切换输入框及"打印--->清空表" 的 隐藏和显示
+		$("#formSaoMiao").toggle();
+		$("p.dayin").toggle();
+		setTimeout('$("#bianhao").focus()', 1);
+	});
+	if(document.getElementById("single").rows.length<=1){//加载网页时 表的 隐藏和显示
+		$(".xianshi").hide();
+	}
+	else{
+		$(".xianshi").show();
+	}
+	$("#bianhao").blur(function(){
+		setTimeout('$("#bianhao").focus()', 1);
+	});
+/*	$("#cydh").change(function(){
+		$("#bianhao").focus();
+	})
+*/
+});
+//扫描枪扫描编号后 调用的方法（对编号完成率的判断）
+function saomiao(){
+	$.getJSON("saomiao.php",{bh:bianhao.value},
+	function(json){
+		if(json.jg==1){
+			var changdu = document.getElementById("single").rows.length;//获取已经有多少行
+			var tb      = document.getElementById("single").insertRow(1);//在第二行的地方 添加 新行
+			tb.insertCell(0).innerHTML=""+json.ypbh;//行内 第一个td要添加的内容...........以此类摧
+			tb.insertCell(1).innerHTML=""+json.river;
+			tb.insertCell(2).innerHTML=""+json.site_name;
+			tb.insertCell(3).innerHTML=""+json.finish;
+			tb.insertCell(4).innerHTML=""+json.win;
+			if((changdu%23)===0){//每页23行，换行时添加表头信息
+				document.getElementById("single").rows[23].className = 'huanHang';
+				if(changdu>23){
+					var biaotou = document.getElementById("single").insertRow(24);
+					biaotou.insertCell(0).innerHTML="样品编号";//行内 第一个td要添加的内容...........以此类摧
+                        		biaotou.insertCell(1).innerHTML="河名";
+                        		biaotou.insertCell(2).innerHTML="站名";
+                        		biaotou.insertCell(3).innerHTML="完成率";
+                        		biaotou.insertCell(4).innerHTML="完成状况";
+				}
+			}
+			if(document.getElementById("single").rows.length<1){//提交数据后,表的信息的显示和隐藏
+				$(".xianshi").hide();
+			}
+			else{
+				$(".xianshi").show();
+			}
+		}
+		document.getElementById("audio").src = "$rooturl/img/"+json.src;//加载声音文件
+	}
+	);
+	document.getElementById("bianhao").value='';
+	document.getElementById("bianhao").focus();
+	return false;
+}
+ window.onbeforeunload = qingkong('sx');//刷新页面时 清空session全局变量
+//用户点击 清空表执行的方法（清空session全局变量 并客户端刷新页面）
+function qingkong(zt){
+	$.getJSON("saomiao.php",{zt:"qingkong"},
+	function(json){
+		if(zt=="qk"){
+			location=location;//客户端刷新页面
+		}
+	}
+	);
+}
+-->
+</script>
+<style>
+.huanHang{page-break-after:always;}
+table{margin:0 auto;}
+table td{border:0.5px solid black;}
+table tr{border:none;}
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99" >
+<audio id="audio" src="" autoplay></audio>
+<form action="#" method="post" name="formSaoMiao" id="formSaoMiao" style="text-align:center;" onsubmit="return saomiao();">
+  <input type="text" name="bianhao" id="bianhao" style="border-style:solid;border-width:1px;border-color:#3D7BAD #A4C9E3 #B7D9ED #B5CFE7;" placeholder="请用扫描枪对准条形码"  required="required" />
+  <input type="submit" name="sub" value="继续扫描" />
+</form>
+<div class="xianshi">
+	<p align=center class="dayin">
+		<span class="dayin" style="cursor:pointer;">打印&lt;----------</span>|
+		<span id="clear" style="cursor:pointer;" onclick="qingkong('qk');">----------&gt;清空表</span>
+	</p>
+	<div class="smje" style="text-align:center;">
+		<h1 class="dayin" title="点击切换 输入模式/打印模式" style="cursor:pointer;">扫描结果列表</h1>
+		<table id="single" class="single" style="text-align:center;width:24cm;baoder:none;"  cellspacing="0" cellpadding="0">
+			<tr>
+				<td>样品编号</td>
+				<td>河名</td>
+				<td>站名</td>
+				<td>完成率</td>
+				<td>完成状况</td>
+			</tr>
+		</table>
+	</div>
+</div>

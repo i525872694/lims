@@ -1,0 +1,59 @@
+
+<style>
+    td{
+        height:33px;
+    }
+</style>
+<script>
+function ptn(aa)
+{   
+     var fzx = $('#dayin').val();
+     var type = $('#dayin').attr('flag');
+     if(!type){
+        type = $('#dayin1').attr('flag');
+     }
+     location = "?type="+type+"&fzx="+fzx+"&pri="+aa;
+}
+function cfzx(ab){
+    var fzx = $(ab).val();
+    var type = $(ab).attr('flag');
+    location = "?type="+type+"&fzx="+fzx;
+}
+function cfzx1(ab){
+    var fzx = $('#dayin').val();
+    var type = $(ab).val();
+    location = "?type="+type+"&fzx="+fzx;
+}
+
+</script>
+{$sel}
+        <br/>
+<table class='center' id='tableid1' style='width:28cm;' border="0">
+    <tr><td colspan='11'  align='center' ><h3 class="center">仪器设备（标准物质）配置一览表<font size='6px'>□</font></h3></td></tr>
+    <tr><td colspan='11'  align='center'><div style='text-align:left;'>{$hub_name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实验室地址:{$adress}</div></td></tr>
+</table>
+<table class='center' id='tableid' style='width:28cm;' border="1" >
+    <tr>
+        <td style="width:1%" rowspan='2' align='center'>序<br/>号</td>
+        <td style="width:3%" rowspan='2' align='center'>检测产<br>品/类别</td>
+        <td style="width:9%" colspan='2' align='center'>检测项目/参数</td>
+        <td style="width:9%" rowspan='2' align='center'>检测条款/检测<br/>细则编号</td>
+        <td style="width:10%" rowspan='2' align='center'>仪器设备名称、型号/规格</td>
+        <td style="width:12%" colspan='2' align='center'>技术指标</td>
+        <td style="width:4%" rowspan='2' align='center'>溯源<br/>方式</td>
+        <td style="width:7%" rowspan='2' align='center'>有效截止日期</td>
+        <td style="width:3%" rowspan='2' align='center'>备注</td>
+    </tr>
+    <tr>
+        <td style="width:3%" align='center'>序<br/>号</td>
+        <td style="width:8%" align='center'>名称</td>
+        <td style="width:5%" align='center'>测量范围</td>
+        <td style="width:7%" align='center'>准确度等级/不<br/>确定度</td>
+    </tr>
+     <tr>
+         <td style="width:3%" rowspan='$fenge' >{$tyxh}</td>
+        <td style="width:8%" rowspan='$fenge'>{$type1}</td>
+        <td style="height:0;padding:0;margin:0;"></td>
+    </tr>
+    $lines
+</table>

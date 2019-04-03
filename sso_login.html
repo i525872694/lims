@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="./js/jquery-1.7.2.min.js"></script>
+    <script src="./js/JsUtil.js"></script>
+    <script src="./js/cookie/2.1.0/cookie.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var query = __JsUtil.GetAllQuery();
+            $.ajax({
+                url: 'http://http://172.17.2.22/api/v1/sso/token/verify?token_type=' + query.token_type + '&access_token=' + query.access_token,
+                async: false,
+                success: function (json) {
+                    if (json.data != undefined) {
+                        $.ajax({
+                            url: 'sso_login.php?key=s_sso_user_by_username&username=' + json.data.user_name + '&access_token=' + access_token,
+                            async: false,
+                            success: function (userJson) {
+                                if (userJson.data.length > 0) {
+                                    var user = userJson.data[0];
+				    
+				    //todo 前端写入cookie
+				    //document.cookie = "UnitID=" + user.unitid + ";path=/";
+
+                                    window.location.href = "index.php";
+                                } else {
+                                    window.location.href = "http://172.17.2.22:8306";
+                                }
+                            },
+                            error: function () {
+                                window.location.href = "http://172.17.2.22:8306";
+                            }
+                        });
+                    } else if (json.error && json.error.error_code == 401) {
+                        window.location.href = "http://172.17.2.22:8306";
+                    }
+                },
+                error: function () {
+                    window.location.href = "http://172.17.2.22:8306";
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<h1>{$arow['assay_element']}测定原始记录表</h1>
+<h1>(仪器法)</h1>
+{$hjtj_bt}
+<table class="single center" >
+  <tr class="noborder">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+    <td style="width:8.3%">
+  </tr>
+  <tr>
+    <td colspan="1">测定方法</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="1">仪器名称</td>
+    <td colspan="2">{$arow['td4']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+    <td colspan="1">试剂包量程</td>
+    <td colspan="2"><input type="text" class="inputl" name="td8" value="{$arow['td8']}" style="width:80px;">mg/L</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td colspan="2">采样日期</td>
+    <td>水样体积mL</td>
+    <td>稀释倍数</td>
+    <td>仪器读数</td>
+    <td>减空白</td>
+    <td>含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colspan="2">空白</td>
+    <td colspan="2"></td>
+    <td><input type="text" class="inputc" name="btdata[101]" value="{$arow['btdata'][101]}"></td>
+    <td><input type="text" class="inputc" name="btdata[102]" value="{$arow['btdata'][102]}"></td>
+    <td><input type="text" class="inputc" name="btdata[103]" value="{$arow['btdata'][103]}"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  
+  {$aline}
+
+  <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+  if(!$("[name='btdata[102]']").val()){
+    $("[name='btdata[102]']").val('1');
+  }
+  if(!$("[name^='vd2[']").val()){
+    $("[name^='vd2[']").val('1');
+  }
+
+  function jsgs(){
+    var vd2 = $.isNumeric(vs['vd2'])?vs['vd2']:1;
+    if($.isNumeric(vs['vd27'])){
+      if($.isNumeric($("[name='btdata[103]']").val())){
+        vs['vd3'] = accsub(vs['vd27'],$("[name='btdata[103]']").val());
+      }else{
+        vs['vd3'] = vs['vd27'];
+      }
+      vs['vd0'] = accMul(vs['vd3'],vd2);
+    }else{
+      vs['vd3'] = vs['vd0'] = '';
+    }
+  }
+</script>

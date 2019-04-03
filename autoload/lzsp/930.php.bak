@@ -1,0 +1,40 @@
+<?php
+/*
+*功能：离子色谱 型号：万通930
+*作者：汤永胜
+*时间：2016-12-29
+*检测项目：氟化物,氯化物,硝酸盐氮,硫酸盐
+*数组格式:$zhi = array([编号1]=>值1,[编号2]=>值2)
+*/
+$xmArr=array('氟化物'=>'181','氯化物'=>'182','硝酸盐氮'=>'186','硫酸盐'=>'190');
+$html    = array("<BR>","<BR/>","<BR />","<I>","</I>","<B>","</B>","<A NAME=2></A>");//转成html时产生的 标签  全部替换成空
+$kongGe  = array("&NBSP;","&#160;");
+$quzhi_zt='';
+$zhi =$bar_code_arr =$jcxm_arr   =array();
+//取出数组键数
+for($i=0;$i<count($arr);$i++){
+    //循环每条数据并把每条数据去除两端空白并把字符全部转换成大写
+    $line  = trim(str_replace($kongGe," ",str_replace($html,"",strtoupper($arr[$i]))));
+    if(match_bar($line)){
+        $bar      = match_bar($line);
+        if(!in_array($bar,$bar_code_arr)){
+            $bar_code_arr[]=$bar;
+        }
+        $quzhi_zt = "start";
+        continue;
+    }
+    //获取第一个带小数点的数据
+    if($quzhi_zt=="start" &&stristr($line,".")){
+        $last_data=$line;
+    }
+    if($quzhi_zt=="start"&&isset($xmArr[$line])){
+        //检测项目
+        if(!in_array($line,$jcxm_arr)){
+             $jcxm_arr[]=$line;
+        }
+        $zhi[$bar][$xmArr[$line]]=$last_data;
+    }
+
+}
+return $zhi;
+?>

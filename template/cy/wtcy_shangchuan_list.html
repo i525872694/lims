@@ -1,0 +1,38 @@
+<script>
+function redirect( cy_date ){
+    url = "wtcy_shangchuan_list.php?cy_date=" + cy_date;
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+</script>
+<h3 class="header smaller center title">委托检测采样确认单上传</h3>
+<form action="wtcy_shangchuan_save.php" method="post" onkeydown="if(event.keyCode==13)return false;" enctype="multipart/form-data">
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		
+		年份选择:<select id="year"      onchange="redirect(get_cy_date())">$year_list</select>
+		月份选择:<select id="month"     onchange="redirect(get_cy_date())">$month_list</select> 
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center">
+  <tr>
+    <th width="5%" style='min-width:35px;'>序号</th>
+    <th width="10%" style='min-width:80px;'>采样日期</th>
+    <th width="10%" style='min-width:90px;'>采样单号</th>
+    <th width="23%" style='min-width:110px;'>委托单位</th>
+    <th width="15%" style='min-width:60px;'>采样人</th>
+    <th width="17%" style='min-width:110px;'>状态</th>
+    <th width="20%" style='min-width:168px;'>文件选择</th>
+  </tr>
+  $lines
+</table>
+<input type="submit" name="scsub" value="提交">
+</div>
+</div>
+</form>
+

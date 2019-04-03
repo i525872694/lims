@@ -1,0 +1,58 @@
+<div id="sc_get_bzry_box" class="modal fade" data-backdrop="static">
+  <div class="modal-content" style="width:800px;margin:0 auto;overflow:auto;">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>选择项目/选择标液</h3>
+  </div>
+  <div class="modal-body">
+    <table style="width:100%">
+      <tr>
+      <td class="left">
+        选择项目：{echo PublicApp::get_select('vid',$xm_list,true,false);}
+        {php global $global;}
+        {if 'qdzls' != $global['hyd']['danwei']}
+        取用物质来源：{echo PublicApp::get_select('wz_type',array('1'=>'标准溶液','2'=>'自配溶液','3'=>'标定标液'),true,false);}
+        {else}<input type="hidden" name="wz_type" value="1">{/if}
+      </td>
+      <td style="text-align:right">
+        选择表格 {echo PublicApp::get_select('table_name',$muban_list,true,false);}
+      </td>
+      </tr>
+    </table>
+    <div style="clear:both"></div>
+    <div class="select_bzry_div widget-box no-border">
+      <div class="widget-body">
+        <table class="table table-striped table-bordered table-hover center" style="table-layout:fixed"></table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary btn-sm sub_bzry">确定</a>
+    <a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+  </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var sc_gb_box = $("#sc_get_bzry_box");
+    sc_gb_box.find("[name=vid]").select2();
+    sc_gb_box.find("select[name=vid],[name=wz_type]").unbind("change").change(function(){
+      var vid = sc_gb_box.FN("vid","s").val();
+      var wz_type = sc_gb_box.find("[name=wz_type]").val();
+      $.getJSON('{$rooturl}/huayan/ahlims.php?app=quxian&act=getBzryList', {vid:vid,wz_type:wz_type,ajax:1},
+        function(data){
+          sc_gb_box.find(".select_bzry_div table").html(data['temp']);
+          var sc_vid = $("form[name^=sc_form] [name=vid]").val();
+          var sc_table_name = $("form[name^=sc_form] [name=table_name]").val();
+          // 如果是在曲线原始记录里面切换项目时,切换到当前项目时默认选中当前曲线使用的表格
+          if(sc_vid && vid == sc_vid){
+            sc_gb_box.find("[name=table_name]").val(sc_table_name);
+          }else{
+            sc_gb_box.find("[name=table_name]").val(data['sc_muban']);
+          }
+        }
+      );
+    });
+    sc_gb_box.FN("vid","s").trigger("change");
+  });
+</script>

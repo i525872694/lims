@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<link rel="stylesheet" href="{$rooturl}/css/bootstrap-editable.css" />
+<link rel="stylesheet" href="{$rooturl}/css/select2.css" />
+<link rel="stylesheet" href="{AH_URL}/css/hyd.css?v={$global['hyd']['v']}" />
+ <script type="text/javascript" src="{AH_URL}/js/hyd.js?v={$global['hyd']['v']}"></script> 
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-editable.js"></script>
+<script type="text/javascript" src="{AH_URL}/js/table-master/bootstrap-editable-lims.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/select2.min.js"></script>
+<div class="fixed nav-fixed" style="width:100%">
+    <ul class="nav nav-tabs padding-18 tab-size-bigger">
+        <li><a data-toggle="tab" data-refresh="true" href="#zhikong0">平行计算<span class="badge badge-danger"></span></a></li>
+        <li><a data-toggle="tab" data-refresh="true" href="#zhikong1">加标计算<span class="badge badge-danger"></span></a></li>
+        <li><a data-toggle="tab" data-refresh="true" href="#zhikong2">标样计算<span class="badge badge-danger"></span></a></li>
+        <li><a data-toggle="tab" data-refresh="true" href="#zhikong3">曲线设置<span class="badge badge-danger"></span></a></li>
+        <li><a data-toggle="tab" data-refresh="true" href="#zhikong4">质控范围<span class="badge badge-danger"></span></a></li>
+    </ul>
+</div>
+<div class="tabbable">
+    <div class="tab-content no-border">
+        <div id="zhikong0" class="tab-pane fade"><!-- 相对偏差 --></div>
+        <div id="zhikong1" class="tab-pane fade"><!-- 加标回收 --></div>
+        <div id="zhikong2" class="tab-pane fade"><!-- 标样计算 --></div>
+        <div id="zhikong3" class="tab-pane fade"><!-- 曲线设置 --></div>
+        <div id="zhikong4" class="tab-pane fade"><!-- 曲线设置 --></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //bootstrap模态框和select2合用时input无法获取焦点解决办法
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+        // 平行计算设置
+        $("a[href='#zhikong0']").unbind("click").on("click",function(){
+            if(true == $(this).data("refresh")){
+                $(this).data("refresh",false);
+                $.get("{$rooturl}/huayan/ahlims.php?ajax=1&app=zk_pingxing",function(data){
+                    $("#zhikong0").html(data);
+                });
+            }
+        });
+        // 加标计算设置
+        $("a[href='#zhikong1']").unbind("click").on("click",function(){
+            if(true == $(this).data("refresh")){
+                $(this).data("refresh",false);
+                $.get("{$rooturl}/huayan/ahlims.php?ajax=1&app=zk_jiabiao",function(data){
+                    $("#zhikong1").html(data);
+                });
+            }
+        });
+        // 标准样品计算设置
+        $("a[href='#zhikong2']").unbind("click").on("click",function(){
+            if(true == $(this).data("refresh")){
+                $(this).data("refresh",false);
+                $.get("{$rooturl}/huayan/ahlims.php?ajax=1&app=zk_biaoyang",function(data){
+                    $("#zhikong2").html(data);
+                });
+            }
+        });
+        // 曲线计算设置
+        $("a[href='#zhikong3']").unbind("click").on("click",function(){
+            if(true == $(this).data("refresh")){
+                $(this).data("refresh",false);
+                $.get("{$rooturl}/huayan/ahlims.php?ajax=1&app=zk_quxian",function(data){
+                    $("#zhikong3").html(data);
+                });
+            }
+        });
+        // 质控范围设置
+        $("a[href='#zhikong4']").unbind("click").on("click",function(){
+            if(true == $(this).data("refresh")){
+                $(this).data("refresh",false);
+                $.get("{$rooturl}/huayan/ahlims.php?ajax=1&app=zk_fanwei",function(data){
+                    $("#zhikong4").html(data);
+                });
+            }
+        });
+        // 打开指定标签页
+        var hash = document.location.hash;
+        $(hash).length || (hash = "#zhikong0");
+        $("a[href='"+hash+"']").trigger("click");
+    });
+</script>
+<style type="text/css">
+    /*bootstrapTable的header取消margin，防止出现滚动条时th与下面的td数据不对齐*/
+    .fixed-table-header table.table.center {
+        margin: 0px;
+    }
+</style>

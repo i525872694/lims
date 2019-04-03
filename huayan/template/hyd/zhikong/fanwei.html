@@ -1,0 +1,397 @@
+<h3 class="header smaller center" style="color:#000;">质控范围设置</h3>
+<!--{if $this->canModi}-->
+<div id="toolbar2" style="padding-left:10px;padding-right:150px;">
+	<button class="copy btn btn-xs btn-primary" data-value="<">&lt;</button>
+	<button class="copy btn btn-xs btn-primary" data-value=">">&gt;</button>
+	<button class="copy btn btn-xs btn-primary" data-value="～">～</button>
+	<button class="copy btn btn-xs btn-primary" data-value="≤">≤</button>
+	<button class="copy btn btn-xs btn-primary" data-value="≥">≥</button>
+	<button class="copy btn btn-xs btn-primary" data-value="±">±</button>
+	<a href="javascript:void();" class="glyphicon glyphicon-question-sign tooltip-info" data-rel="tooltip" title="点击按钮可以将特殊字符粘贴进剪贴板。"></a>
+</div>
+<!--{/if}-->
+<div class="fanwei-toolbar">
+    水样类型：{echo PublicApp::get_select('water_type',$this->get_all_leixing(),true,true);}
+    检测项目：<span id="fw_value_C">{echo PublicApp::get_select('vid',$_SESSION['assayvalueC'],true,true);}</span>
+    <!--{if $this->canModi}-->
+    <button class="btn btn-xs btn-primary add-rule"><span class="glyphicon glyphicon-plus"></span><span>添加条件</span></button>
+    <button class="btn btn-xs btn-primary del-rule" disabled><i class="glyphicon glyphicon-remove"></i>刪除</button>
+    <!--{/if}-->
+</div>
+<!-- bootstrapTable数据表格 -->
+<table id="bootstrapTable_fw" class="table center"></table>
+<script>
+$("#fw_value_C select").prepend('<option value="0">默认设置</option>').select2();
+// 为水样类型和人员选择绑定change事件来查看不同的数据
+$("#zhikong4").find("[name=vid], [name=water_type]").on("change", function(){
+    if( '全部' != $(this).val() ){
+        fwTable.bootstrapTable("hideColumn","lname");
+    }else{
+        fwTable.bootstrapTable("showColumn","lname");
+    }
+	// 更新bootstrapTable表数据，需要使用最新的URL路径
+	fwTable.bootstrapTable("refresh",{silent: true, url: get_fanwei_url()});
+});
+function get_fanwei_url(){
+    var vid = $("#zhikong4 [name=vid]").val();
+    var water_type = $("#zhikong4 [name=water_type]").val();
+    // 根据水样类型，显示数据类型进行筛选数据进行展示
+    return 'ahlims.php?ajax=1&app=zk_fanwei&act=fanwei_list&water_type='+water_type+'&vid='+vid;
+}
+// {if $this->canModi}
+//这是绑定操作按钮事件
+window.fwEditEvents = {
+    'click button': function (e, value, row, index) {
+        $.confirm({
+            content: '你确定要删除吗？',
+            confirm: function(){
+                $.ajax({
+                    type: 'get',
+                    dataType: 'json',
+                    data: {id: row.id},
+                    url: 'ahlims.php?app=zk_fanwei&act=zhikong_del&ajax=1',
+                    success: function(data){
+                        if( '0' == data.error ){
+                            save_status_msg(data.content,'success');
+                            fwTable.bootstrapTable('removeByUniqueId', row.id);
+                            // 合并单元格
+                            fw_table_merge(fwTable);
+                        }else{
+                            save_status_msg(data.content,'danger');
+                        }
+                    },error: function(data){
+                        alert_error(data.responseText);
+                    }
+                });
+            }
+        });
+    }
+}
+// 注册editable即点即改功能
+var register_fw_editable = function(index, that, value, row, title, field){
+    // 检测项目使用select2
+    var sel_type = 'text';
+    var val_data = row[field] || '';
+    if(field == 'value_C'){
+        var source = [];
+        var sel_type = 'select2';
+        var val_data = row.vid;
+        // 注意这里键值是id
+        $("#fw_"+field+" option").each(function(){
+            if('全部' != $(this).attr("value")){
+                source.push({id: $(this).attr("value"), text: $(this).html()});
+            }
+        });
+    }
+    $(that).editable({
+        title: title,
+        type: sel_type,
+        // onblur: 'ignore',
+        showbuttons: true,
+		select2: {
+			allowClear: true,
+			placeholder: '--请选择--'
+		},
+        source: function(){
+            return source;
+        },
+        value : val_data,
+        emptytext: '-',
+        display: function(value) {
+            if($("#fw_"+field+" option[value='"+value+"']").length){
+                value = $("#fw_"+field+" option[value='"+value+"']").html();
+            }
+            $(that).html(value);
+        },
+        url: function(params){
+            var d = new $.Deferred;//回调延迟的对象
+            row[field] = params.value;
+            row['water_type'] = $("#zhikong4 [name=water_type]").val();
+            if(field == 'value_C'){
+                row['vid'] = params.value;
+            }
+            var prop = {id: row.id, data: row};
+            $.ajax({
+                type: 'get',
+                data: prop,
+                dataType: 'json',
+                url: 'ahlims.php?app=zk_fanwei&act=fanwei_save&ajax=1',
+                success: function(data){
+                    if(data.error=='0'){
+                        row.id=data.id;
+                        save_status_msg(data.content,'success');
+                        d.resolve();
+                    }else{
+                        return d.reject(data.content);
+                    }
+                },error: function(data){
+                    return d.reject(data.responseText);
+                }
+            });
+            return d.promise();
+        }
+    });
+    $(that).trigger("click");
+}
+//.editable的click事件绑定
+var fw_editClickEvents = {
+    'click .editable':function(e, value, row, index){
+        //如果已注册editable方法事件则不再重复注册
+        if( $(this).is(".editable-click") ){
+            return false;
+        }
+        var that = this;
+        //当前列所在位置
+        var n = $(that).parents("tr").find("td").index($(that).parents("td"));
+        //当前列数据名称
+        var editableTitle = $("#bootstrapTable_fw thead tr th:eq("+n+")").text();
+        // 当前列参数名称
+        var field = $("#bootstrapTable_fw thead tr th:eq("+n+")").attr("data-field");
+        // 注册编辑功能
+        register_fw_editable(index, that, value, row, editableTitle, field);
+    }
+}// 添加
+$(".add-rule").click(function(){
+    var new_row = Object.assign({}, fwTable.bootstrapTable('getData')[0]);
+    new_row.id=0;
+    new_row.vid='-1';
+    new_row.value_C = '<span class="red">点击选择项目</span>';
+    var rowspan = $("#bootstrapTable_fw tbody tr:first td.td_value_c").prop("rowspan");
+    if(fwTable.bootstrapTable('getData')[rowspan] && fwTable.bootstrapTable('getData')[rowspan].id==0){
+        save_status_msg('请将现有数据填充完整后再添加新数据。', 'danger');
+        return;
+    }
+    fwTable.bootstrapTable('insertRow', {index: rowspan, row: new_row});
+    // 合并单元格
+	fw_table_merge(fwTable);
+});
+// 批量删除
+$(".del-rule").unbind("click").click(function () {
+	var ids = getIdSelections();
+    $.confirm({
+        content: '你确定要删除吗,删除后不可恢复？',
+        confirm: function(){
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                data: {ids: ids},
+                url: 'ahlims.php?app=zk_fanwei&act=zhikong_del&ajax=1',
+                success: function(data){
+                    if( '0' == data.error ){
+                        fwTable.bootstrapTable('remove', {
+                            field: 'id',
+                            values: ids
+                        });
+                        $('.del-rule').prop('disabled', true);
+                        save_status_msg(data.content,'success');
+                        setTimeout(function () {
+                            fwTable.bootstrapTable('resetView');
+                            // 合并单元格
+                            fw_table_merge(fwTable);
+                        }, 200);
+                    }else{
+                        save_status_msg(data.content,'danger');
+                    }
+                },error: function(data){
+                    alert_error(data.responseText);
+                }
+            });
+        }
+    });
+});
+// 复制黏贴
+$("button.copy").on("click", function(){
+    var oInput = document.createElement('input');
+    // oInput.type = 'hidden';
+    oInput.value = $(this).data("value");
+    document.body.appendChild(oInput);
+    oInput.select(); // 选择对象
+    document.execCommand("Copy");// 执行浏览器复制命令
+    save_status_msg('复制 '+ $(this).data("value") +' 成功','success');
+    document.body.removeChild(oInput);
+});
+// {else}\n
+window.fwEditEvents={};
+fw_editClickEvents={};
+// {/if}\n
+var fwTable = $('#bootstrapTable_fw').bootstrapTable({
+    cache: false,
+    url: get_fanwei_url(),
+    height: get_fanwei_height(),
+    uniqueId: 'id',
+    toolbar: "#zhikong4 .fanwei-toolbar",
+    toolbarAlign: "center",
+    toolbarClass: "header-color-blue4",
+    showColumns: false,
+    showRefresh: true,
+    minimumCountColumns: 3,
+    clickToSelect:true,
+    search: true,
+    searchText: '',
+    formatSearch: function () {
+        return '请输入要搜索的信息';
+    },
+    columns: [
+        // {if $this->canModi}\n
+		{
+			field: 'checkbox',
+			checkbox: true
+		},
+        // {/if}\n
+        {
+            field: 'xuhao',
+            title: '序号',
+            events: false,
+            formatter: function(value, row, index){
+                return index+1;
+            }
+        },
+		{
+			field: 'lname',
+			visible: ( '全部' == $("#zhikong4 [name=water_type]").val() ),
+			sortable: true,
+			title: '水样类型'
+		},
+        {
+            field: 'value_C',
+            title: '检测项目',
+            class: 'td_value_c',
+            events: fw_editClickEvents,
+            formatter: function(value, row, index){
+                if(row.vid == 0 && index == 0){
+                    return '默认设置';
+                }
+                return '<span class="editable value_c">'+value+'</span>';
+            }
+        },
+        {
+            field: 'nd',
+            title: '样品含量范围(mg/L)',
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'nd';
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'sn_jmd',
+            title: '室内相对偏差(%)',
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'sn_jmd';
+                !value && (value = '-');
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'sj_jmd',
+            title: '室间相对偏差(%)',
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'sj_jmd';
+                !value && (value = '-');
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'jbhs',
+            title: '加标回收率(%)',
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'jbhs';
+                !value && (value = '-');
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'sn_xdwc',
+            title: '室内相对误差(%)',
+            events: false,
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'sn_xdwc';
+                !value && (value = '-');
+                return '<span class="editable">'+value+'</span>';
+            }
+        },
+        {
+            field: 'sj_xdwc',
+            title: '室间相对误差(%)',
+            events: false,
+            events: fw_editClickEvents,
+            formatter: function(value, row, index, field){
+                field = 'sj_xdwc';
+                !value && (value = '-');
+                return '<span class="editable">'+value+'</span>';
+            }
+        }// {if $this->canModi}\n
+        ,{
+            field: 'option',
+            title: '操作',
+            events: fwEditEvents,
+            formatter: function(value, row, index){
+                if(index == 0 && row.water_type == 0){
+                    return '-';
+                }
+                return '<button title="删除" class="btn btn-danger btn-sm remove-rule"><span class="glyphicon glyphicon-trash"></span></button>';
+            }
+        }// {/if}\n
+    ],
+	onLoadSuccess: function(data){
+            // 合并单元格
+			fw_table_merge(fwTable);
+			// tooltip
+			$('[data-rel="tooltip"]').tooltip();
+            // 添加字段说明，自定义方法在hyd.js
+            fwTable.bootstrapTable('columnsAddTooltipInfo');
+	},onSearch: function(){
+            // 合并单元格
+			fw_table_merge(fwTable);
+    }
+});
+// 合并单元格
+function fw_table_merge(obj){
+    var data = obj.bootstrapTable('getData');
+    var index = 0;
+    var rowspan = 1;
+    var vid = -1;
+    for (var i = 0; i < data.length; i++) {
+        if( vid != data[i].vid ){
+            if(rowspan > 1){
+                $(obj).find("tbody tr:eq("+index+")").find(".value_c").removeClass("editable").unbind("click");
+            }
+            obj.bootstrapTable('mergeCells', {index: index, field: 'value_C', colspan: 1, rowspan: rowspan});
+            vid = data[i].vid;
+            index = i;
+            rowspan = 1;
+        }else{
+            rowspan++;
+        }
+    };
+    obj.bootstrapTable('mergeCells', {index: index, field: 'value_C', colspan: 1, rowspan: rowspan});
+}
+function get_fanwei_height(){
+    var height = $(window).height()
+    - $('#zhikong4 .header').outerHeight(true)
+    - $('#zhikong4 .fanwei-toolbar').outerHeight(true)
+    - $(".fixed.nav-fixed").height() - 20;
+    return height < 300 ? 300 : height;
+}
+// 自适应高度
+$(window).resize(function () {
+    fwTable.bootstrapTable('resetView', {
+        height: get_fanwei_height()
+    });
+});
+// 当化验单被选中时批量操作按钮才可操作
+fwTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+	$(".del-rule").prop('disabled', !fwTable.bootstrapTable('getSelections').length);
+	var selections = getIdSelections();
+});
+// 获取选中的数据
+function getIdSelections() {
+	return $.map(fwTable.bootstrapTable('getSelections'), function (row) {
+		return row.id
+	});
+}
+</script>

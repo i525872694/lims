@@ -1,0 +1,44 @@
+<style>
+    fieldset{width:90%;margin:10px auto;padding: 10px;border: 2px solid #A8A8A8;display: block;background-color: #DEF7F7;border-radius: 8px;font-size: 15px;}
+    legend{font-size:18px;width:auto;background-color: #DEF7F7;border-radius:8px 8px 0px 0px;border: 2px solid #A8A8A8;border-bottom: none;margin-bottom: 26px;}
+    /*display: block;padding: 0;margin-bottom: 10px;font-size: 21px;line-height: inherit;color: #333;border: 0;border-bottom: 1px solid #e5e5e5;*/
+    h1{width:90%;margin:15px auto;text-align:left;font-size:20px !important;font-weight: bold;}
+    .stress{color:#F27979;}
+    button{border-radius: 8px !important;}
+</style>
+<script type="text/javascript">
+$(function(){
+    //项目提醒界面
+    $("#xm_button").click(function(){
+        $("#cover").show();
+        $("body").css({"overflow":"hidden"});
+        $.post("value_diff.php",{"action":'xm',"title":'系统项目名称对照表',"ajax":'1'},function(data){
+            $("#con").html(data);
+        },'html')
+    });
+    //水样类型提醒界面
+    $("#water_button").click(function(){
+        $("#cover").show();
+        $("body").css({"overflow":"hidden"});
+        $.post("value_diff.php",{"action":'water_type',"title":'系统水样类型名称对照表',"ajax":'1'},function(data){
+            $("#con").html(data);
+        },'html')
+    });
+    //关闭弹出层
+    $(".close_cover").click(function(){
+        $("#cover").hide();
+        $("body").css({"overflow":"auto"});
+    });
+})
+</script>
+<h1>出现此页面说明excel表中存在<span class="stress">系统无法识别</span>的信息，请更改后再重新上传：</h1>
+{$tixing}
+<center><a href="{$rooturl}/basis_data_set/fangfa_import.php" class="btn btn-xs btn-primary btn_bg" >返回重新导入</a></center>
+<!-- 弹出层 -->
+<div id="cover" class="modal" role="dialog" style='clear:both;background-color:rgba(15, 15, 15, 0.7)!important;'>
+    <div class="modal-dialog" style='width:80%;margin:0 auto;height:100%;'>
+        <div style="color:#0000FF;font-size:20px;cursor:pointer;width:75px;height:35px;line-height:35px;text-align:center;margin-bottom:-35px;position:relative;z-index:1051;float:right;" class='close_cover'>关闭</div>
+        <div id="con" class='modal-content' style='clear:both;width:100%;height:100%;'></div>
+    </div>
+</div>
+<!-- 弹出层 -->

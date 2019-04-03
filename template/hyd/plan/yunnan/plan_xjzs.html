@@ -1,0 +1,80 @@
+<h1>细菌总数(倾注培养法)测定记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+  <tr class="noborder">
+    <td style="width:7%">
+    <td style="width:16%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+    <td style="width:7%">
+  </tr>
+  <tr>
+    <td>测定项目</td>
+    <td colspan="1">$arow[assay_element]</td>
+    <td>测定方法</td>
+    <td colspan="4">{$arow['td2']}</td>
+    <td>接种日期</td>
+    <td colspan="2"><input type="text" name="td8" value="$arow[td8]" class="inputc date_Ymd"></td>
+    <td>完成日期</td>
+    <td colspan="2"><input type="text" name="td9" value="$arow[td9]" class="inputc date_Ymd"></td>
+  </tr>
+  <tr align="center">
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">采样日期</td>
+    <td colspan="6">取样体积</td>
+    <td rowspan="2">空白</td>
+    <td rowspan="2">细菌总数({$arow['unit']})</td>
+    <td rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td rowspan="2">相对偏差/加标回收率(%)</td>
+  </tr>
+  <tr>
+    <td colspan="2">1.00mL</td>
+    <td colspan="2">0.10mL</td>
+    <td colspan="2">0.01mL</td>
+  </tr>
+
+   {$aline}
+   
+  <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+  function jsgs(){
+    var kb = $.isNumeric(vs['vd9']) ? vs['vd9'] : 0;
+    if($.isNumeric(vs['vd7']) && $.isNumeric(vs['vd8'])){
+      var num1 = vs['vd7'];
+      var num2 = vs['vd8'];
+      var times = 100;
+    }else if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])){
+      var num1 = vs['vd5'];
+      var num2 = vs['vd6'];
+      var times = 10;
+    }else if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+      var num1 = vs['vd3'];
+      var num2 = vs['vd4'];
+      var times = 1;
+    }
+    
+    var unit = "{$arow['unit']}";
+    if(unit == '个/10L'){
+      times = times * 10;
+    }else if(unit == '万个/L'){
+      times = times / 10000;
+    }
+
+    if($.isNumeric(num1) && $.isNumeric(num2)){
+      vs['vd0'] = accsub(accMul(accDiv(accAdd(num1,num2),2),times),kb);
+    }else{
+      vs['vd0'] = '';
+    }
+
+  }
+</script>

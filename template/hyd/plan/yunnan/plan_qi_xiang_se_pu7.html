@@ -1,0 +1,66 @@
+<table class="noborder">
+    <tr align="right">
+	    <td colspan="15">监-00</td>
+	</tr>
+</table>
+
+<h1>气相色谱测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single center">
+  <tr class="noborder">
+    <td style="width:7%"></td>
+    <td style="width:7%"></td>
+    <td style="width:13%"></td>
+    <td style="width:11%"></td>
+    <td style="width:11%"></td>
+    <td style="width:11%"></td>
+    <td style="width:11%"></td>
+    <td style="width:11%"></td>
+    <td style="width:11%"></td>
+  </tr>
+  <tr>
+    <td colspan="2">测定项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+	  <td colspan="1">测定方法</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="1">检出限({$arow['unit']})</td>
+    <td colspan="1">{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td colspan="2">仪器名称</td>
+    <td colspan="2">{$arow['td4']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+	  <td colspan="1">检定器</td>
+    <td colspan="1"><input type="text" name="td8" value="$arow[td8]" /></td>
+  </tr>
+  <tr>
+	  <td colspan="2">进样口温度(℃)</td>
+    <td colspan="2"><input type="text" name="td9" value="$arow[td9]" /></td>
+    <td colspan="1">分流比</td>
+    <td colspan="2"><input type="text" name="td10" value="$arow[td10]" /></td>
+    <td colspan="1">检测器温度</td>
+    <td colspan="1"><input type="text" name="td11" value="$arow[td11]" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">水样名称</td>
+    <td colspan="1">采样日期</td>
+    <td>仪器读数</td>
+    <td>稀释倍数</td>
+    <td>含量<br/>({$arow['unit']})</td>
+    <td>平均值</td>
+    <td>相对偏差/<br/>加标回收率<br/>（%）</td>
+  </tr>
+  {$aline}
+  <tr class="noborder"></tr>
+</table>
+<script type="text/javascript">
+function jsgs(){
+    if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+      vs['vd0'] =　accMul(vs['vd27'], vs['vd2']);
+    }else{
+      vs['vd0'] = '';
+    }
+}
+</script>

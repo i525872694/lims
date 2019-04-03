@@ -1,0 +1,52 @@
+<!-- 计量仪器设备一览表行数据 -->
+<script>
+function px(obj,s_px){
+    var html = '',lock = $(obj).html();
+    if(lock.indexOf('type') == -1){
+        var old = $(obj).text();
+        html = '<input type="text" size=2 class="inputc" value="'+ old +'">';
+        $(obj).html(html);
+        $(obj).children('input').focus().select();
+        $(obj).children('input').blur(function(){
+        var id = $(obj).prev().val();
+        var px_id = $(this).val();
+    if(px_id ==s_px){
+         $(obj).html(px_id);
+        return;
+    }
+    $.post('./sdpx.php',{'id':id,'px_id':px_id,'s_px':s_px},function(data){
+            if(data == 'ok')
+                    location.reload();
+            else
+                    $(obj).html(px_id);
+    });
+    });
+    }
+}
+</script>
+
+<style type="text/css">
+.aa {
+	font-weight: normal;
+}
+</style>
+
+
+<input name=r id=r type=hidden value='$r'>
+
+<tr align=center  style="color:$color">
+<input type='hidden' name='id' value=$r[id]>   
+ <td align=left onclick="px(this,$r[px_id])">$xx</td>
+ $fzx_lie_content
+    <td ><a href='hn_yiqiguanli.php?id=$r[id]&action=show' style="color:$color"><span class="aa">$r[yq_mingcheng]</span></a></td>
+    <td>$r[yq_xinghao]</td>
+    <td>$r[yq_jiage]</td>
+    <td>$r[yq_chucangbh]</td>	
+    <td>$r[yq_neibubh]</td>
+    <td>$r[yq_zzcangjia]</td>
+    <td>$r[yq_state]</td>
+    <td>$r[yq_gouzhirq]</td>
+    <td>$r[yq_jiandingriqi]</td>
+    <!--<td>$r[yq_baoguanren]</td>-->
+    <td colspan=2 class="action-buttons">$operation</td>
+  </tr>
